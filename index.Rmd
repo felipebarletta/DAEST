@@ -1,0 +1,195 @@
+---
+title: "Probabilidade e inferência estatística com `R`"
+output:
+  html_document:
+    toc: false
+---
+
+```{r setup, include=FALSE, cache=FALSE}
+source("setup_knitr.R")
+```
+
+
+```{css}
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+.toc-content {
+padding-left: 0;
+padding-right: 0;
+margin-left: -95px;
+}
+table.dataTable thead th {
+text-align: left;
+}
+table.dataTable tbody th, table.dataTable tbody td {
+padding: 8px 18px;
+}
+table.dataTable thead th, table.dataTable thead td {
+padding: 8px 18px 8px 18px;
+border-bottom: 1px solid #111;
+}
+body {
+font-family: Roboto;
+font-size: 14px;
+line-height: 1.529;
+}
+h1.title {
+padding-top: 30px;
+top: 34px;
+left: 390px;
+width: 832px;
+height: 77px;
+text-align: left;
+letter-spacing: 1px;
+color: #000000;
+opacity: 1;
+margin: 0;
+font-size: 30px;
+line-height: 47px;
+font-family: 'Roboto', sans-serif;
+display: inline-block;
+max-width: 100%;
+}
+h4.date {
+font-family: "Roboto Mono", Roboto, sans-serif;
+font-size: 20px;
+color: #000000;
+line-height: 26px;
+font-weight: 400;
+letter-spacing: 0;
+}
+body::before {
+content: '';
+height: 168px;
+width: 100%;
+position: absolute;
+top: 0;
+left: 0;
+background: #FFFAFA;
+z-index: -1;
+}
+#header {
+#    top: 0px;
+#    left: 0px;
+#    width: 100%;
+#    height: 167px;
+#    opacity: 1;
+#    background: url(http://www.utfpr.edu.br/icones/cabecalho/logo-utfpr/@@images/image.png) #FFFAFA right bottom 19px no-repeat padding-box;
+#    background-size: 150px;
+#    margin-bottom: 36px;
+#    z-index: 11;
+#    position: relative;
+#}
+@media only screen and (min-width: 1600px) {
+#header {
+background: url(http://www.utfpr.edu.br/icones/cabecalho/logo-utfpr/@@images/image.png) #FFFAFA right center no-repeat padding-box;
+background-size: 210px;
+}
+```
+
+
+
+```{R, echo=FALSE,warning=FALSE, message=FALSE,eval=FALSE}
+htmltools::img(src = knitr::image_uri(file.path("logo.png")), 
+               alt = 'logo', 
+               style = 'position:absolute; top:0; right:0; padding:10px;')
+               #style = 'float: right;padding-right:10px;height:125px;width:250px')
+
+#knitr::include_graphics("path/to/image.png", dpi = 100)
+
+```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+# **Projeto de Extensão**
+
+
+O projeto de extensão “Probabilidade e inferência com aplicações em `R`” é ofertado pelo departamento de estatística da UTFPR para a comunidade que tenha interesse em estatística com aplicações na linguagem R. O formato do curso está particionado em três módulos, sendo eles probabilidades, inferência 1 e inferência 2. A intenção do curso é colaborar com o aprendizado em estatística assim como possibilitar aplicações práticas em linguagem `R`.
+
+<div  style="background-color:gold;color:black;padding:20px;">
+
+
+- Carga horária: 30h, com certificado.
+
+- Datas
+  - Terças-feiras às 14h, nos dias 01, 15, 22 e 29 de setembro, 06, 20 e 27 de outubro e 03 e 10 de novembro
+<br>
+<br>
+
+- Local
+  - A modalidade utilizada será a distância e por meio do Google Meet. As aulas serão uma vez por semana. O link será disponibilizado por e-mail 1 hora antes do evento.
+<br>
+<br>
+
+- Público
+  - Alunos e demais interessados em conhecimentos básicos de estatística com aplicações em linguagem `R`.
+<br>
+<br>
+
+</div>
+<br>
+
+# Detalhes da oferta do curso
+
+## Escolha a aba do módulo {.tabset}
+
+### Módulo 1
+
+
+- **Professor Responsável:**
+    - Felipe E. Barletta Mendes, DAEST/UTFPR - **email: fmendes@utfpr.edu.br**
+
+      • **Aula 1 - 01/09:** Fundamentos de probabilidade: Conceitos básicos de probabilidade, regras de probabilidade, probabilidade condicional, Teorema de Bayes e probabilidade posteriori.
+      
+      • **Aula 2 - 15/09:** Distribuição discreta: Introdução as distribuições discretas, distribuição Uniforme, distribuição Geométrica, distribuição Binomial, distribuição Hipergeométrica e distribuição Poisson.
+      
+      • **Aula 3 - 22/09:** Distribuição Contínua:  Introdução as distribuições contínuas, Distribuição Uniforme contínua, distribuição exponencial, distribuição Normal e aproximações a distribuição Normal.
+    
+- **Horários de atendimento do professor:**
+    - Segunda a quinta: 17:00 as 18:00 (online). Outros horários
+      podem ser agendados previamente.
+   
+   
+
+### Módulo 2
+
+- **Dias:** $29$ de setembro, $06$ e $20$ de outubro
+- **Professor Responsável:**
+    - Angélica Maria Tortola Ribeiro, DAEST/UTFPR - **email: angelicaribeiro@utfpr.edu.br**
+
+      • Conceitos básicos da teoria de estimação. Definições de parâmetros, estatísticas e estimadores. Noções da distribuição amostral de um estimador. Intervalos de confiança para os parâmetros de uma população Normal e para a comparação de médias de duas populações. Intervalos de confiança para uma proporção. Conceitos básicos de testes de hipóteses. Testes de hipóteses para os parâmetros de uma população Normal, para a comparação de duas médias e para a proporção. 
+      
+- **Horários de atendimento do professor:**
+    
+    
+    
+
+### Módulo 3
+
+- **Dias:**  $27$ de outubro, $03$ e $10$ de novembro
+- **Professor Responsável:**
+    - Suellen Teixeira Zavadzki de Pauli, DAEST/UTFPR - **email: suellent@utfpr.edu.br**
+
+      • Introdução a análise de Regressão. Exemplos de aplicações. Conceitos. Regressão Linear Simples. Pressupostos Teóricos. Método de Estimação dos Coeficientes por Mínimos Quadrados. Análise de Resíduos. Coeficiente de Correção Linear. Análise de Resíduos. Conceitos. Pressupostos teóricos. Modelo e Hipóteses. Testes estatísticos para validar os pressupostos teóricos. ANOVA com um Fator. Testes Estatísticos para Comparação de Médias.
+      
+- **Horários de atendimento do professor:**
+    
+    
+    
+
+  
+    
+    
+# Programa/objetivos do curso
+
+O objetivo geral do projeto é introduzir os conceito fundamentais da estatística além de familiarizar os participantes com a linguagem de programação `R` nas aplicações. Com isto, tem-se os objetivos específicos:
+
+    • Capacitar o aluno a compreender as diferentes distribuições de probabilidades;
+    • Preparar os participantes para a utilização de testes de hipóteses e intervalos de confiança;
+    • Instrumentar o aluno na compreensão de problemas de análise de regressão e análise de variância;
+    • Possibilitar os conteúdos abordados com aplicações em linguagem R.
+    

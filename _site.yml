@@ -1,0 +1,33 @@
+name: "LEIP/DAEST-CT/UTFPR"
+output_dir: "docs"
+exclude: ["README.md", "\\.sh", "cache"]
+output:
+  html_document:
+    theme: cosmo
+    highlight: default
+    code_folding: hide
+    number_sections: false
+    toc: true
+    toc_depth: 4
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    includes:
+      in_header: analytics.html
+      after_body: footer.html
+navbar:
+  title: "LEIP/DAEST-CT/UTFPR"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Aulas Módulo 1"
+      href: aulas_modulo1.html
+    - text: "Referências"
+      href: referencias.html
+    - text: "Recursos computacionais"
+      href: Como_Instalar_R.html      
+    - text: "Materiais"
+      menu:
+      - text: "Slides"
+      - text: "Módulo1 - Aula 1 - Fundamentos de Probabilidade"
+        href: slides/Modulo1_Aula1.pdf
