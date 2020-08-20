@@ -99,7 +99,7 @@ x
 
 Agora vamos carregar um conjunto de dados
 
-```{r}
+```{r dados}
 dir(pattern = '.csv')
 dados <- read.csv('hospital.csv',
                   header = TRUE,
@@ -117,7 +117,7 @@ for (i in 1:length(names(var_num)))
 
 ## Gráficos
 
-```{R, results = 'hide'}
+```{R, graphs, results = 'hide'}
 lapply(var_num, hist)
 
 
