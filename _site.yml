@@ -22,6 +22,8 @@ navbar:
       href: index.html
     - text: "Aulas Módulo 1"
       href: aulas_modulo1.html
+    - text: "Aulas Módulo 2"
+      href: aulas_modulo2.html
     - text: "Referências"
       href: referencias.html
     - text: "Recursos computacionais"

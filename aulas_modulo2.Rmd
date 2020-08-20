@@ -1,5 +1,5 @@
 ---
-title: "Cronograma das aulas do curso"
+title: "Módulo 2 - Inferência Estatística Parte I"
 output:
   html_document:
     toc: false
@@ -83,44 +83,18 @@ background-size: 210px;
 <br>
 <br>
 
-Abaixo estão os comandos do `R` utilizados durante as aulas.
+
+- **Aula 01** - $29/09/2020:$ **Terminologias e Distribuições Amostrais**
 
 
-## Módulo 1 - Probabilidade
-
-- **Aula 01** - $01/09/2020$: 
-
-```{R aula1}
-#### craindo um vetor
-
-x <- 1:10
-x
-```
-
-Agora vamos carregar um conjunto de dados
-
-```{r dados}
-dir(pattern = '.csv')
-dados <- read.csv('hospital.csv',
-                  header = TRUE,
-                  sep = '\t')
-
-head(dados)
-dim(dados)
-str(dados)
-
-var_num <- dados[,c(1,3:8)]
-for (i in 1:length(names(var_num)))
-
-  print(summary(var_num[i]))
-```
-
-## Gráficos
-
-```{R, graphs, results = 'hide'}
-lapply(var_num, hist)
-
+```{R 1.1}
 
 ```
 
+
+
+- **Aula 02** - $06/10/2020$: **Estimação por Intervalo**
+
+
+- **Aula 03** - $20/10/2020$: **Testes de Hipóteses**
 
