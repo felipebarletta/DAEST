@@ -6,3 +6,21 @@ output:
     code_folding: show
 ---
 
+```{r setup, include=FALSE, cache=FALSE}
+#source("setup_knitr.R")
+knitr::opts_chunk$set(echo = TRUE,
+                      comment = NA,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+
+- **Aula 01** - $27/10/2020:$ **Introdução a análise de regressão**
+
+
+
+
+- **Aula 02** - $03/11/2020$: **Regressão simples**
+
+
+- **Aula 03** - $10/11/2020$: **ANOVA**
