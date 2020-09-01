@@ -143,11 +143,11 @@ O projeto de extensão “Probabilidade e inferência com aplicações em `R`”
 - **Professor Responsável:**
     - Felipe E. Barletta Mendes, DAEST/UTFPR - **email: fmendes@utfpr.edu.br**
 
-      • **Aula 1 - 01/09:** Fundamentos de probabilidade: Conceitos básicos de probabilidade, regras de probabilidade, probabilidade condicional, Teorema de Bayes e probabilidade posteriori.
+      - **Aula 1 - 01/09:** Fundamentos de probabilidade: Conceitos básicos de probabilidade, regras de probabilidade, probabilidade condicional, Teorema de Bayes e probabilidade posteriori.
       
-      • **Aula 2 - 15/09:** Distribuição discreta: Introdução as distribuições discretas, distribuição Uniforme, distribuição Geométrica, distribuição Binomial, distribuição Hipergeométrica e distribuição Poisson.
+       - **Aula 2 - 15/09:** Distribuição discreta: Introdução as distribuições discretas, distribuição Uniforme, distribuição Geométrica, distribuição Binomial, distribuição Hipergeométrica e distribuição Poisson.
       
-      • **Aula 3 - 22/09:** Distribuição Contínua:  Introdução as distribuições contínuas, Distribuição Uniforme contínua, distribuição exponencial, distribuição Normal e aproximações a distribuição Normal.
+      - **Aula 3 - 22/09:** Distribuição Contínua:  Introdução as distribuições contínuas, Distribuição Uniforme contínua, distribuição exponencial, distribuição Normal e aproximações a distribuição Normal.
     
 - **Horários de atendimento do professor:**
     - Segunda a quinta: 17:00 as 18:00 (online). Outros horários
@@ -161,11 +161,13 @@ O projeto de extensão “Probabilidade e inferência com aplicações em `R`”
 - **Professor Responsável:**
     - Angélica Maria Tortola Ribeiro, DAEST/UTFPR - **email: angelicaribeiro@utfpr.edu.br**
 
-      • Conceitos básicos da teoria de estimação. Definições de parâmetros, estatísticas e estimadores. 
-      
-      • Noções da distribuição amostral de um estimador. Intervalos de confiança para os parâmetros de uma população Normal e para a comparação de médias de duas populações. Intervalos de confiança para uma proporção. Conceitos básicos de testes de hipóteses. 
-      
-      • Testes de hipóteses para os parâmetros de uma população Normal, para a comparação de duas médias e para a proporção. 
+      - **Aula 01** - $29/09/2020:$ **Terminologias e Distribuições Amostrais**
+
+
+      - **Aula 02** - $06/10/2020$: **Estimação por Intervalo**
+
+
+      - **Aula 03** - $20/10/2020$: **Testes de Hipóteses** 
       
 - **Horários de atendimento do professor:**
     
