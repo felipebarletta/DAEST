@@ -91,7 +91,7 @@ Abaixo estão os comandos do `R` utilizados durante as aulas.
 - **Aula 01** - $01/09/2020$: 
 
 ```{R aula1}
-#### craindo um vetor
+#### crindo um vetor
 
 x <- 1:10
 x

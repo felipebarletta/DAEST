@@ -161,7 +161,11 @@ O projeto de extensão “Probabilidade e inferência com aplicações em `R`”
 - **Professor Responsável:**
     - Angélica Maria Tortola Ribeiro, DAEST/UTFPR - **email: angelicaribeiro@utfpr.edu.br**
 
-      • Conceitos básicos da teoria de estimação. Definições de parâmetros, estatísticas e estimadores. Noções da distribuição amostral de um estimador. Intervalos de confiança para os parâmetros de uma população Normal e para a comparação de médias de duas populações. Intervalos de confiança para uma proporção. Conceitos básicos de testes de hipóteses. Testes de hipóteses para os parâmetros de uma população Normal, para a comparação de duas médias e para a proporção. 
+      • Conceitos básicos da teoria de estimação. Definições de parâmetros, estatísticas e estimadores. 
+      
+      • Noções da distribuição amostral de um estimador. Intervalos de confiança para os parâmetros de uma população Normal e para a comparação de médias de duas populações. Intervalos de confiança para uma proporção. Conceitos básicos de testes de hipóteses. 
+      
+      • Testes de hipóteses para os parâmetros de uma população Normal, para a comparação de duas médias e para a proporção. 
       
 - **Horários de atendimento do professor:**
     
@@ -174,7 +178,13 @@ O projeto de extensão “Probabilidade e inferência com aplicações em `R`”
 - **Professor Responsável:**
     - Suellen Teixeira Zavadzki de Pauli, DAEST/UTFPR - **email: suellent@utfpr.edu.br**
 
-      • Introdução a análise de Regressão. Exemplos de aplicações. Conceitos. Regressão Linear Simples. Pressupostos Teóricos. Método de Estimação dos Coeficientes por Mínimos Quadrados. Análise de Resíduos. Coeficiente de Correção Linear. Análise de Resíduos. Conceitos. Pressupostos teóricos. Modelo e Hipóteses. Testes estatísticos para validar os pressupostos teóricos. ANOVA com um Fator. Testes Estatísticos para Comparação de Médias.
+      • Introdução a análise de Regressão. Exemplos de aplicações. Conceitos. 
+      
+      • Regressão Linear Simples. Pressupostos Teóricos. Método de Estimação dos Coeficientes por Mínimos Quadrados. Coeficiente de Correção Linear. 
+      
+      • Análise de Resíduos. Conceitos. Pressupostos teóricos. Modelo e Hipóteses. Testes estatísticos para validar os pressupostos teóricos.
+      
+      • ANOVA com um Fator. Testes Estatísticos para Comparação de Médias.
       
 - **Horários de atendimento do professor:**
     

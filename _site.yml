@@ -1,4 +1,4 @@
-name: "LEIP/DAEST-CT/UTFPR"
+name: "LEIP/DAEST/UTFPR"
 output_dir: "docs"
 exclude: ["README.md", "\\.sh", "cache"]
 output:
@@ -16,7 +16,7 @@ output:
       in_header: analytics.html
       after_body: footer.html
 navbar:
-  title: "LEIP/DAEST-CT/UTFPR"
+  title: "LEIP/DAEST/UTFPR"
   left:
     - text: "Home"
       href: index.html

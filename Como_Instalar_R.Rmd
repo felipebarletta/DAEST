@@ -79,9 +79,6 @@ background-size: 210px;
 <br>
 <br>
 
-O curso prevê conteúdo computacional. Entretanto todo o conteúdo
-abordado pode ser tratado computacionalmente por  linguagens ou programas estatísticos.
-
 Em particular, todo o conteúdo deste curso é confeccionado utilizando-se
 o *software* [R](http://www.r-project.org), uma linguagem de programação
 para estatística, que é livre e de código aberto. 
