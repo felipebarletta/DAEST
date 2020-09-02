@@ -32,6 +32,8 @@ navbar:
         href: web_data.csv
       - text: "web_data.html"
         href: web_data.htm
+      - text: "hospital.csv"
+        href: hospital.csv  
     - text: "Referências"
       href: referencias.html
     - text: "Recursos computacionais"
