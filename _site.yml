@@ -31,7 +31,7 @@ navbar:
       - text: "web_data.csv"
         href: web_data.csv
       - text: "web_data.html"
-        href: web_data.htm
+        href: web_data.html
       - text: "hospital.csv"
         href: hospital.csv  
     - text: "Referências"
