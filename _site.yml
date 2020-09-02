@@ -26,6 +26,12 @@ navbar:
       href: aulas_modulo2.html
     - text: "Aulas Módulo 3"
       href: aulas_modulo3.html
+    - text: "Dados"
+      menu:
+      - text: "web_data.csv"
+        href: web_data.csv
+      - text: "web_data.html"
+        href: web_data.htm
     - text: "Referências"
       href: referencias.html
     - text: "Recursos computacionais"
