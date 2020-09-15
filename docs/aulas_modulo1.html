@@ -307,7 +307,7 @@ $(document).ready(function () {
       <a href="web_data.csv">web_data.csv</a>
     </li>
     <li>
-      <a href="web_data.htm">web_data.html</a>
+      <a href="web_data.html">web_data.html</a>
     </li>
     <li>
       <a href="hospital.csv">hospital.csv</a>
@@ -330,6 +330,9 @@ $(document).ready(function () {
     <li class="dropdown-header">Slides</li>
     <li>
       <a href="slides/Modulo1_Aula1.pdf">Módulo1 - Aula 1 - Fundamentos de Probabilidade</a>
+    </li>
+    <li>
+      <a href="slides/Modulo1_Aula2.pdf">Módulo1 - Aula 2 - Distribuições de Probabilidade discreta</a>
     </li>
   </ul>
 </li>
@@ -461,9 +464,9 @@ Y</code></pre>
 <h3>Funções estatística básica</h3>
 <pre class="r"><code>x &lt;- rnorm(100)
 head(x,n=3)</code></pre>
-<pre><code>[1]  0.4801444 -1.0053848  1.6321423</code></pre>
+<pre><code>[1]  0.6373141  0.5996615 -0.7950552</code></pre>
 <pre class="r"><code>tail(x,n=3)</code></pre>
-<pre><code>[1] -1.0726481 -0.2368901 -1.5007479</code></pre>
+<pre><code>[1]  1.2445800 -0.7790739  1.0491814</code></pre>
 <pre class="r"><code>#### Media = somatório x_i/n
 media &lt;- function(x){
     soma = 0
@@ -473,9 +476,9 @@ media &lt;- function(x){
     return(media)
 }
 media(x)</code></pre>
-<pre><code>[1] -0.1148552</code></pre>
+<pre><code>[1] -0.006525424</code></pre>
 <pre class="r"><code>mean(x)</code></pre>
-<pre><code>[1] -0.1148552</code></pre>
+<pre><code>[1] -0.006525424</code></pre>
 <div id="intervalo-de-confiança" class="section level4">
 <h4>Intervalo de confiança</h4>
 <pre class="r"><code># LI = media - Z*desvio_padrão/raiz(n)
@@ -492,7 +495,7 @@ IC &lt;- function(x, conf = 0.95){
     return(paste(&quot;IC(95%)= &quot;,  ic))
 }
 IC(x)</code></pre>
-<pre><code>[1] &quot;IC(95%)=  -0.297560518970988&quot; &quot;IC(95%)=  0.0678500928374349&quot;</code></pre>
+<pre><code>[1] &quot;IC(95%)=  -0.177062244495017&quot; &quot;IC(95%)=  0.164011396535519&quot; </code></pre>
 </div>
 <div id="exemplo-de-acesso-a-dados" class="section level4">
 <h4>Exemplo de acesso a dados</h4>
@@ -502,20 +505,13 @@ dir(pattern = &#39;.csv&#39;)</code></pre>
 <pre class="r"><code>dados &lt;- read.csv(&quot;hospital.csv&quot;,
                   header = TRUE, sep =&#39;\t&#39;)
 head(dados)</code></pre>
-<pre><code>  idade setor temperatura freq_respiratoria pa_sistolica pa_diastolica pa_media
-1    87  UTIG        36.0                18          128            75       93
-2    53  1AP2        35.4                14          117            67       84
-3    63  UTIG        36.4                40          149            75      100
-4    84  UTIG        36.4                40          149            75      100
-5    99  4AP2        36.3                16           80            60       67
-6    50  UTIG        34.4                17          140           100      113
-  sat_o2 alta.motivo
-1     91       Obito
-2    100       Obito
-3     78       Obito
-4     78       Obito
-5     94       Obito
-6     94       Obito</code></pre>
+<pre><code>  idade setor temperatura freq_respiratoria pa_sistolica pa_diastolica pa_media sat_o2 alta.motivo
+1    87  UTIG        36.0                18          128            75       93     91       Obito
+2    53  1AP2        35.4                14          117            67       84    100       Obito
+3    63  UTIG        36.4                40          149            75      100     78       Obito
+4    84  UTIG        36.4                40          149            75      100     78       Obito
+5    99  4AP2        36.3                16           80            60       67     94       Obito
+6    50  UTIG        34.4                17          140           100      113     94       Obito</code></pre>
 <pre class="r"><code>dim(dados)</code></pre>
 <pre><code>[1] 5001    9</code></pre>
 <pre class="r"><code>str(dados)</code></pre>
@@ -536,9 +532,8 @@ head(dados)</code></pre>
 <pre class="r"><code>media(dados$idade)</code></pre>
 <pre><code>[1] 47.55209</code></pre>
 <pre class="r"><code>names(dados)</code></pre>
-<pre><code>[1] &quot;idade&quot;             &quot;setor&quot;             &quot;temperatura&quot;      
-[4] &quot;freq_respiratoria&quot; &quot;pa_sistolica&quot;      &quot;pa_diastolica&quot;    
-[7] &quot;pa_media&quot;          &quot;sat_o2&quot;            &quot;alta.motivo&quot;      </code></pre>
+<pre><code>[1] &quot;idade&quot;             &quot;setor&quot;             &quot;temperatura&quot;       &quot;freq_respiratoria&quot; &quot;pa_sistolica&quot;      &quot;pa_diastolica&quot;     &quot;pa_media&quot;          &quot;sat_o2&quot;           
+[9] &quot;alta.motivo&quot;      </code></pre>
 <pre class="r"><code>var_num &lt;- dados[,c(1,3:8)]
 str(var_num)</code></pre>
 <pre><code>&#39;data.frame&#39;:   5001 obs. of  7 variables:
@@ -628,8 +623,7 @@ $counts
  [1] 538 180 433 756 685 729 767 516 318  77   2
 
 $density
- [1] 0.010757848 0.003599280 0.008658268 0.015116977 0.013697261 0.014577085
- [7] 0.015336933 0.010317936 0.006358728 0.001539692 0.000039992
+ [1] 0.010757848 0.003599280 0.008658268 0.015116977 0.013697261 0.014577085 0.015336933 0.010317936 0.006358728 0.001539692 0.000039992
 
 $mids
  [1]   5  15  25  35  45  55  65  75  85  95 105
@@ -651,8 +645,7 @@ $counts
 [1]    1    0    0    0    0    0  323 4674
 
 $density
-[1] 4.001601e-05 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00
-[6] 0.000000e+00 1.292517e-02 1.870348e-01
+[1] 4.001601e-05 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 1.292517e-02 1.870348e-01
 
 $mids
 [1]  2.5  7.5 12.5 17.5 22.5 27.5 32.5 37.5
@@ -674,8 +667,7 @@ $counts
 [1] 4926   66    1    1    1    0    0    0    1
 
 $density
-[1] 1.971978e-02 2.642114e-04 4.003203e-06 4.003203e-06 4.003203e-06
-[6] 0.000000e+00 0.000000e+00 0.000000e+00 4.003203e-06
+[1] 1.971978e-02 2.642114e-04 4.003203e-06 4.003203e-06 4.003203e-06 0.000000e+00 0.000000e+00 0.000000e+00 4.003203e-06
 
 $mids
 [1]  25  75 125 175 225 275 325 375 425
@@ -697,8 +689,7 @@ $counts
  [1]  513    0    4   26  732 2258 1161  226   60   13    4    2
 
 $density
- [1] 0.005131026 0.000000000 0.000040008 0.000260052 0.007321464 0.022584517
- [7] 0.011612322 0.002260452 0.000600120 0.000130026 0.000040008 0.000020004
+ [1] 0.005131026 0.000000000 0.000040008 0.000260052 0.007321464 0.022584517 0.011612322 0.002260452 0.000600120 0.000130026 0.000040008 0.000020004
 
 $mids
  [1]  10  30  50  70  90 110 130 150 170 190 210 230
@@ -720,9 +711,8 @@ $counts
  [1]  516    1    6   20   83  911 1317 1612  394  107   21    7    2    1    1
 
 $density
- [1] 0.010322064 0.000020004 0.000120024 0.000400080 0.001660332 0.018223645
- [7] 0.026345269 0.032246449 0.007881576 0.002140428 0.000420084 0.000140028
-[13] 0.000040008 0.000020004 0.000020004
+ [1] 0.010322064 0.000020004 0.000120024 0.000400080 0.001660332 0.018223645 0.026345269 0.032246449 0.007881576 0.002140428 0.000420084 0.000140028 0.000040008 0.000020004
+[15] 0.000020004
 
 $mids
  [1]   5  15  25  35  45  55  65  75  85  95 105 115 125 135 145
@@ -741,13 +731,11 @@ $breaks
  [1]   0  10  20  30  40  50  60  70  80  90 100 110 120 130 140 150 160 170
 
 $counts
- [1]  511    0    0    2   15   29  176  922 1448 1382  366  103   32    5    6
-[16]    0    2
+ [1]  511    0    0    2   15   29  176  922 1448 1382  366  103   32    5    6    0    2
 
 $density
- [1] 0.010222044 0.000000000 0.000000000 0.000040008 0.000300060 0.000580116
- [7] 0.003520704 0.018443689 0.028965793 0.027645529 0.007321464 0.002060412
-[13] 0.000640128 0.000100020 0.000120024 0.000000000 0.000040008
+ [1] 0.010222044 0.000000000 0.000000000 0.000040008 0.000300060 0.000580116 0.003520704 0.018443689 0.028965793 0.027645529 0.007321464 0.002060412 0.000640128 0.000100020
+[15] 0.000120024 0.000000000 0.000040008
 
 $mids
  [1]   5  15  25  35  45  55  65  75  85  95 105 115 125 135 145 155 165
@@ -769,9 +757,8 @@ $counts
  [1]   31    0    0    2    0    4    3   12  170 3462    0    1    0    0    1
 
 $density
- [1] 8.410201e-04 0.000000e+00 0.000000e+00 5.425936e-05 0.000000e+00
- [6] 1.085187e-04 8.138904e-05 3.255562e-04 4.612046e-03 9.392295e-02
-[11] 0.000000e+00 2.712968e-05 0.000000e+00 0.000000e+00 2.712968e-05
+ [1] 8.410201e-04 0.000000e+00 0.000000e+00 5.425936e-05 0.000000e+00 1.085187e-04 8.138904e-05 3.255562e-04 4.612046e-03 9.392295e-02 0.000000e+00 2.712968e-05 0.000000e+00
+[14] 0.000000e+00 2.712968e-05
 
 $mids
  [1]   5  15  25  35  45  55  65  75  85  95 105 115 125 135 145
@@ -820,9 +807,8 @@ length(unique(sorteio))</code></pre>
 <pre><code>[1] 36</code></pre>
 <pre class="r"><code>sorteio &lt;- sort(unique(sorteio))
 sorteio</code></pre>
-<pre><code> [1] &quot;11&quot; &quot;12&quot; &quot;13&quot; &quot;14&quot; &quot;15&quot; &quot;16&quot; &quot;21&quot; &quot;22&quot; &quot;23&quot; &quot;24&quot; &quot;25&quot; &quot;26&quot; &quot;31&quot; &quot;32&quot; &quot;33&quot;
-[16] &quot;34&quot; &quot;35&quot; &quot;36&quot; &quot;41&quot; &quot;42&quot; &quot;43&quot; &quot;44&quot; &quot;45&quot; &quot;46&quot; &quot;51&quot; &quot;52&quot; &quot;53&quot; &quot;54&quot; &quot;55&quot; &quot;56&quot;
-[31] &quot;61&quot; &quot;62&quot; &quot;63&quot; &quot;64&quot; &quot;65&quot; &quot;66&quot;</code></pre>
+<pre><code> [1] &quot;11&quot; &quot;12&quot; &quot;13&quot; &quot;14&quot; &quot;15&quot; &quot;16&quot; &quot;21&quot; &quot;22&quot; &quot;23&quot; &quot;24&quot; &quot;25&quot; &quot;26&quot; &quot;31&quot; &quot;32&quot; &quot;33&quot; &quot;34&quot; &quot;35&quot; &quot;36&quot; &quot;41&quot; &quot;42&quot; &quot;43&quot; &quot;44&quot; &quot;45&quot; &quot;46&quot; &quot;51&quot; &quot;52&quot; &quot;53&quot; &quot;54&quot; &quot;55&quot; &quot;56&quot; &quot;61&quot; &quot;62&quot; &quot;63&quot; &quot;64&quot;
+[35] &quot;65&quot; &quot;66&quot;</code></pre>
 <pre class="r"><code>## Lançamento de três dados
 6^3</code></pre>
 <pre><code>[1] 216</code></pre>
@@ -837,24 +823,14 @@ length(unique(sorteio2))</code></pre>
 <pre><code>[1] 216</code></pre>
 <pre class="r"><code>sorteio2 &lt;- sort(unique(sorteio2))
 sorteio2</code></pre>
-<pre><code>  [1] &quot;111&quot; &quot;112&quot; &quot;113&quot; &quot;114&quot; &quot;115&quot; &quot;116&quot; &quot;121&quot; &quot;122&quot; &quot;123&quot; &quot;124&quot; &quot;125&quot; &quot;126&quot;
- [13] &quot;131&quot; &quot;132&quot; &quot;133&quot; &quot;134&quot; &quot;135&quot; &quot;136&quot; &quot;141&quot; &quot;142&quot; &quot;143&quot; &quot;144&quot; &quot;145&quot; &quot;146&quot;
- [25] &quot;151&quot; &quot;152&quot; &quot;153&quot; &quot;154&quot; &quot;155&quot; &quot;156&quot; &quot;161&quot; &quot;162&quot; &quot;163&quot; &quot;164&quot; &quot;165&quot; &quot;166&quot;
- [37] &quot;211&quot; &quot;212&quot; &quot;213&quot; &quot;214&quot; &quot;215&quot; &quot;216&quot; &quot;221&quot; &quot;222&quot; &quot;223&quot; &quot;224&quot; &quot;225&quot; &quot;226&quot;
- [49] &quot;231&quot; &quot;232&quot; &quot;233&quot; &quot;234&quot; &quot;235&quot; &quot;236&quot; &quot;241&quot; &quot;242&quot; &quot;243&quot; &quot;244&quot; &quot;245&quot; &quot;246&quot;
- [61] &quot;251&quot; &quot;252&quot; &quot;253&quot; &quot;254&quot; &quot;255&quot; &quot;256&quot; &quot;261&quot; &quot;262&quot; &quot;263&quot; &quot;264&quot; &quot;265&quot; &quot;266&quot;
- [73] &quot;311&quot; &quot;312&quot; &quot;313&quot; &quot;314&quot; &quot;315&quot; &quot;316&quot; &quot;321&quot; &quot;322&quot; &quot;323&quot; &quot;324&quot; &quot;325&quot; &quot;326&quot;
- [85] &quot;331&quot; &quot;332&quot; &quot;333&quot; &quot;334&quot; &quot;335&quot; &quot;336&quot; &quot;341&quot; &quot;342&quot; &quot;343&quot; &quot;344&quot; &quot;345&quot; &quot;346&quot;
- [97] &quot;351&quot; &quot;352&quot; &quot;353&quot; &quot;354&quot; &quot;355&quot; &quot;356&quot; &quot;361&quot; &quot;362&quot; &quot;363&quot; &quot;364&quot; &quot;365&quot; &quot;366&quot;
-[109] &quot;411&quot; &quot;412&quot; &quot;413&quot; &quot;414&quot; &quot;415&quot; &quot;416&quot; &quot;421&quot; &quot;422&quot; &quot;423&quot; &quot;424&quot; &quot;425&quot; &quot;426&quot;
-[121] &quot;431&quot; &quot;432&quot; &quot;433&quot; &quot;434&quot; &quot;435&quot; &quot;436&quot; &quot;441&quot; &quot;442&quot; &quot;443&quot; &quot;444&quot; &quot;445&quot; &quot;446&quot;
-[133] &quot;451&quot; &quot;452&quot; &quot;453&quot; &quot;454&quot; &quot;455&quot; &quot;456&quot; &quot;461&quot; &quot;462&quot; &quot;463&quot; &quot;464&quot; &quot;465&quot; &quot;466&quot;
-[145] &quot;511&quot; &quot;512&quot; &quot;513&quot; &quot;514&quot; &quot;515&quot; &quot;516&quot; &quot;521&quot; &quot;522&quot; &quot;523&quot; &quot;524&quot; &quot;525&quot; &quot;526&quot;
-[157] &quot;531&quot; &quot;532&quot; &quot;533&quot; &quot;534&quot; &quot;535&quot; &quot;536&quot; &quot;541&quot; &quot;542&quot; &quot;543&quot; &quot;544&quot; &quot;545&quot; &quot;546&quot;
-[169] &quot;551&quot; &quot;552&quot; &quot;553&quot; &quot;554&quot; &quot;555&quot; &quot;556&quot; &quot;561&quot; &quot;562&quot; &quot;563&quot; &quot;564&quot; &quot;565&quot; &quot;566&quot;
-[181] &quot;611&quot; &quot;612&quot; &quot;613&quot; &quot;614&quot; &quot;615&quot; &quot;616&quot; &quot;621&quot; &quot;622&quot; &quot;623&quot; &quot;624&quot; &quot;625&quot; &quot;626&quot;
-[193] &quot;631&quot; &quot;632&quot; &quot;633&quot; &quot;634&quot; &quot;635&quot; &quot;636&quot; &quot;641&quot; &quot;642&quot; &quot;643&quot; &quot;644&quot; &quot;645&quot; &quot;646&quot;
-[205] &quot;651&quot; &quot;652&quot; &quot;653&quot; &quot;654&quot; &quot;655&quot; &quot;656&quot; &quot;661&quot; &quot;662&quot; &quot;663&quot; &quot;664&quot; &quot;665&quot; &quot;666&quot;</code></pre>
+<pre><code>  [1] &quot;111&quot; &quot;112&quot; &quot;113&quot; &quot;114&quot; &quot;115&quot; &quot;116&quot; &quot;121&quot; &quot;122&quot; &quot;123&quot; &quot;124&quot; &quot;125&quot; &quot;126&quot; &quot;131&quot; &quot;132&quot; &quot;133&quot; &quot;134&quot; &quot;135&quot; &quot;136&quot; &quot;141&quot; &quot;142&quot; &quot;143&quot; &quot;144&quot; &quot;145&quot; &quot;146&quot; &quot;151&quot; &quot;152&quot; &quot;153&quot; &quot;154&quot;
+ [29] &quot;155&quot; &quot;156&quot; &quot;161&quot; &quot;162&quot; &quot;163&quot; &quot;164&quot; &quot;165&quot; &quot;166&quot; &quot;211&quot; &quot;212&quot; &quot;213&quot; &quot;214&quot; &quot;215&quot; &quot;216&quot; &quot;221&quot; &quot;222&quot; &quot;223&quot; &quot;224&quot; &quot;225&quot; &quot;226&quot; &quot;231&quot; &quot;232&quot; &quot;233&quot; &quot;234&quot; &quot;235&quot; &quot;236&quot; &quot;241&quot; &quot;242&quot;
+ [57] &quot;243&quot; &quot;244&quot; &quot;245&quot; &quot;246&quot; &quot;251&quot; &quot;252&quot; &quot;253&quot; &quot;254&quot; &quot;255&quot; &quot;256&quot; &quot;261&quot; &quot;262&quot; &quot;263&quot; &quot;264&quot; &quot;265&quot; &quot;266&quot; &quot;311&quot; &quot;312&quot; &quot;313&quot; &quot;314&quot; &quot;315&quot; &quot;316&quot; &quot;321&quot; &quot;322&quot; &quot;323&quot; &quot;324&quot; &quot;325&quot; &quot;326&quot;
+ [85] &quot;331&quot; &quot;332&quot; &quot;333&quot; &quot;334&quot; &quot;335&quot; &quot;336&quot; &quot;341&quot; &quot;342&quot; &quot;343&quot; &quot;344&quot; &quot;345&quot; &quot;346&quot; &quot;351&quot; &quot;352&quot; &quot;353&quot; &quot;354&quot; &quot;355&quot; &quot;356&quot; &quot;361&quot; &quot;362&quot; &quot;363&quot; &quot;364&quot; &quot;365&quot; &quot;366&quot; &quot;411&quot; &quot;412&quot; &quot;413&quot; &quot;414&quot;
+[113] &quot;415&quot; &quot;416&quot; &quot;421&quot; &quot;422&quot; &quot;423&quot; &quot;424&quot; &quot;425&quot; &quot;426&quot; &quot;431&quot; &quot;432&quot; &quot;433&quot; &quot;434&quot; &quot;435&quot; &quot;436&quot; &quot;441&quot; &quot;442&quot; &quot;443&quot; &quot;444&quot; &quot;445&quot; &quot;446&quot; &quot;451&quot; &quot;452&quot; &quot;453&quot; &quot;454&quot; &quot;455&quot; &quot;456&quot; &quot;461&quot; &quot;462&quot;
+[141] &quot;463&quot; &quot;464&quot; &quot;465&quot; &quot;466&quot; &quot;511&quot; &quot;512&quot; &quot;513&quot; &quot;514&quot; &quot;515&quot; &quot;516&quot; &quot;521&quot; &quot;522&quot; &quot;523&quot; &quot;524&quot; &quot;525&quot; &quot;526&quot; &quot;531&quot; &quot;532&quot; &quot;533&quot; &quot;534&quot; &quot;535&quot; &quot;536&quot; &quot;541&quot; &quot;542&quot; &quot;543&quot; &quot;544&quot; &quot;545&quot; &quot;546&quot;
+[169] &quot;551&quot; &quot;552&quot; &quot;553&quot; &quot;554&quot; &quot;555&quot; &quot;556&quot; &quot;561&quot; &quot;562&quot; &quot;563&quot; &quot;564&quot; &quot;565&quot; &quot;566&quot; &quot;611&quot; &quot;612&quot; &quot;613&quot; &quot;614&quot; &quot;615&quot; &quot;616&quot; &quot;621&quot; &quot;622&quot; &quot;623&quot; &quot;624&quot; &quot;625&quot; &quot;626&quot; &quot;631&quot; &quot;632&quot; &quot;633&quot; &quot;634&quot;
+[197] &quot;635&quot; &quot;636&quot; &quot;641&quot; &quot;642&quot; &quot;643&quot; &quot;644&quot; &quot;645&quot; &quot;646&quot; &quot;651&quot; &quot;652&quot; &quot;653&quot; &quot;654&quot; &quot;655&quot; &quot;656&quot; &quot;661&quot; &quot;662&quot; &quot;663&quot; &quot;664&quot; &quot;665&quot; &quot;666&quot;</code></pre>
 </div>
 </div>
 <div id="exemplo-definição-clássica-de-probab." class="section level3">
@@ -870,34 +846,21 @@ library(prob)
 amostral</code></pre>
 <pre><code>[1] 1 2 3 4 5 6</code></pre>
 <pre class="r"><code>sorteio2</code></pre>
-<pre><code>  [1] &quot;111&quot; &quot;112&quot; &quot;113&quot; &quot;114&quot; &quot;115&quot; &quot;116&quot; &quot;121&quot; &quot;122&quot; &quot;123&quot; &quot;124&quot; &quot;125&quot; &quot;126&quot;
- [13] &quot;131&quot; &quot;132&quot; &quot;133&quot; &quot;134&quot; &quot;135&quot; &quot;136&quot; &quot;141&quot; &quot;142&quot; &quot;143&quot; &quot;144&quot; &quot;145&quot; &quot;146&quot;
- [25] &quot;151&quot; &quot;152&quot; &quot;153&quot; &quot;154&quot; &quot;155&quot; &quot;156&quot; &quot;161&quot; &quot;162&quot; &quot;163&quot; &quot;164&quot; &quot;165&quot; &quot;166&quot;
- [37] &quot;211&quot; &quot;212&quot; &quot;213&quot; &quot;214&quot; &quot;215&quot; &quot;216&quot; &quot;221&quot; &quot;222&quot; &quot;223&quot; &quot;224&quot; &quot;225&quot; &quot;226&quot;
- [49] &quot;231&quot; &quot;232&quot; &quot;233&quot; &quot;234&quot; &quot;235&quot; &quot;236&quot; &quot;241&quot; &quot;242&quot; &quot;243&quot; &quot;244&quot; &quot;245&quot; &quot;246&quot;
- [61] &quot;251&quot; &quot;252&quot; &quot;253&quot; &quot;254&quot; &quot;255&quot; &quot;256&quot; &quot;261&quot; &quot;262&quot; &quot;263&quot; &quot;264&quot; &quot;265&quot; &quot;266&quot;
- [73] &quot;311&quot; &quot;312&quot; &quot;313&quot; &quot;314&quot; &quot;315&quot; &quot;316&quot; &quot;321&quot; &quot;322&quot; &quot;323&quot; &quot;324&quot; &quot;325&quot; &quot;326&quot;
- [85] &quot;331&quot; &quot;332&quot; &quot;333&quot; &quot;334&quot; &quot;335&quot; &quot;336&quot; &quot;341&quot; &quot;342&quot; &quot;343&quot; &quot;344&quot; &quot;345&quot; &quot;346&quot;
- [97] &quot;351&quot; &quot;352&quot; &quot;353&quot; &quot;354&quot; &quot;355&quot; &quot;356&quot; &quot;361&quot; &quot;362&quot; &quot;363&quot; &quot;364&quot; &quot;365&quot; &quot;366&quot;
-[109] &quot;411&quot; &quot;412&quot; &quot;413&quot; &quot;414&quot; &quot;415&quot; &quot;416&quot; &quot;421&quot; &quot;422&quot; &quot;423&quot; &quot;424&quot; &quot;425&quot; &quot;426&quot;
-[121] &quot;431&quot; &quot;432&quot; &quot;433&quot; &quot;434&quot; &quot;435&quot; &quot;436&quot; &quot;441&quot; &quot;442&quot; &quot;443&quot; &quot;444&quot; &quot;445&quot; &quot;446&quot;
-[133] &quot;451&quot; &quot;452&quot; &quot;453&quot; &quot;454&quot; &quot;455&quot; &quot;456&quot; &quot;461&quot; &quot;462&quot; &quot;463&quot; &quot;464&quot; &quot;465&quot; &quot;466&quot;
-[145] &quot;511&quot; &quot;512&quot; &quot;513&quot; &quot;514&quot; &quot;515&quot; &quot;516&quot; &quot;521&quot; &quot;522&quot; &quot;523&quot; &quot;524&quot; &quot;525&quot; &quot;526&quot;
-[157] &quot;531&quot; &quot;532&quot; &quot;533&quot; &quot;534&quot; &quot;535&quot; &quot;536&quot; &quot;541&quot; &quot;542&quot; &quot;543&quot; &quot;544&quot; &quot;545&quot; &quot;546&quot;
-[169] &quot;551&quot; &quot;552&quot; &quot;553&quot; &quot;554&quot; &quot;555&quot; &quot;556&quot; &quot;561&quot; &quot;562&quot; &quot;563&quot; &quot;564&quot; &quot;565&quot; &quot;566&quot;
-[181] &quot;611&quot; &quot;612&quot; &quot;613&quot; &quot;614&quot; &quot;615&quot; &quot;616&quot; &quot;621&quot; &quot;622&quot; &quot;623&quot; &quot;624&quot; &quot;625&quot; &quot;626&quot;
-[193] &quot;631&quot; &quot;632&quot; &quot;633&quot; &quot;634&quot; &quot;635&quot; &quot;636&quot; &quot;641&quot; &quot;642&quot; &quot;643&quot; &quot;644&quot; &quot;645&quot; &quot;646&quot;
-[205] &quot;651&quot; &quot;652&quot; &quot;653&quot; &quot;654&quot; &quot;655&quot; &quot;656&quot; &quot;661&quot; &quot;662&quot; &quot;663&quot; &quot;664&quot; &quot;665&quot; &quot;666&quot;</code></pre>
+<pre><code>  [1] &quot;111&quot; &quot;112&quot; &quot;113&quot; &quot;114&quot; &quot;115&quot; &quot;116&quot; &quot;121&quot; &quot;122&quot; &quot;123&quot; &quot;124&quot; &quot;125&quot; &quot;126&quot; &quot;131&quot; &quot;132&quot; &quot;133&quot; &quot;134&quot; &quot;135&quot; &quot;136&quot; &quot;141&quot; &quot;142&quot; &quot;143&quot; &quot;144&quot; &quot;145&quot; &quot;146&quot; &quot;151&quot; &quot;152&quot; &quot;153&quot; &quot;154&quot;
+ [29] &quot;155&quot; &quot;156&quot; &quot;161&quot; &quot;162&quot; &quot;163&quot; &quot;164&quot; &quot;165&quot; &quot;166&quot; &quot;211&quot; &quot;212&quot; &quot;213&quot; &quot;214&quot; &quot;215&quot; &quot;216&quot; &quot;221&quot; &quot;222&quot; &quot;223&quot; &quot;224&quot; &quot;225&quot; &quot;226&quot; &quot;231&quot; &quot;232&quot; &quot;233&quot; &quot;234&quot; &quot;235&quot; &quot;236&quot; &quot;241&quot; &quot;242&quot;
+ [57] &quot;243&quot; &quot;244&quot; &quot;245&quot; &quot;246&quot; &quot;251&quot; &quot;252&quot; &quot;253&quot; &quot;254&quot; &quot;255&quot; &quot;256&quot; &quot;261&quot; &quot;262&quot; &quot;263&quot; &quot;264&quot; &quot;265&quot; &quot;266&quot; &quot;311&quot; &quot;312&quot; &quot;313&quot; &quot;314&quot; &quot;315&quot; &quot;316&quot; &quot;321&quot; &quot;322&quot; &quot;323&quot; &quot;324&quot; &quot;325&quot; &quot;326&quot;
+ [85] &quot;331&quot; &quot;332&quot; &quot;333&quot; &quot;334&quot; &quot;335&quot; &quot;336&quot; &quot;341&quot; &quot;342&quot; &quot;343&quot; &quot;344&quot; &quot;345&quot; &quot;346&quot; &quot;351&quot; &quot;352&quot; &quot;353&quot; &quot;354&quot; &quot;355&quot; &quot;356&quot; &quot;361&quot; &quot;362&quot; &quot;363&quot; &quot;364&quot; &quot;365&quot; &quot;366&quot; &quot;411&quot; &quot;412&quot; &quot;413&quot; &quot;414&quot;
+[113] &quot;415&quot; &quot;416&quot; &quot;421&quot; &quot;422&quot; &quot;423&quot; &quot;424&quot; &quot;425&quot; &quot;426&quot; &quot;431&quot; &quot;432&quot; &quot;433&quot; &quot;434&quot; &quot;435&quot; &quot;436&quot; &quot;441&quot; &quot;442&quot; &quot;443&quot; &quot;444&quot; &quot;445&quot; &quot;446&quot; &quot;451&quot; &quot;452&quot; &quot;453&quot; &quot;454&quot; &quot;455&quot; &quot;456&quot; &quot;461&quot; &quot;462&quot;
+[141] &quot;463&quot; &quot;464&quot; &quot;465&quot; &quot;466&quot; &quot;511&quot; &quot;512&quot; &quot;513&quot; &quot;514&quot; &quot;515&quot; &quot;516&quot; &quot;521&quot; &quot;522&quot; &quot;523&quot; &quot;524&quot; &quot;525&quot; &quot;526&quot; &quot;531&quot; &quot;532&quot; &quot;533&quot; &quot;534&quot; &quot;535&quot; &quot;536&quot; &quot;541&quot; &quot;542&quot; &quot;543&quot; &quot;544&quot; &quot;545&quot; &quot;546&quot;
+[169] &quot;551&quot; &quot;552&quot; &quot;553&quot; &quot;554&quot; &quot;555&quot; &quot;556&quot; &quot;561&quot; &quot;562&quot; &quot;563&quot; &quot;564&quot; &quot;565&quot; &quot;566&quot; &quot;611&quot; &quot;612&quot; &quot;613&quot; &quot;614&quot; &quot;615&quot; &quot;616&quot; &quot;621&quot; &quot;622&quot; &quot;623&quot; &quot;624&quot; &quot;625&quot; &quot;626&quot; &quot;631&quot; &quot;632&quot; &quot;633&quot; &quot;634&quot;
+[197] &quot;635&quot; &quot;636&quot; &quot;641&quot; &quot;642&quot; &quot;643&quot; &quot;644&quot; &quot;645&quot; &quot;646&quot; &quot;651&quot; &quot;652&quot; &quot;653&quot; &quot;654&quot; &quot;655&quot; &quot;656&quot; &quot;661&quot; &quot;662&quot; &quot;663&quot; &quot;664&quot; &quot;665&quot; &quot;666&quot;</code></pre>
 <pre class="r"><code>dado1 &lt;- substr(sorteio,1,1)
 dado2 &lt;- substr(sorteio,2,2)
 iguais &lt;- ifelse(dado1 == dado2, sorteio,&quot;excluir&quot;)
 iguais</code></pre>
-<pre><code> [1] &quot;11&quot;      &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot;
- [8] &quot;22&quot;      &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot;
-[15] &quot;33&quot;      &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot;
-[22] &quot;44&quot;      &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot;
-[29] &quot;55&quot;      &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot;
-[36] &quot;66&quot;     </code></pre>
+<pre><code> [1] &quot;11&quot;      &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;22&quot;      &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;33&quot;      &quot;excluir&quot; &quot;excluir&quot;
+[18] &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;44&quot;      &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;55&quot;      &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot;
+[35] &quot;excluir&quot; &quot;66&quot;     </code></pre>
 <pre class="r"><code>iguais &lt;- iguais[iguais != &quot;excluir&quot;]
 PE1 &lt;- length(iguais)/length(sorteio)
 PE1</code></pre>

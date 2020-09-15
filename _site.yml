@@ -43,3 +43,5 @@ navbar:
       - text: "Slides"
       - text: "Módulo1 - Aula 1 - Fundamentos de Probabilidade"
         href: slides/Modulo1_Aula1.pdf
+      - text: "Módulo1 - Aula 2 - Distribuições de Probabilidade discreta"
+        href: slides/Modulo1_Aula2.pdf  
