@@ -90,8 +90,9 @@ Abaixo estão os comandos do `R` utilizados durante as aulas.
 
 - **Aula 01** - $01/09/2020$:
 
-### Primiro exemplo
-```{r}
+## Primiro exemplo
+
+```{R}
 x <- c(1,2,3,4,5,6,7,80)
 x
 class(x)
@@ -135,7 +136,7 @@ IC <- function(x, conf = 0.95){
     #li = avg - z*(dp/raizn)
     #ls = avg + z*(dp/raizn)
     ic  <- avg + z*(dp/raizn)
-    return(paste("IC(95%)= ",  ic))
+    return(paste("IC(95%)= (",  round(ic[1],2),";",round(ic[2],2),")"))
 }
 IC(x)
 ```
@@ -167,7 +168,7 @@ for(i in 1:length(names(var_num))){
 ```
 
 ## Gráficos
-```{r graph}
+```{r graph, results='hide'}
 plot(var_num$idade)
 hist(var_num$idade)
 
@@ -240,5 +241,237 @@ iguais
 iguais <- iguais[iguais != "excluir"]
 PE1 <- length(iguais)/length(sorteio)
 PE1
+
+```
+
+
+- **Aula 02** - $15/09/2020$:
+
+## União e intersecção
+
+```{R conjunto}
+## Espaço amostral= (1,2,3,4,5,6)
+A <- 1:4
+B <- 1:3
+C <- c(2,4,6)
+D <- c(2,3,5)
+
+                                        # Função União
+uniao <- function(a,b){
+    u = a
+    for(i in 1:length(b))
+        if(!b[i] %in% u){
+            u = c(u,b[i])
+        }
+        return(u)
+    }
+
+uniao(A,B)
+uniao(A,C)
+
+union(A,C)
+
+                                        # Função para intersecção
+
+Inter <- function(a,b){
+    inte <- NULL
+    for(i in 1:length(a))
+        if(a[i] %in% b){
+            inte  <- c(inte, a[i])
+        }
+    return(inte)
+    }
+Inter(a=A, b=B)
+Inter(A,D)
+
+intersect(A,D)
+
+amostral <- 1:6
+A
+```
+
+
+## Regra da Adição
+
+```{R regra}
+rm(list=ls())
+dados <- read.csv("hospital.csv",
+                  header = T,
+                  sep = '\t')
+head(dados)
+##P(AuB) = P(A) + P(B) - P(AinterB)
+## Criando variável dicotomica para Temperatura
+dados$Temp_nivel <- ifelse(dados$temperatura <=35 |
+                           dados$temperatura >=38.4,
+                           "Alterada",
+                           "Nao_Alterada")
+
+## Criando variável dicotomica para Temperatura
+dados$Resp_nivel <- ifelse(dados$freq_respiratoria <=14,
+                           "Alterada",
+                           "Nao_Alterada")
+table(dados$Temp_nivel)
+table(dados$Resp_nivel)
+# A: Temperatura nao alterada
+# B: Respiração não alterada
+PA <- table(dados$Temp_nivel)[2]/nrow(dados)
+PA
+
+PB <- table(dados$Resp_nivel)[2]/nrow(dados)
+PB
+
+table(dados$Temp_nivel,dados$Resp_nivel)
+PAinterB <- 3910/nrow(dados)
+PAinterB
+PAuB <- PA + PB - PAinterB
+PAuB
+PA+(1-PA)
+
+```
+
+## Probabilidade condicional
+```{R AdadoB}
+library(ggplot2)
+ggplot(dados, aes(idade, fill = alta.motivo, colour = alta.motivo)) +
+    geom_density(alpha= 0.1, fill = 'white')
+
+### Probabilidade de óbito
+table(dados$alta.motivo)
+PO <- table(dados$alta.motivo)[2]/nrow(dados)
+PO
+### P(O | idade >= 55) = P(O inter idade >=55)/P(idade >=55)
+dados$f_idade <- ifelse(dados$idade < 55,
+                        "F1",
+                        "F2")
+table(dados$f_idade)
+PF2 <- table(dados$f_idade)[2]/nrow(dados)
+PF2
+table(dados$f_idade,dados$alta.motivo)
+POinterF2 <- 330/nrow(dados)
+POinterF2
+POdadoF2 <- POinterF2/PF2
+POdadoF2
+```
+
+
+## Regra do produto Independência de eventos
+```{R Prod_Ind}
+table(dados$Temp_nivel,dados$Resp_nivel)
+
+##P(AinterB) = P(A)*P(B)
+PAPB <- PA*PB
+PAPB
+PAdadoB <- PAinterB/PB
+PAdadoB
+```
+
+## Partição do espaço amostral
+
+```{R UTI}
+library(dplyr)
+
+UTI <- dados %>%
+    filter(setor %in% c('UTIG',
+                        'UTIC',
+                        'UTIP'))
+
+UTI$setor <- droplevels(UTI$setor)
+table(UTI$setor)
+
+#PA1 = P(O inter UTIG)  = P(O | UTIG)*P(UTIG)
+POuti <- table(UTI$alta.motivo)[2]/nrow(UTI)
+PUTIG <- table(UTI$setor)[2]/nrow(UTI)
+PUTIG*POuti
+table(UTI$alta.motivo,UTI$setor)
+171/nrow(UTI)
+
+
+PA1 <- table(UTI$setor,UTI$alta.motivo)[5]/nrow(UTI)
+PA2 <- table(UTI$setor,UTI$alta.motivo)[6]/nrow(UTI)
+PA3 <- table(UTI$setor,UTI$alta.motivo)[4]/nrow(UTI)
+PA1
+PA2
+PA3
+# PA1 U PA2 U PA3
+# TMA DA PROBABILIDADE TOTAL
+PoUTI  <- PA1+PA2+PA3
+PoUTI
+                                        #P(O | UTIG) = PA1/PUTIG
+PA1 / (174/nrow(UTI))
+
+```
+
+```{R condicional}
+# P(UTIP inter O) = P (O | UTIP) * P(O)
+PUTIP <- length(UTI$setor[UTI$setor == 'UTIP'])/nrow(UTI)
+PUTIP
+PUTIPdadoO <- PA2/PUTIP
+PUTIPdadoO
+
+# P(UTIC inter O) = P (O | UTIC) * P(O)
+PUTIC <- length(UTI$setor[UTI$setor == 'UTIC'])/nrow(UTI)
+PUTIC
+PUTICdadoO <- PA3/PUTIC
+PUTICdadoO
+
+
+# P(UTIG inter O) = P (O | UTIG) * P(O)
+PUTIG <- length(UTI$setor[UTI$setor == 'UTIG'])/nrow(UTI)
+PUTIG
+PUTIGdadoO <- PA1/PUTIG
+PUTIGdadoO
+
+
+```
+
+
+## TMA BAYES
+
+```{R bayes}
+## P(UTIG | O) = P(O | UTIG) * P(UTIG)/(PoUTI)
+PUTIGdadoO <- PA1/PoUTI
+PUTIGdadoO
+```
+
+
+## Função de probabilidade (f.p.)
+```{R fp}
+X <- 0:6
+X
+fo <- c(9,14,13,9,4,2,1)
+fo
+fr <- fo/52
+df <- data.frame(X,fo,fr)
+df
+#Gráfico p(x)
+p1 <- ifelse(df$fr > 1 | df$fr< 0,
+             'N_p(x)','p(x)')
+table(p1)
+
+#p2
+sum(df$fr)
+
+
+
+#P(X = 2)
+# P(X>2) = P(X =3 U X=4 U X=5 U X=6) = P(X=3)+P(X=4)+P(X=5)+P(X=6)
+df$Fx <- cumsum(df$fr)
+df
+
+# 1 - P(X<=2)
+1-0.692307
+
+par(mfrow=c(1,2))
+plot(df$X,
+     df$fr,
+     xlab='V.A.',
+     ylab = 'P[X=x]',
+     type = 'h')
+
+plot(df$X,
+     df$Fx,
+     xlab = 'V.A.',
+     ylab = 'F(x)= P[X<=x]',
+     type = 's')
 
 ```

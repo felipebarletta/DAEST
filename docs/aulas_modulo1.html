@@ -432,8 +432,9 @@ background-size: 210px;
 <ul>
 <li><strong>Aula 01</strong> - <span class="math inline">\(01/09/2020\)</span>:</li>
 </ul>
-<div id="primiro-exemplo" class="section level3">
-<h3>Primiro exemplo</h3>
+</div>
+<div id="primiro-exemplo" class="section level2">
+<h2>Primiro exemplo</h2>
 <pre class="r"><code>x &lt;- c(1,2,3,4,5,6,7,80)
 x</code></pre>
 <pre><code>[1]  1  2  3  4  5  6  7 80</code></pre>
@@ -459,14 +460,13 @@ Y</code></pre>
 [3,]   30   44</code></pre>
 <pre class="r"><code>Y[1,2]</code></pre>
 <pre><code>[1] 4</code></pre>
-</div>
 <div id="funções-estatística-básica" class="section level3">
 <h3>Funções estatística básica</h3>
 <pre class="r"><code>x &lt;- rnorm(100)
 head(x,n=3)</code></pre>
-<pre><code>[1]  0.6373141  0.5996615 -0.7950552</code></pre>
+<pre><code>[1] 0.8954834 0.1759631 1.1705395</code></pre>
 <pre class="r"><code>tail(x,n=3)</code></pre>
-<pre><code>[1]  1.2445800 -0.7790739  1.0491814</code></pre>
+<pre><code>[1] -2.4450102 -0.7576909 -1.2736632</code></pre>
 <pre class="r"><code>#### Media = somatório x_i/n
 media &lt;- function(x){
     soma = 0
@@ -476,9 +476,9 @@ media &lt;- function(x){
     return(media)
 }
 media(x)</code></pre>
-<pre><code>[1] -0.006525424</code></pre>
+<pre><code>[1] 0.1195474</code></pre>
 <pre class="r"><code>mean(x)</code></pre>
-<pre><code>[1] -0.006525424</code></pre>
+<pre><code>[1] 0.1195474</code></pre>
 <div id="intervalo-de-confiança" class="section level4">
 <h4>Intervalo de confiança</h4>
 <pre class="r"><code># LI = media - Z*desvio_padrão/raiz(n)
@@ -492,10 +492,10 @@ IC &lt;- function(x, conf = 0.95){
     #li = avg - z*(dp/raizn)
     #ls = avg + z*(dp/raizn)
     ic  &lt;- avg + z*(dp/raizn)
-    return(paste(&quot;IC(95%)= &quot;,  ic))
+    return(paste(&quot;IC(95%)= (&quot;,  round(ic[1],2),&quot;;&quot;,round(ic[2],2),&quot;)&quot;))
 }
 IC(x)</code></pre>
-<pre><code>[1] &quot;IC(95%)=  -0.177062244495017&quot; &quot;IC(95%)=  0.164011396535519&quot; </code></pre>
+<pre><code>[1] &quot;IC(95%)= ( -0.04 ; 0.28 )&quot;</code></pre>
 </div>
 <div id="exemplo-de-acesso-a-dados" class="section level4">
 <h4>Exemplo de acesso a dados</h4>
@@ -505,13 +505,20 @@ dir(pattern = &#39;.csv&#39;)</code></pre>
 <pre class="r"><code>dados &lt;- read.csv(&quot;hospital.csv&quot;,
                   header = TRUE, sep =&#39;\t&#39;)
 head(dados)</code></pre>
-<pre><code>  idade setor temperatura freq_respiratoria pa_sistolica pa_diastolica pa_media sat_o2 alta.motivo
-1    87  UTIG        36.0                18          128            75       93     91       Obito
-2    53  1AP2        35.4                14          117            67       84    100       Obito
-3    63  UTIG        36.4                40          149            75      100     78       Obito
-4    84  UTIG        36.4                40          149            75      100     78       Obito
-5    99  4AP2        36.3                16           80            60       67     94       Obito
-6    50  UTIG        34.4                17          140           100      113     94       Obito</code></pre>
+<pre><code>  idade setor temperatura freq_respiratoria pa_sistolica pa_diastolica pa_media
+1    87  UTIG        36.0                18          128            75       93
+2    53  1AP2        35.4                14          117            67       84
+3    63  UTIG        36.4                40          149            75      100
+4    84  UTIG        36.4                40          149            75      100
+5    99  4AP2        36.3                16           80            60       67
+6    50  UTIG        34.4                17          140           100      113
+  sat_o2 alta.motivo
+1     91       Obito
+2    100       Obito
+3     78       Obito
+4     78       Obito
+5     94       Obito
+6     94       Obito</code></pre>
 <pre class="r"><code>dim(dados)</code></pre>
 <pre><code>[1] 5001    9</code></pre>
 <pre class="r"><code>str(dados)</code></pre>
@@ -532,8 +539,9 @@ head(dados)</code></pre>
 <pre class="r"><code>media(dados$idade)</code></pre>
 <pre><code>[1] 47.55209</code></pre>
 <pre class="r"><code>names(dados)</code></pre>
-<pre><code>[1] &quot;idade&quot;             &quot;setor&quot;             &quot;temperatura&quot;       &quot;freq_respiratoria&quot; &quot;pa_sistolica&quot;      &quot;pa_diastolica&quot;     &quot;pa_media&quot;          &quot;sat_o2&quot;           
-[9] &quot;alta.motivo&quot;      </code></pre>
+<pre><code>[1] &quot;idade&quot;             &quot;setor&quot;             &quot;temperatura&quot;      
+[4] &quot;freq_respiratoria&quot; &quot;pa_sistolica&quot;      &quot;pa_diastolica&quot;    
+[7] &quot;pa_media&quot;          &quot;sat_o2&quot;            &quot;alta.motivo&quot;      </code></pre>
 <pre class="r"><code>var_num &lt;- dados[,c(1,3:8)]
 str(var_num)</code></pre>
 <pre><code>&#39;data.frame&#39;:   5001 obs. of  7 variables:
@@ -615,162 +623,6 @@ str(var_num)</code></pre>
 <p><img src="aulas_modulo1_files/figure-html/graph-2.png" width="672" /></p>
 <pre class="r"><code>par(mfrow=c(2,4))
 lapply(var_num,hist)</code></pre>
-<pre><code>$idade
-$breaks
- [1]   0  10  20  30  40  50  60  70  80  90 100 110
-
-$counts
- [1] 538 180 433 756 685 729 767 516 318  77   2
-
-$density
- [1] 0.010757848 0.003599280 0.008658268 0.015116977 0.013697261 0.014577085 0.015336933 0.010317936 0.006358728 0.001539692 0.000039992
-
-$mids
- [1]   5  15  25  35  45  55  65  75  85  95 105
-
-$xname
-[1] &quot;X[[i]]&quot;
-
-$equidist
-[1] TRUE
-
-attr(,&quot;class&quot;)
-[1] &quot;histogram&quot;
-
-$temperatura
-$breaks
-[1]  0  5 10 15 20 25 30 35 40
-
-$counts
-[1]    1    0    0    0    0    0  323 4674
-
-$density
-[1] 4.001601e-05 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 1.292517e-02 1.870348e-01
-
-$mids
-[1]  2.5  7.5 12.5 17.5 22.5 27.5 32.5 37.5
-
-$xname
-[1] &quot;X[[i]]&quot;
-
-$equidist
-[1] TRUE
-
-attr(,&quot;class&quot;)
-[1] &quot;histogram&quot;
-
-$freq_respiratoria
-$breaks
- [1]   0  50 100 150 200 250 300 350 400 450
-
-$counts
-[1] 4926   66    1    1    1    0    0    0    1
-
-$density
-[1] 1.971978e-02 2.642114e-04 4.003203e-06 4.003203e-06 4.003203e-06 0.000000e+00 0.000000e+00 0.000000e+00 4.003203e-06
-
-$mids
-[1]  25  75 125 175 225 275 325 375 425
-
-$xname
-[1] &quot;X[[i]]&quot;
-
-$equidist
-[1] TRUE
-
-attr(,&quot;class&quot;)
-[1] &quot;histogram&quot;
-
-$pa_sistolica
-$breaks
- [1]   0  20  40  60  80 100 120 140 160 180 200 220 240
-
-$counts
- [1]  513    0    4   26  732 2258 1161  226   60   13    4    2
-
-$density
- [1] 0.005131026 0.000000000 0.000040008 0.000260052 0.007321464 0.022584517 0.011612322 0.002260452 0.000600120 0.000130026 0.000040008 0.000020004
-
-$mids
- [1]  10  30  50  70  90 110 130 150 170 190 210 230
-
-$xname
-[1] &quot;X[[i]]&quot;
-
-$equidist
-[1] TRUE
-
-attr(,&quot;class&quot;)
-[1] &quot;histogram&quot;
-
-$pa_diastolica
-$breaks
- [1]   0  10  20  30  40  50  60  70  80  90 100 110 120 130 140 150
-
-$counts
- [1]  516    1    6   20   83  911 1317 1612  394  107   21    7    2    1    1
-
-$density
- [1] 0.010322064 0.000020004 0.000120024 0.000400080 0.001660332 0.018223645 0.026345269 0.032246449 0.007881576 0.002140428 0.000420084 0.000140028 0.000040008 0.000020004
-[15] 0.000020004
-
-$mids
- [1]   5  15  25  35  45  55  65  75  85  95 105 115 125 135 145
-
-$xname
-[1] &quot;X[[i]]&quot;
-
-$equidist
-[1] TRUE
-
-attr(,&quot;class&quot;)
-[1] &quot;histogram&quot;
-
-$pa_media
-$breaks
- [1]   0  10  20  30  40  50  60  70  80  90 100 110 120 130 140 150 160 170
-
-$counts
- [1]  511    0    0    2   15   29  176  922 1448 1382  366  103   32    5    6    0    2
-
-$density
- [1] 0.010222044 0.000000000 0.000000000 0.000040008 0.000300060 0.000580116 0.003520704 0.018443689 0.028965793 0.027645529 0.007321464 0.002060412 0.000640128 0.000100020
-[15] 0.000120024 0.000000000 0.000040008
-
-$mids
- [1]   5  15  25  35  45  55  65  75  85  95 105 115 125 135 145 155 165
-
-$xname
-[1] &quot;X[[i]]&quot;
-
-$equidist
-[1] TRUE
-
-attr(,&quot;class&quot;)
-[1] &quot;histogram&quot;
-
-$sat_o2
-$breaks
- [1]   0  10  20  30  40  50  60  70  80  90 100 110 120 130 140 150
-
-$counts
- [1]   31    0    0    2    0    4    3   12  170 3462    0    1    0    0    1
-
-$density
- [1] 8.410201e-04 0.000000e+00 0.000000e+00 5.425936e-05 0.000000e+00 1.085187e-04 8.138904e-05 3.255562e-04 4.612046e-03 9.392295e-02 0.000000e+00 2.712968e-05 0.000000e+00
-[14] 0.000000e+00 2.712968e-05
-
-$mids
- [1]   5  15  25  35  45  55  65  75  85  95 105 115 125 135 145
-
-$xname
-[1] &quot;X[[i]]&quot;
-
-$equidist
-[1] TRUE
-
-attr(,&quot;class&quot;)
-[1] &quot;histogram&quot;</code></pre>
 <p><img src="aulas_modulo1_files/figure-html/graph-3.png" width="672" /></p>
 <div id="ggplot2" class="section level4">
 <h4>ggplot2</h4>
@@ -807,8 +659,9 @@ length(unique(sorteio))</code></pre>
 <pre><code>[1] 36</code></pre>
 <pre class="r"><code>sorteio &lt;- sort(unique(sorteio))
 sorteio</code></pre>
-<pre><code> [1] &quot;11&quot; &quot;12&quot; &quot;13&quot; &quot;14&quot; &quot;15&quot; &quot;16&quot; &quot;21&quot; &quot;22&quot; &quot;23&quot; &quot;24&quot; &quot;25&quot; &quot;26&quot; &quot;31&quot; &quot;32&quot; &quot;33&quot; &quot;34&quot; &quot;35&quot; &quot;36&quot; &quot;41&quot; &quot;42&quot; &quot;43&quot; &quot;44&quot; &quot;45&quot; &quot;46&quot; &quot;51&quot; &quot;52&quot; &quot;53&quot; &quot;54&quot; &quot;55&quot; &quot;56&quot; &quot;61&quot; &quot;62&quot; &quot;63&quot; &quot;64&quot;
-[35] &quot;65&quot; &quot;66&quot;</code></pre>
+<pre><code> [1] &quot;11&quot; &quot;12&quot; &quot;13&quot; &quot;14&quot; &quot;15&quot; &quot;16&quot; &quot;21&quot; &quot;22&quot; &quot;23&quot; &quot;24&quot; &quot;25&quot; &quot;26&quot; &quot;31&quot; &quot;32&quot; &quot;33&quot;
+[16] &quot;34&quot; &quot;35&quot; &quot;36&quot; &quot;41&quot; &quot;42&quot; &quot;43&quot; &quot;44&quot; &quot;45&quot; &quot;46&quot; &quot;51&quot; &quot;52&quot; &quot;53&quot; &quot;54&quot; &quot;55&quot; &quot;56&quot;
+[31] &quot;61&quot; &quot;62&quot; &quot;63&quot; &quot;64&quot; &quot;65&quot; &quot;66&quot;</code></pre>
 <pre class="r"><code>## Lançamento de três dados
 6^3</code></pre>
 <pre><code>[1] 216</code></pre>
@@ -823,14 +676,24 @@ length(unique(sorteio2))</code></pre>
 <pre><code>[1] 216</code></pre>
 <pre class="r"><code>sorteio2 &lt;- sort(unique(sorteio2))
 sorteio2</code></pre>
-<pre><code>  [1] &quot;111&quot; &quot;112&quot; &quot;113&quot; &quot;114&quot; &quot;115&quot; &quot;116&quot; &quot;121&quot; &quot;122&quot; &quot;123&quot; &quot;124&quot; &quot;125&quot; &quot;126&quot; &quot;131&quot; &quot;132&quot; &quot;133&quot; &quot;134&quot; &quot;135&quot; &quot;136&quot; &quot;141&quot; &quot;142&quot; &quot;143&quot; &quot;144&quot; &quot;145&quot; &quot;146&quot; &quot;151&quot; &quot;152&quot; &quot;153&quot; &quot;154&quot;
- [29] &quot;155&quot; &quot;156&quot; &quot;161&quot; &quot;162&quot; &quot;163&quot; &quot;164&quot; &quot;165&quot; &quot;166&quot; &quot;211&quot; &quot;212&quot; &quot;213&quot; &quot;214&quot; &quot;215&quot; &quot;216&quot; &quot;221&quot; &quot;222&quot; &quot;223&quot; &quot;224&quot; &quot;225&quot; &quot;226&quot; &quot;231&quot; &quot;232&quot; &quot;233&quot; &quot;234&quot; &quot;235&quot; &quot;236&quot; &quot;241&quot; &quot;242&quot;
- [57] &quot;243&quot; &quot;244&quot; &quot;245&quot; &quot;246&quot; &quot;251&quot; &quot;252&quot; &quot;253&quot; &quot;254&quot; &quot;255&quot; &quot;256&quot; &quot;261&quot; &quot;262&quot; &quot;263&quot; &quot;264&quot; &quot;265&quot; &quot;266&quot; &quot;311&quot; &quot;312&quot; &quot;313&quot; &quot;314&quot; &quot;315&quot; &quot;316&quot; &quot;321&quot; &quot;322&quot; &quot;323&quot; &quot;324&quot; &quot;325&quot; &quot;326&quot;
- [85] &quot;331&quot; &quot;332&quot; &quot;333&quot; &quot;334&quot; &quot;335&quot; &quot;336&quot; &quot;341&quot; &quot;342&quot; &quot;343&quot; &quot;344&quot; &quot;345&quot; &quot;346&quot; &quot;351&quot; &quot;352&quot; &quot;353&quot; &quot;354&quot; &quot;355&quot; &quot;356&quot; &quot;361&quot; &quot;362&quot; &quot;363&quot; &quot;364&quot; &quot;365&quot; &quot;366&quot; &quot;411&quot; &quot;412&quot; &quot;413&quot; &quot;414&quot;
-[113] &quot;415&quot; &quot;416&quot; &quot;421&quot; &quot;422&quot; &quot;423&quot; &quot;424&quot; &quot;425&quot; &quot;426&quot; &quot;431&quot; &quot;432&quot; &quot;433&quot; &quot;434&quot; &quot;435&quot; &quot;436&quot; &quot;441&quot; &quot;442&quot; &quot;443&quot; &quot;444&quot; &quot;445&quot; &quot;446&quot; &quot;451&quot; &quot;452&quot; &quot;453&quot; &quot;454&quot; &quot;455&quot; &quot;456&quot; &quot;461&quot; &quot;462&quot;
-[141] &quot;463&quot; &quot;464&quot; &quot;465&quot; &quot;466&quot; &quot;511&quot; &quot;512&quot; &quot;513&quot; &quot;514&quot; &quot;515&quot; &quot;516&quot; &quot;521&quot; &quot;522&quot; &quot;523&quot; &quot;524&quot; &quot;525&quot; &quot;526&quot; &quot;531&quot; &quot;532&quot; &quot;533&quot; &quot;534&quot; &quot;535&quot; &quot;536&quot; &quot;541&quot; &quot;542&quot; &quot;543&quot; &quot;544&quot; &quot;545&quot; &quot;546&quot;
-[169] &quot;551&quot; &quot;552&quot; &quot;553&quot; &quot;554&quot; &quot;555&quot; &quot;556&quot; &quot;561&quot; &quot;562&quot; &quot;563&quot; &quot;564&quot; &quot;565&quot; &quot;566&quot; &quot;611&quot; &quot;612&quot; &quot;613&quot; &quot;614&quot; &quot;615&quot; &quot;616&quot; &quot;621&quot; &quot;622&quot; &quot;623&quot; &quot;624&quot; &quot;625&quot; &quot;626&quot; &quot;631&quot; &quot;632&quot; &quot;633&quot; &quot;634&quot;
-[197] &quot;635&quot; &quot;636&quot; &quot;641&quot; &quot;642&quot; &quot;643&quot; &quot;644&quot; &quot;645&quot; &quot;646&quot; &quot;651&quot; &quot;652&quot; &quot;653&quot; &quot;654&quot; &quot;655&quot; &quot;656&quot; &quot;661&quot; &quot;662&quot; &quot;663&quot; &quot;664&quot; &quot;665&quot; &quot;666&quot;</code></pre>
+<pre><code>  [1] &quot;111&quot; &quot;112&quot; &quot;113&quot; &quot;114&quot; &quot;115&quot; &quot;116&quot; &quot;121&quot; &quot;122&quot; &quot;123&quot; &quot;124&quot; &quot;125&quot; &quot;126&quot;
+ [13] &quot;131&quot; &quot;132&quot; &quot;133&quot; &quot;134&quot; &quot;135&quot; &quot;136&quot; &quot;141&quot; &quot;142&quot; &quot;143&quot; &quot;144&quot; &quot;145&quot; &quot;146&quot;
+ [25] &quot;151&quot; &quot;152&quot; &quot;153&quot; &quot;154&quot; &quot;155&quot; &quot;156&quot; &quot;161&quot; &quot;162&quot; &quot;163&quot; &quot;164&quot; &quot;165&quot; &quot;166&quot;
+ [37] &quot;211&quot; &quot;212&quot; &quot;213&quot; &quot;214&quot; &quot;215&quot; &quot;216&quot; &quot;221&quot; &quot;222&quot; &quot;223&quot; &quot;224&quot; &quot;225&quot; &quot;226&quot;
+ [49] &quot;231&quot; &quot;232&quot; &quot;233&quot; &quot;234&quot; &quot;235&quot; &quot;236&quot; &quot;241&quot; &quot;242&quot; &quot;243&quot; &quot;244&quot; &quot;245&quot; &quot;246&quot;
+ [61] &quot;251&quot; &quot;252&quot; &quot;253&quot; &quot;254&quot; &quot;255&quot; &quot;256&quot; &quot;261&quot; &quot;262&quot; &quot;263&quot; &quot;264&quot; &quot;265&quot; &quot;266&quot;
+ [73] &quot;311&quot; &quot;312&quot; &quot;313&quot; &quot;314&quot; &quot;315&quot; &quot;316&quot; &quot;321&quot; &quot;322&quot; &quot;323&quot; &quot;324&quot; &quot;325&quot; &quot;326&quot;
+ [85] &quot;331&quot; &quot;332&quot; &quot;333&quot; &quot;334&quot; &quot;335&quot; &quot;336&quot; &quot;341&quot; &quot;342&quot; &quot;343&quot; &quot;344&quot; &quot;345&quot; &quot;346&quot;
+ [97] &quot;351&quot; &quot;352&quot; &quot;353&quot; &quot;354&quot; &quot;355&quot; &quot;356&quot; &quot;361&quot; &quot;362&quot; &quot;363&quot; &quot;364&quot; &quot;365&quot; &quot;366&quot;
+[109] &quot;411&quot; &quot;412&quot; &quot;413&quot; &quot;414&quot; &quot;415&quot; &quot;416&quot; &quot;421&quot; &quot;422&quot; &quot;423&quot; &quot;424&quot; &quot;425&quot; &quot;426&quot;
+[121] &quot;431&quot; &quot;432&quot; &quot;433&quot; &quot;434&quot; &quot;435&quot; &quot;436&quot; &quot;441&quot; &quot;442&quot; &quot;443&quot; &quot;444&quot; &quot;445&quot; &quot;446&quot;
+[133] &quot;451&quot; &quot;452&quot; &quot;453&quot; &quot;454&quot; &quot;455&quot; &quot;456&quot; &quot;461&quot; &quot;462&quot; &quot;463&quot; &quot;464&quot; &quot;465&quot; &quot;466&quot;
+[145] &quot;511&quot; &quot;512&quot; &quot;513&quot; &quot;514&quot; &quot;515&quot; &quot;516&quot; &quot;521&quot; &quot;522&quot; &quot;523&quot; &quot;524&quot; &quot;525&quot; &quot;526&quot;
+[157] &quot;531&quot; &quot;532&quot; &quot;533&quot; &quot;534&quot; &quot;535&quot; &quot;536&quot; &quot;541&quot; &quot;542&quot; &quot;543&quot; &quot;544&quot; &quot;545&quot; &quot;546&quot;
+[169] &quot;551&quot; &quot;552&quot; &quot;553&quot; &quot;554&quot; &quot;555&quot; &quot;556&quot; &quot;561&quot; &quot;562&quot; &quot;563&quot; &quot;564&quot; &quot;565&quot; &quot;566&quot;
+[181] &quot;611&quot; &quot;612&quot; &quot;613&quot; &quot;614&quot; &quot;615&quot; &quot;616&quot; &quot;621&quot; &quot;622&quot; &quot;623&quot; &quot;624&quot; &quot;625&quot; &quot;626&quot;
+[193] &quot;631&quot; &quot;632&quot; &quot;633&quot; &quot;634&quot; &quot;635&quot; &quot;636&quot; &quot;641&quot; &quot;642&quot; &quot;643&quot; &quot;644&quot; &quot;645&quot; &quot;646&quot;
+[205] &quot;651&quot; &quot;652&quot; &quot;653&quot; &quot;654&quot; &quot;655&quot; &quot;656&quot; &quot;661&quot; &quot;662&quot; &quot;663&quot; &quot;664&quot; &quot;665&quot; &quot;666&quot;</code></pre>
 </div>
 </div>
 <div id="exemplo-definição-clássica-de-probab." class="section level3">
@@ -846,26 +709,340 @@ library(prob)
 amostral</code></pre>
 <pre><code>[1] 1 2 3 4 5 6</code></pre>
 <pre class="r"><code>sorteio2</code></pre>
-<pre><code>  [1] &quot;111&quot; &quot;112&quot; &quot;113&quot; &quot;114&quot; &quot;115&quot; &quot;116&quot; &quot;121&quot; &quot;122&quot; &quot;123&quot; &quot;124&quot; &quot;125&quot; &quot;126&quot; &quot;131&quot; &quot;132&quot; &quot;133&quot; &quot;134&quot; &quot;135&quot; &quot;136&quot; &quot;141&quot; &quot;142&quot; &quot;143&quot; &quot;144&quot; &quot;145&quot; &quot;146&quot; &quot;151&quot; &quot;152&quot; &quot;153&quot; &quot;154&quot;
- [29] &quot;155&quot; &quot;156&quot; &quot;161&quot; &quot;162&quot; &quot;163&quot; &quot;164&quot; &quot;165&quot; &quot;166&quot; &quot;211&quot; &quot;212&quot; &quot;213&quot; &quot;214&quot; &quot;215&quot; &quot;216&quot; &quot;221&quot; &quot;222&quot; &quot;223&quot; &quot;224&quot; &quot;225&quot; &quot;226&quot; &quot;231&quot; &quot;232&quot; &quot;233&quot; &quot;234&quot; &quot;235&quot; &quot;236&quot; &quot;241&quot; &quot;242&quot;
- [57] &quot;243&quot; &quot;244&quot; &quot;245&quot; &quot;246&quot; &quot;251&quot; &quot;252&quot; &quot;253&quot; &quot;254&quot; &quot;255&quot; &quot;256&quot; &quot;261&quot; &quot;262&quot; &quot;263&quot; &quot;264&quot; &quot;265&quot; &quot;266&quot; &quot;311&quot; &quot;312&quot; &quot;313&quot; &quot;314&quot; &quot;315&quot; &quot;316&quot; &quot;321&quot; &quot;322&quot; &quot;323&quot; &quot;324&quot; &quot;325&quot; &quot;326&quot;
- [85] &quot;331&quot; &quot;332&quot; &quot;333&quot; &quot;334&quot; &quot;335&quot; &quot;336&quot; &quot;341&quot; &quot;342&quot; &quot;343&quot; &quot;344&quot; &quot;345&quot; &quot;346&quot; &quot;351&quot; &quot;352&quot; &quot;353&quot; &quot;354&quot; &quot;355&quot; &quot;356&quot; &quot;361&quot; &quot;362&quot; &quot;363&quot; &quot;364&quot; &quot;365&quot; &quot;366&quot; &quot;411&quot; &quot;412&quot; &quot;413&quot; &quot;414&quot;
-[113] &quot;415&quot; &quot;416&quot; &quot;421&quot; &quot;422&quot; &quot;423&quot; &quot;424&quot; &quot;425&quot; &quot;426&quot; &quot;431&quot; &quot;432&quot; &quot;433&quot; &quot;434&quot; &quot;435&quot; &quot;436&quot; &quot;441&quot; &quot;442&quot; &quot;443&quot; &quot;444&quot; &quot;445&quot; &quot;446&quot; &quot;451&quot; &quot;452&quot; &quot;453&quot; &quot;454&quot; &quot;455&quot; &quot;456&quot; &quot;461&quot; &quot;462&quot;
-[141] &quot;463&quot; &quot;464&quot; &quot;465&quot; &quot;466&quot; &quot;511&quot; &quot;512&quot; &quot;513&quot; &quot;514&quot; &quot;515&quot; &quot;516&quot; &quot;521&quot; &quot;522&quot; &quot;523&quot; &quot;524&quot; &quot;525&quot; &quot;526&quot; &quot;531&quot; &quot;532&quot; &quot;533&quot; &quot;534&quot; &quot;535&quot; &quot;536&quot; &quot;541&quot; &quot;542&quot; &quot;543&quot; &quot;544&quot; &quot;545&quot; &quot;546&quot;
-[169] &quot;551&quot; &quot;552&quot; &quot;553&quot; &quot;554&quot; &quot;555&quot; &quot;556&quot; &quot;561&quot; &quot;562&quot; &quot;563&quot; &quot;564&quot; &quot;565&quot; &quot;566&quot; &quot;611&quot; &quot;612&quot; &quot;613&quot; &quot;614&quot; &quot;615&quot; &quot;616&quot; &quot;621&quot; &quot;622&quot; &quot;623&quot; &quot;624&quot; &quot;625&quot; &quot;626&quot; &quot;631&quot; &quot;632&quot; &quot;633&quot; &quot;634&quot;
-[197] &quot;635&quot; &quot;636&quot; &quot;641&quot; &quot;642&quot; &quot;643&quot; &quot;644&quot; &quot;645&quot; &quot;646&quot; &quot;651&quot; &quot;652&quot; &quot;653&quot; &quot;654&quot; &quot;655&quot; &quot;656&quot; &quot;661&quot; &quot;662&quot; &quot;663&quot; &quot;664&quot; &quot;665&quot; &quot;666&quot;</code></pre>
+<pre><code>  [1] &quot;111&quot; &quot;112&quot; &quot;113&quot; &quot;114&quot; &quot;115&quot; &quot;116&quot; &quot;121&quot; &quot;122&quot; &quot;123&quot; &quot;124&quot; &quot;125&quot; &quot;126&quot;
+ [13] &quot;131&quot; &quot;132&quot; &quot;133&quot; &quot;134&quot; &quot;135&quot; &quot;136&quot; &quot;141&quot; &quot;142&quot; &quot;143&quot; &quot;144&quot; &quot;145&quot; &quot;146&quot;
+ [25] &quot;151&quot; &quot;152&quot; &quot;153&quot; &quot;154&quot; &quot;155&quot; &quot;156&quot; &quot;161&quot; &quot;162&quot; &quot;163&quot; &quot;164&quot; &quot;165&quot; &quot;166&quot;
+ [37] &quot;211&quot; &quot;212&quot; &quot;213&quot; &quot;214&quot; &quot;215&quot; &quot;216&quot; &quot;221&quot; &quot;222&quot; &quot;223&quot; &quot;224&quot; &quot;225&quot; &quot;226&quot;
+ [49] &quot;231&quot; &quot;232&quot; &quot;233&quot; &quot;234&quot; &quot;235&quot; &quot;236&quot; &quot;241&quot; &quot;242&quot; &quot;243&quot; &quot;244&quot; &quot;245&quot; &quot;246&quot;
+ [61] &quot;251&quot; &quot;252&quot; &quot;253&quot; &quot;254&quot; &quot;255&quot; &quot;256&quot; &quot;261&quot; &quot;262&quot; &quot;263&quot; &quot;264&quot; &quot;265&quot; &quot;266&quot;
+ [73] &quot;311&quot; &quot;312&quot; &quot;313&quot; &quot;314&quot; &quot;315&quot; &quot;316&quot; &quot;321&quot; &quot;322&quot; &quot;323&quot; &quot;324&quot; &quot;325&quot; &quot;326&quot;
+ [85] &quot;331&quot; &quot;332&quot; &quot;333&quot; &quot;334&quot; &quot;335&quot; &quot;336&quot; &quot;341&quot; &quot;342&quot; &quot;343&quot; &quot;344&quot; &quot;345&quot; &quot;346&quot;
+ [97] &quot;351&quot; &quot;352&quot; &quot;353&quot; &quot;354&quot; &quot;355&quot; &quot;356&quot; &quot;361&quot; &quot;362&quot; &quot;363&quot; &quot;364&quot; &quot;365&quot; &quot;366&quot;
+[109] &quot;411&quot; &quot;412&quot; &quot;413&quot; &quot;414&quot; &quot;415&quot; &quot;416&quot; &quot;421&quot; &quot;422&quot; &quot;423&quot; &quot;424&quot; &quot;425&quot; &quot;426&quot;
+[121] &quot;431&quot; &quot;432&quot; &quot;433&quot; &quot;434&quot; &quot;435&quot; &quot;436&quot; &quot;441&quot; &quot;442&quot; &quot;443&quot; &quot;444&quot; &quot;445&quot; &quot;446&quot;
+[133] &quot;451&quot; &quot;452&quot; &quot;453&quot; &quot;454&quot; &quot;455&quot; &quot;456&quot; &quot;461&quot; &quot;462&quot; &quot;463&quot; &quot;464&quot; &quot;465&quot; &quot;466&quot;
+[145] &quot;511&quot; &quot;512&quot; &quot;513&quot; &quot;514&quot; &quot;515&quot; &quot;516&quot; &quot;521&quot; &quot;522&quot; &quot;523&quot; &quot;524&quot; &quot;525&quot; &quot;526&quot;
+[157] &quot;531&quot; &quot;532&quot; &quot;533&quot; &quot;534&quot; &quot;535&quot; &quot;536&quot; &quot;541&quot; &quot;542&quot; &quot;543&quot; &quot;544&quot; &quot;545&quot; &quot;546&quot;
+[169] &quot;551&quot; &quot;552&quot; &quot;553&quot; &quot;554&quot; &quot;555&quot; &quot;556&quot; &quot;561&quot; &quot;562&quot; &quot;563&quot; &quot;564&quot; &quot;565&quot; &quot;566&quot;
+[181] &quot;611&quot; &quot;612&quot; &quot;613&quot; &quot;614&quot; &quot;615&quot; &quot;616&quot; &quot;621&quot; &quot;622&quot; &quot;623&quot; &quot;624&quot; &quot;625&quot; &quot;626&quot;
+[193] &quot;631&quot; &quot;632&quot; &quot;633&quot; &quot;634&quot; &quot;635&quot; &quot;636&quot; &quot;641&quot; &quot;642&quot; &quot;643&quot; &quot;644&quot; &quot;645&quot; &quot;646&quot;
+[205] &quot;651&quot; &quot;652&quot; &quot;653&quot; &quot;654&quot; &quot;655&quot; &quot;656&quot; &quot;661&quot; &quot;662&quot; &quot;663&quot; &quot;664&quot; &quot;665&quot; &quot;666&quot;</code></pre>
 <pre class="r"><code>dado1 &lt;- substr(sorteio,1,1)
 dado2 &lt;- substr(sorteio,2,2)
 iguais &lt;- ifelse(dado1 == dado2, sorteio,&quot;excluir&quot;)
 iguais</code></pre>
-<pre><code> [1] &quot;11&quot;      &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;22&quot;      &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;33&quot;      &quot;excluir&quot; &quot;excluir&quot;
-[18] &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;44&quot;      &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;55&quot;      &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot;
-[35] &quot;excluir&quot; &quot;66&quot;     </code></pre>
+<pre><code> [1] &quot;11&quot;      &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot;
+ [8] &quot;22&quot;      &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot;
+[15] &quot;33&quot;      &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot;
+[22] &quot;44&quot;      &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot;
+[29] &quot;55&quot;      &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot; &quot;excluir&quot;
+[36] &quot;66&quot;     </code></pre>
 <pre class="r"><code>iguais &lt;- iguais[iguais != &quot;excluir&quot;]
 PE1 &lt;- length(iguais)/length(sorteio)
 PE1</code></pre>
 <pre><code>[1] 0.1666667</code></pre>
+<ul>
+<li><strong>Aula 02</strong> - <span class="math inline">\(15/09/2020\)</span>:</li>
+</ul>
 </div>
+</div>
+<div id="união-e-intersecção" class="section level2">
+<h2>União e intersecção</h2>
+<pre class="r"><code>## Espaço amostral= (1,2,3,4,5,6)
+A &lt;- 1:4
+B &lt;- 1:3
+C &lt;- c(2,4,6)
+D &lt;- c(2,3,5)
+
+                                        # Função União
+uniao &lt;- function(a,b){
+    u = a
+    for(i in 1:length(b))
+        if(!b[i] %in% u){
+            u = c(u,b[i])
+        }
+        return(u)
+    }
+
+uniao(A,B)</code></pre>
+<pre><code>[1] 1 2 3 4</code></pre>
+<pre class="r"><code>uniao(A,C)</code></pre>
+<pre><code>[1] 1 2 3 4 6</code></pre>
+<pre class="r"><code>union(A,C)</code></pre>
+<pre><code>[1] 1 2 3 4 6</code></pre>
+<pre class="r"><code>                                        # Função para intersecção
+
+Inter &lt;- function(a,b){
+    inte &lt;- NULL
+    for(i in 1:length(a))
+        if(a[i] %in% b){
+            inte  &lt;- c(inte, a[i])
+        }
+    return(inte)
+    }
+Inter(a=A, b=B)</code></pre>
+<pre><code>[1] 1 2 3</code></pre>
+<pre class="r"><code>Inter(A,D)</code></pre>
+<pre><code>[1] 2 3</code></pre>
+<pre class="r"><code>intersect(A,D)</code></pre>
+<pre><code>[1] 2 3</code></pre>
+<pre class="r"><code>amostral &lt;- 1:6
+A</code></pre>
+<pre><code>[1] 1 2 3 4</code></pre>
+</div>
+<div id="regra-da-adição" class="section level2">
+<h2>Regra da Adição</h2>
+<pre class="r"><code>rm(list=ls())
+dados &lt;- read.csv(&quot;hospital.csv&quot;,
+                  header = T,
+                  sep = &#39;\t&#39;)
+head(dados)</code></pre>
+<pre><code>  idade setor temperatura freq_respiratoria pa_sistolica pa_diastolica pa_media
+1    87  UTIG        36.0                18          128            75       93
+2    53  1AP2        35.4                14          117            67       84
+3    63  UTIG        36.4                40          149            75      100
+4    84  UTIG        36.4                40          149            75      100
+5    99  4AP2        36.3                16           80            60       67
+6    50  UTIG        34.4                17          140           100      113
+  sat_o2 alta.motivo
+1     91       Obito
+2    100       Obito
+3     78       Obito
+4     78       Obito
+5     94       Obito
+6     94       Obito</code></pre>
+<pre class="r"><code>##P(AuB) = P(A) + P(B) - P(AinterB)
+## Criando variável dicotomica para Temperatura
+dados$Temp_nivel &lt;- ifelse(dados$temperatura &lt;=35 |
+                           dados$temperatura &gt;=38.4,
+                           &quot;Alterada&quot;,
+                           &quot;Nao_Alterada&quot;)
+
+## Criando variável dicotomica para Temperatura
+dados$Resp_nivel &lt;- ifelse(dados$freq_respiratoria &lt;=14,
+                           &quot;Alterada&quot;,
+                           &quot;Nao_Alterada&quot;)
+table(dados$Temp_nivel)</code></pre>
+<pre><code>
+    Alterada Nao_Alterada 
+         350         4648 </code></pre>
+<pre class="r"><code>table(dados$Resp_nivel)</code></pre>
+<pre><code>
+    Alterada Nao_Alterada 
+         801         4195 </code></pre>
+<pre class="r"><code># A: Temperatura nao alterada
+# B: Respiração não alterada
+PA &lt;- table(dados$Temp_nivel)[2]/nrow(dados)
+PA</code></pre>
+<pre><code>Nao_Alterada 
+   0.9294141 </code></pre>
+<pre class="r"><code>PB &lt;- table(dados$Resp_nivel)[2]/nrow(dados)
+PB</code></pre>
+<pre><code>Nao_Alterada 
+   0.8388322 </code></pre>
+<pre class="r"><code>table(dados$Temp_nivel,dados$Resp_nivel)</code></pre>
+<pre><code>              
+               Alterada Nao_Alterada
+  Alterada           66          284
+  Nao_Alterada      735         3910</code></pre>
+<pre class="r"><code>PAinterB &lt;- 3910/nrow(dados)
+PAinterB</code></pre>
+<pre><code>[1] 0.7818436</code></pre>
+<pre class="r"><code>PAuB &lt;- PA + PB - PAinterB
+PAuB</code></pre>
+<pre><code>Nao_Alterada 
+   0.9864027 </code></pre>
+<pre class="r"><code>PA+(1-PA)</code></pre>
+<pre><code>Nao_Alterada 
+           1 </code></pre>
+</div>
+<div id="probabilidade-condicional" class="section level2">
+<h2>Probabilidade condicional</h2>
+<pre class="r"><code>library(ggplot2)
+ggplot(dados, aes(idade, fill = alta.motivo, colour = alta.motivo)) +
+    geom_density(alpha= 0.1, fill = &#39;white&#39;)</code></pre>
+<p><img src="aulas_modulo1_files/figure-html/AdadoB-1.png" width="672" /></p>
+<pre class="r"><code>### Probabilidade de óbito
+table(dados$alta.motivo)</code></pre>
+<pre><code>
+Melhorado     Obito 
+     4572       429 </code></pre>
+<pre class="r"><code>PO &lt;- table(dados$alta.motivo)[2]/nrow(dados)
+PO</code></pre>
+<pre><code>     Obito 
+0.08578284 </code></pre>
+<pre class="r"><code>### P(O | idade &gt;= 55) = P(O inter idade &gt;=55)/P(idade &gt;=55)
+dados$f_idade &lt;- ifelse(dados$idade &lt; 55,
+                        &quot;F1&quot;,
+                        &quot;F2&quot;)
+table(dados$f_idade)</code></pre>
+<pre><code>
+  F1   F2 
+2859 2142 </code></pre>
+<pre class="r"><code>PF2 &lt;- table(dados$f_idade)[2]/nrow(dados)
+PF2</code></pre>
+<pre><code>       F2 
+0.4283143 </code></pre>
+<pre class="r"><code>table(dados$f_idade,dados$alta.motivo)</code></pre>
+<pre><code>    
+     Melhorado Obito
+  F1      2760    99
+  F2      1812   330</code></pre>
+<pre class="r"><code>POinterF2 &lt;- 330/nrow(dados)
+POinterF2</code></pre>
+<pre><code>[1] 0.0659868</code></pre>
+<pre class="r"><code>POdadoF2 &lt;- POinterF2/PF2
+POdadoF2</code></pre>
+<pre><code>       F2 
+0.1540616 </code></pre>
+</div>
+<div id="regra-do-produto-independência-de-eventos" class="section level2">
+<h2>Regra do produto Independência de eventos</h2>
+<pre class="r"><code>table(dados$Temp_nivel,dados$Resp_nivel)</code></pre>
+<pre><code>              
+               Alterada Nao_Alterada
+  Alterada           66          284
+  Nao_Alterada      735         3910</code></pre>
+<pre class="r"><code>##P(AinterB) = P(A)*P(B)
+PAPB &lt;- PA*PB
+PAPB</code></pre>
+<pre><code>Nao_Alterada 
+   0.7796225 </code></pre>
+<pre class="r"><code>PAdadoB &lt;- PAinterB/PB
+PAdadoB</code></pre>
+<pre><code>Nao_Alterada 
+    0.932062 </code></pre>
+</div>
+<div id="partição-do-espaço-amostral" class="section level2">
+<h2>Partição do espaço amostral</h2>
+<pre class="r"><code>library(dplyr)
+
+UTI &lt;- dados %&gt;%
+    filter(setor %in% c(&#39;UTIG&#39;,
+                        &#39;UTIC&#39;,
+                        &#39;UTIP&#39;))
+
+UTI$setor &lt;- droplevels(UTI$setor)
+table(UTI$setor)</code></pre>
+<pre><code>
+UTIC UTIG UTIP 
+  66  174   34 </code></pre>
+<pre class="r"><code>#PA1 = P(O inter UTIG)  = P(O | UTIG)*P(UTIG)
+POuti &lt;- table(UTI$alta.motivo)[2]/nrow(UTI)
+PUTIG &lt;- table(UTI$setor)[2]/nrow(UTI)
+PUTIG*POuti</code></pre>
+<pre><code>     UTIG 
+0.6072247 </code></pre>
+<pre class="r"><code>table(UTI$alta.motivo,UTI$setor)</code></pre>
+<pre><code>           
+            UTIC UTIG UTIP
+  Melhorado    0    3    9
+  Obito       66  171   25</code></pre>
+<pre class="r"><code>171/nrow(UTI)</code></pre>
+<pre><code>[1] 0.6240876</code></pre>
+<pre class="r"><code>PA1 &lt;- table(UTI$setor,UTI$alta.motivo)[5]/nrow(UTI)
+PA2 &lt;- table(UTI$setor,UTI$alta.motivo)[6]/nrow(UTI)
+PA3 &lt;- table(UTI$setor,UTI$alta.motivo)[4]/nrow(UTI)
+PA1</code></pre>
+<pre><code>[1] 0.6240876</code></pre>
+<pre class="r"><code>PA2</code></pre>
+<pre><code>[1] 0.09124088</code></pre>
+<pre class="r"><code>PA3</code></pre>
+<pre><code>[1] 0.2408759</code></pre>
+<pre class="r"><code># PA1 U PA2 U PA3
+# TMA DA PROBABILIDADE TOTAL
+PoUTI  &lt;- PA1+PA2+PA3
+PoUTI</code></pre>
+<pre><code>[1] 0.9562044</code></pre>
+<pre class="r"><code>                                        #P(O | UTIG) = PA1/PUTIG
+PA1 / (174/nrow(UTI))</code></pre>
+<pre><code>[1] 0.9827586</code></pre>
+<pre class="r"><code># P(UTIP inter O) = P (O | UTIP) * P(O)
+PUTIP &lt;- length(UTI$setor[UTI$setor == &#39;UTIP&#39;])/nrow(UTI)
+PUTIP</code></pre>
+<pre><code>[1] 0.1240876</code></pre>
+<pre class="r"><code>PUTIPdadoO &lt;- PA2/PUTIP
+PUTIPdadoO</code></pre>
+<pre><code>[1] 0.7352941</code></pre>
+<pre class="r"><code># P(UTIC inter O) = P (O | UTIC) * P(O)
+PUTIC &lt;- length(UTI$setor[UTI$setor == &#39;UTIC&#39;])/nrow(UTI)
+PUTIC</code></pre>
+<pre><code>[1] 0.2408759</code></pre>
+<pre class="r"><code>PUTICdadoO &lt;- PA3/PUTIC
+PUTICdadoO</code></pre>
+<pre><code>[1] 1</code></pre>
+<pre class="r"><code># P(UTIG inter O) = P (O | UTIG) * P(O)
+PUTIG &lt;- length(UTI$setor[UTI$setor == &#39;UTIG&#39;])/nrow(UTI)
+PUTIG</code></pre>
+<pre><code>[1] 0.6350365</code></pre>
+<pre class="r"><code>PUTIGdadoO &lt;- PA1/PUTIG
+PUTIGdadoO</code></pre>
+<pre><code>[1] 0.9827586</code></pre>
+</div>
+<div id="tma-bayes" class="section level2">
+<h2>TMA BAYES</h2>
+<pre class="r"><code>## P(UTIG | O) = P(O | UTIG) * P(UTIG)/(PoUTI)
+PUTIGdadoO &lt;- PA1/PoUTI
+PUTIGdadoO</code></pre>
+<pre><code>[1] 0.6526718</code></pre>
+</div>
+<div id="função-de-probabilidade-f.p." class="section level2">
+<h2>Função de probabilidade (f.p.)</h2>
+<pre class="r"><code>X &lt;- 0:6
+X</code></pre>
+<pre><code>[1] 0 1 2 3 4 5 6</code></pre>
+<pre class="r"><code>fo &lt;- c(9,14,13,9,4,2,1)
+fo</code></pre>
+<pre><code>[1]  9 14 13  9  4  2  1</code></pre>
+<pre class="r"><code>fr &lt;- fo/52
+df &lt;- data.frame(X,fo,fr)
+df</code></pre>
+<pre><code>  X fo         fr
+1 0  9 0.17307692
+2 1 14 0.26923077
+3 2 13 0.25000000
+4 3  9 0.17307692
+5 4  4 0.07692308
+6 5  2 0.03846154
+7 6  1 0.01923077</code></pre>
+<pre class="r"><code>#Gráfico p(x)
+p1 &lt;- ifelse(df$fr &gt; 1 | df$fr&lt; 0,
+             &#39;N_p(x)&#39;,&#39;p(x)&#39;)
+table(p1)</code></pre>
+<pre><code>p1
+p(x) 
+   7 </code></pre>
+<pre class="r"><code>#p2
+sum(df$fr)</code></pre>
+<pre><code>[1] 1</code></pre>
+<pre class="r"><code>#P(X = 2)
+# P(X&gt;2) = P(X =3 U X=4 U X=5 U X=6) = P(X=3)+P(X=4)+P(X=5)+P(X=6)
+df$Fx &lt;- cumsum(df$fr)
+df</code></pre>
+<pre><code>  X fo         fr        Fx
+1 0  9 0.17307692 0.1730769
+2 1 14 0.26923077 0.4423077
+3 2 13 0.25000000 0.6923077
+4 3  9 0.17307692 0.8653846
+5 4  4 0.07692308 0.9423077
+6 5  2 0.03846154 0.9807692
+7 6  1 0.01923077 1.0000000</code></pre>
+<pre class="r"><code># 1 - P(X&lt;=2)
+1-0.692307</code></pre>
+<pre><code>[1] 0.307693</code></pre>
+<pre class="r"><code>par(mfrow=c(1,2))
+plot(df$X,
+     df$fr,
+     xlab=&#39;V.A.&#39;,
+     ylab = &#39;P[X=x]&#39;,
+     type = &#39;h&#39;)
+
+plot(df$X,
+     df$Fx,
+     xlab = &#39;V.A.&#39;,
+     ylab = &#39;F(x)= P[X&lt;=x]&#39;,
+     type = &#39;s&#39;)</code></pre>
+<p><img src="aulas_modulo1_files/figure-html/fp-1.png" width="672" /></p>
 </div>
 
 <center>
