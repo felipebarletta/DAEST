@@ -44,6 +44,8 @@ navbar:
       - text: "Módulo1 - Aula 1 - Fundamentos de Probabilidade"
         href: slides/Modulo1_Aula1.pdf
       - text: "Módulo1 - Aula 2 - Distribuições de Probabilidade discreta"
-        href: slides/Modulo1_Aula2.pdf  
+        href: slides/Modulo1_Aula2.pdf
+      - text: "Módulo1 - Aula 3 - Distribuições de Probabilidade contínua"
+        href: slides/Modulo1_Aula3.pdf  
       - text: "Módulo2 - Inferência Estatística"
         href: slides/Modulo2_Aula1.pdf  
