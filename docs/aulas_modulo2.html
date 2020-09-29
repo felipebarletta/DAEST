@@ -9,13 +9,14 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Prof.ª Angélica Maria Tortola Ribeiro" />
 
 
-<title>Módulo 2 - Inferência Estatística Parte I</title>
+<title>Módulo 2</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -112,33 +113,33 @@ summary {
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
-  padding-top: 51px;
+  padding-top: 54px;
   padding-bottom: 40px;
 }
 /* offset scroll position for anchor links (for fixed navbar)  */
 .section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 59px;
+  margin-top: -59px;
 }
 .section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 59px;
+  margin-top: -59px;
 }
 .section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 59px;
+  margin-top: -59px;
 }
 .section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 59px;
+  margin-top: -59px;
 }
 .section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 59px;
+  margin-top: -59px;
 }
 .section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 59px;
+  margin-top: -59px;
 }
 .dropdown-submenu {
   position: relative;
@@ -356,81 +357,647 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Módulo 2 - Inferência Estatística Parte I</h1>
+<h1 class="title toc-ignore">Módulo 2</h1>
+<h4 class="author">Prof.ª Angélica Maria Tortola Ribeiro</h4>
 
 </div>
 
 
-<style type="text/css">
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
-.toc-content {
-padding-left: 0;
-padding-right: 0;
-margin-left: -95px;
-}
-table.dataTable thead th {
-text-align: left;
-}
-table.dataTable tbody th, table.dataTable tbody td {
-padding: 8px 18px;
-}
-table.dataTable thead th, table.dataTable thead td {
-padding: 8px 18px 8px 18px;
-border-bottom: 1px solid #111;
-}
+<style>
 body {
-font-family: Roboto;
-font-size: 14px;
-line-height: 1.529;
-}
-h1.title {
-padding-top: 30px;
-top: 34px;
-left: 390px;
-width: 832px;
-height: 77px;
-text-align: left;
-letter-spacing: 1px;
-color: #000000;
-opacity: 1;
-margin: 0;
-font-size: 30px;
-line-height: 47px;
-font-family: 'Roboto', sans-serif;
-display: inline-block;
-max-width: 100%;
-}
-h4.date {
-font-family: "Roboto Mono", Roboto, sans-serif;
-font-size: 20px;
-color: #000000;
-line-height: 26px;
-font-weight: 400;
-letter-spacing: 0;
-}
-body::before {
-content: '';
-height: 168px;
-width: 100%;
-position: absolute;
-top: 0;
-left: 0;
-background: #FFFAFA;
-z-index: -1;
-}
-
-@media only screen and (min-width: 1600px) {
-#header {
-background: url(http://www.utfpr.edu.br/icones/cabecalho/logo-utfpr/@@images/image.png) #FFFAFA right center no-repeat padding-box;
-background-size: 210px;
-}
+text-align: justify}
 </style>
 <p><br> <br> <br></p>
+<div id="conceitos-básicos-29092020" class="section level1">
+<h1><span class="header-section-number">1</span> Conceitos Básicos (29/09/2020)</h1>
+<p><br></p>
 <ul>
-<li><p><strong>Aula 01</strong> - <span class="math inline">\(29/09/2020:\)</span> <strong>Terminologias e Distribuições Amostrais</strong></p></li>
-<li><p><strong>Aula 02</strong> - <span class="math inline">\(06/10/2020\)</span>: <strong>Estimação por Intervalo</strong></p></li>
-<li><p><strong>Aula 03</strong> - <span class="math inline">\(20/10/2020\)</span>: <strong>Testes de Hipóteses</strong></p></li>
+<li><strong>População:</strong> É o conjunto de todos os elementos ou resultados sob investigação, com pelo menos uma característica em comum.</li>
+<li><strong>Amostra:</strong> É qualquer subconjunto da população.<br />
+<em>Exemplos:</em>
+<ul>
+<li>P1: Todos os moradores de Curitiba.</li>
+<li>P2: Todos os estudantes da UTFPR.</li>
+<li>P3: Todos os celulares produzidos por uma fábrica.</li>
+<li>P4: Todos os consumidores de algum produto.</li>
+</ul></li>
 </ul>
+<p><br></p>
+<div class="figure" style="text-align: center">
+<img src="populationvssample.png" alt="**Fig 1.** Relação entre população e amostra. Fonte: Practical Statistics for Data Scientists (2017)." width="75%" />
+<p class="caption">
+<strong>Fig 1.</strong> Relação entre população e amostra. Fonte: Practical Statistics for Data Scientists (2017).
+</p>
+</div>
+<ul>
+<li><strong>Variáveis:</strong> São as características de interesse de uma população.<br />
+<em>Exemplos:</em></li>
+<li>Considerando a P1, possíveis variáveis são: altura, peso, nº de filhos, renda familiar, grau de escolaridade (F, M, S), tem ensino superior (sim ou não), classe social (baixa, média, alta), sexo (masculino, feminino).</li>
+<li>Considerando a P3, possíveis variáveis são: peso do aparelho, nº de defeitos por aparelho, tem defeito (sim ou não), tamanho do aparelho (pequeno, médio, grande), nº de aparelhos produzidos por hora.</li>
+</ul>
+<div class="figure" style="text-align: center">
+<img src="variaveis.png" alt="**Fig 2.** Classificação das variáveis." width="60%" />
+<p class="caption">
+<strong>Fig 2.</strong> Classificação das variáveis.
+</p>
+</div>
+<p><br></p>
+<p><strong>Classificação das variáveis:</strong></p>
+<p>As variáveis podem assumir diferentes valores, e podem ser claassificadas em:<br />
+</p>
+<ul>
+<li>Quantitativas (numéricas)<br />
+</li>
+<li>Qualitativas (não numéricas, categóricas)</li>
+</ul>
+<p>As variáveis  se classificam em:</p>
+<ul>
+<li>Discretas: assumem apenas valores inteiros.</li>
+<li>Contínuas: assumem qualquer valor no intervalo dos números reais.</li>
+</ul>
+<p>As variáveis  ou  se classificam em:</p>
+<ul>
+<li>Ordinais: quando as categorias podem ser ordenadas.</li>
+<li>Nominais: quando as categorias não possuem uma ordem natural.</li>
+</ul>
+<table>
+<colgroup>
+<col width="18%" />
+<col width="17%" />
+<col width="34%" />
+<col width="30%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Discretas</th>
+<th>Contínuas</th>
+<th>Ordinais</th>
+<th>Nominais</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>nº de filhos</td>
+<td>peso</td>
+<td>tamanho (P, M, G)</td>
+<td>sexo (M, F)</td>
+</tr>
+<tr class="even">
+<td>nº de defeitos</td>
+<td>altura</td>
+<td>classe social (B, M, A)</td>
+<td>tem defeito(S, N)</td>
+</tr>
+<tr class="odd">
+<td>nº de aparelhos</td>
+<td>renda familiar</td>
+<td>Grau de escolaridade (F, M, S)</td>
+<td>tem ensino superior (S, N)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Exercício:</strong> Apresentar 2 exemplos de variáveis para cada uma das classificações da Tabela acima, considerando as populações <strong>P2</strong> e <strong>P4</strong>.</p>
+<p><br></p>
+<ul>
+<li><strong>Inferência estatística:</strong> Conjunto de técnicas utilizadas para tirar conclusões sobre determinada(s) característica(s) da população, a partir de informações colhidas de uma amostra.</li>
+<li><strong>Amostra Aleatória (a.a.):</strong> Uma a.a. de tamanho <span class="math inline">\(n\)</span> de uma população <span class="math inline">\(X\)</span>, com dada distribuição, é o conjunto de <span class="math inline">\(n\)</span> variáveis aleatórias independentes <span class="math inline">\(X_{1}, X_{2}, ....,X_{n}\)</span>, cada uma com a mesma distribuição de X.</li>
+</ul>
+<p><img src="inf5.png" width="40%" style="display: block; margin: auto;" /></p>
+<p><br></p>
+<ul>
+<li><strong>Parâmetros:</strong> São medidas utilizadas para descrever características da população.</li>
+<li><strong>Estatísticas:</strong> São características da amostra, ou seja, uma estatística T é uma função de <span class="math inline">\(X_{1}, X_{2}, ....,X_{n}\)</span>.</li>
+</ul>
+<div class="figure" style="text-align: center">
+<img src="par_normal.png" alt="**Fig 3.**Representação de parâmetros e estatísticas - distribuição Normal." width="40%" />
+<p class="caption">
+<strong>Fig 3.</strong>Representação de parâmetros e estatísticas - distribuição Normal.
+</p>
+</div>
+<p><br></p>
+<div class="figure" style="text-align: center">
+<img src="par_bern.png" alt="**Fig 4.**Representação de parâmetros e estatísticas - distribuição Bernoulli" width="40%" />
+<p class="caption">
+<strong>Fig 4.</strong>Representação de parâmetros e estatísticas - distribuição Bernoulli
+</p>
+</div>
+<p><br></p>
+<p><strong>Exemplos de parâmetros:</strong> média populacional, variância populacional, desvio-padrão populacional, proporção populacional;</p>
+<p><strong>Exemplos de estatísticas:</strong> média amostral, variância amostral, desvio-padrão amostral, proporção amostral.</p>
+<p><br></p>
+<table style="width:100%;">
+<colgroup>
+<col width="29%" />
+<col width="27%" />
+<col width="43%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Medidas</th>
+<th>Parâmetros</th>
+<th>Estatísticas</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Média</td>
+<td><span class="math inline">\(\mu = \dfrac{X_1+X_2+...+X_N}{N}\)</span></td>
+<td><span class="math inline">\(\bar{X} = \dfrac{X_1+X_2+...+X_n}{n}\)</span></td>
+</tr>
+<tr class="even">
+<td>Variância</td>
+<td><span class="math inline">\(\sigma^2=\sum_{i=1}^{N}\dfrac{(X_i-\mu)^2}{N}\)</span></td>
+<td><span class="math inline">\(S^2 = \sum_{i=1}^{n}\dfrac{(X_i-\bar{X})^2}{n-1}\)</span> ou <span class="math inline">\(\hat{\sigma}^2 = \sum_{i=1}^{n}\dfrac{(X_i-\bar{X})^2}{n}\)</span></td>
+</tr>
+<tr class="odd">
+<td>Desvio-padrão</td>
+<td><span class="math inline">\(\sigma = \sqrt{\sigma^2}\)</span></td>
+<td><span class="math inline">\(S = \sqrt{(S^2)}\)</span></td>
+</tr>
+<tr class="even">
+<td>Proporção</td>
+<td><span class="math inline">\(p = \dfrac{X_1+X_2+...+X_N}{N}\)</span></td>
+<td><span class="math inline">\(\hat{X} = \dfrac{X_1+X_2+...+X_n}{n}\)</span></td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>### Exemplo 1 no R: Parâmetros e Estatísticas
+
+## Simulando uma população com distribuição normal com média 170 cm e desvio-padrão 20 cm.
+
+rm(list = ls())
+set.seed(123456)
+sig &lt;- 20
+mi &lt;- 170
+n_val &lt;- 10000
+
+alt &lt;- rnorm(n_val, mean =  170, sd = 20)
+
+calc_media_var_pop &lt;- function(x)
+{
+  m &lt;- mean(x)
+  s &lt;- sqrt(sum((x-m)^2)/length(x))
+  return(list(media = m, var = s))
+}
+
+calc_media_var_pop(alt)</code></pre>
+<pre><code>$media
+[1] 170.3368
+
+$var
+[1] 19.96783</code></pre>
+<pre class="r"><code>## Gerando valores aleatórios da normal com média e variância exatas
+
+# var_n_menos_1 = (n*var_n/(n-1))
+# sd_n_menos_1 = sqrt(n*var_n/(n-1))
+# x_exata = scale(rnorm(n = n_val))*sd_n_menos_1 + mi
+
+sd_n_menos_1 &lt;- sqrt((sig^2)*n_val/(n_val-1))
+alt_ex &lt;- scale(rnorm(n_val, mean =  170, sd = 20))*sd_n_menos_1  + mi
+
+calc_media_var_pop(alt_ex)</code></pre>
+<pre><code>$media
+[1] 170
+
+$var
+[1] 20</code></pre>
+<pre class="r"><code># rnorm gera números aleatórios da distribuição Normal
+# dnorm calcula a função densidade de probabilidade da distribuição Normal
+# pnorm calcula a função de distribuição acumulada da distribuição Normal
+# qnorm encontra os quantis da distribuição Normal
+
+
+## Histograma das alturas
+
+hist(alt_ex, probability = T, xlim = c(min(alt_ex), max(alt_ex)), ylab = &quot;&quot;, xlab = &quot;Alturas&quot;)
+curve(dnorm(x, mean = 170, sd = 20), from = 90, to = 250, add = T,
+      fg = &quot;white&quot;, col.axis = &quot;white&quot;,ylab = &quot;&quot;, xlab = &quot;&quot;)</code></pre>
+<p><img src="aulas_modulo2_files/figure-html/1.1-1.png" width="672" /></p>
+<pre class="r"><code>## Parâmetros
+
+mi_alt &lt;- mean(alt_ex) # Média populacional
+var_alt &lt;- (sum((alt_ex-mi_alt)^2))/length(alt_ex) ## variância populacional
+desvio_alt &lt;- sqrt(var_alt) ## desvio-padrão populacional
+mi_alt</code></pre>
+<pre><code>[1] 170</code></pre>
+<pre class="r"><code>desvio_alt</code></pre>
+<pre><code>[1] 20</code></pre>
+<pre class="r"><code>## Selecionando amostras da população
+
+amostra1 &lt;- sample(alt_ex, size = 10, replace = T)
+
+## Estatísticas
+
+m1&lt;- mean(amostra1)
+s1 &lt;- sd(amostra1)
+
+## Aumentando o tamanho das amostras
+
+amostra2 &lt;- sample(alt_ex, size = 50, replace = T)
+m2 &lt;- mean(amostra2)
+s2 &lt;- sd(amostra2)
+
+amostra3 &lt;- sample(alt_ex, size = 100, replace = T)
+m3 &lt;- mean(amostra3)
+s3 &lt;- sd(amostra3)
+
+amostra4 &lt;- sample(alt_ex, size = 500, replace = T)
+m4 &lt;- mean(amostra4)
+s4 &lt;- sd(amostra4)
+
+amostra5 &lt;- sample(alt_ex, size = 1000, replace = T)
+m5 &lt;- mean(amostra5)
+s5 &lt;- sd(amostra5)
+
+amostra6 &lt;- sample(alt_ex, size = 2000, replace = T)
+m6 &lt;- mean(amostra6)
+s6 &lt;- sd(amostra6)
+
+amostra7 &lt;- sample(alt_ex, size = 5000, replace = T)
+m7 &lt;- mean(amostra7)
+s7 &lt;- sd(amostra7)
+
+m &lt;- c(m1, m2, m3, m4, m5, m6, m7)
+s &lt;- c(s1, s2, s3, s4, s5, s6, s7)
+
+par(mfrow = c(1,2))
+plot(m)
+abline(h=170)
+plot(s)
+abline(h=20)</code></pre>
+<p><img src="aulas_modulo2_files/figure-html/1.1-2.png" width="672" /> <br></p>
+<p><strong>Exercícios no R:</strong><br />
+1 - Simular 5000 pesos de uma população com distribuição Normal com parâmetros <span class="math inline">\(\mu=90\)</span> e <span class="math inline">\(\sigma^2=9\)</span>;<br />
+2- Construir um histograma para esta variável, considerando as densidades de frequência, e adicionar a curva teórica da Normal;<br />
+3- Selecionar uma amostra, com reposição de tamanho <span class="math inline">\(n = 100\)</span> desta população;<br />
+4 - Calcular as estatísticas: média, variância e desvio-padrão da amostra.</p>
+<p><br></p>
+<p><strong>Estimador:</strong> São estatísticas utilizadas para estimar os parâmetros. Aos valores observados dos estimadores dá-se o nome de .</p>
+<table style="width:100%;">
+<colgroup>
+<col width="29%" />
+<col width="27%" />
+<col width="43%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parâmetros</th>
+<th>Estimadores</th>
+<th>Propriedades</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\mu\)</span></td>
+<td><span class="math inline">\(\bar{X} = \dfrac{X_1+X_2+...+X_n}{n}\)</span></td>
+<td>Não viciado e consistente</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\sigma^2\)</span></td>
+<td><span class="math inline">\(S^2 = \sum_{i=1}^{n}\dfrac{(X_i-\bar{X})^2}{n-1}\)</span></td>
+<td>Não viciado e consistente</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(p\)</span></td>
+<td><span class="math inline">\(\hat{X} = \dfrac{X_1+X_2+...+X_n}{n}\)</span></td>
+<td>Não viciado e consistente</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Distribuição amostral de um Estimador:</strong> É o comportamento probabilístico do estimador, isto é, sua distribuição de probabilidade, caso todas as possíveis amostras fossem retiradas.</p>
+<div class="figure" style="text-align: center">
+<img src="dist5.png" alt="**Fig 5.** Distribuição amostral das médias" width="50%" />
+<p class="caption">
+<strong>Fig 5.</strong> Distribuição amostral das médias
+</p>
+</div>
+<p><br></p>
+<pre class="r"><code>### Exemplo 2: Distribuição amostral da média - População Normal
+
+##  População
+
+# Variável = alt_ex
+# media = mi_alt = 170
+# sd = desvio_alt = 20
+
+n_5 &lt;- 5
+n_50 &lt;- 50
+n_200 &lt;- 200
+
+amostra5 = matrix(0, ncol = 1000, nrow = n_5)
+amostra50 = matrix(0, ncol = 1000, nrow = n_50)
+amostra200 = matrix(0, ncol = 1000, nrow = n_200)
+
+media5 &lt;- media50 &lt;- media200 &lt;- 0
+
+for(j in 1:1000)
+{
+  amostra5[,j] = sample(alt_ex, size = n_5, replace = T)
+  media5[j] = mean(amostra5[,j])
+  amostra50[,j] = sample(alt_ex, size = n_50, replace = T)
+  media50[j] = mean(amostra50[,j])
+  amostra200[,j] = sample(alt_ex, size = n_200, replace = T)
+  media200[j] = mean(amostra200[,j])
+}
+
+
+## Histogramas lado a lado
+
+par(mfrow = c(1,3))
+hist(media5, xlim =  c(min(media5), max(media5)), main = &quot;n=5&quot;, 
+     xlab = &#39;Médias das amostras&#39;, freq = F, col = rgb(1,0,0,0.3), ylim = c(0, 0.05))
+curve(dnorm(x, mean = mi_alt, sd = desvio_alt/sqrt(n_5)), add = T, 
+      lwd = 2, col = &quot;red&quot;)
+
+hist(media50, freq  = F, col = rgb(0,0,1,0.3), ylim = c(0, 0.14),
+     main = &quot;n=50&quot;, xlab = &#39;Médias das amostras&#39;)
+curve(dnorm(x, mean = mi_alt, sd = desvio_alt/sqrt(n_50)), add = T, 
+      lwd = 2, col = &quot;blue&quot;)
+
+hist(media200, freq  = F, col = rgb(0,1,0,0.3), ylim = c(0, 0.26),
+     main = &quot;n=200&quot;, xlab = &#39;Médias das amostras&#39;)
+curve(dnorm(x, mean = mi_alt, sd = desvio_alt/sqrt(n_200)), add = T, 
+      lwd = 2, col = &quot;green&quot;)</code></pre>
+<p><img src="aulas_modulo2_files/figure-html/1.4-1.png" width="672" /></p>
+<pre class="r"><code>## Histogramas sobrepostos
+
+par(mfrow = c(1,1))
+hist(media5, xlim =  c(min(media5), max(media5)), ylim = c(0, 0.26),
+     xlab = &#39;Médias das amostras&#39;, main = &quot;&quot;, freq = F, col = rgb(1,0,0,0.3))
+curve(dnorm(x, mean = mi_alt, sd = desvio_alt/sqrt(n_5)), add = T,
+      lwd = 2, col = &quot;red&quot;)
+
+hist(media50, freq  = F, add = T, col = rgb(0,0,1,0.3))
+curve(dnorm(x, mean = mi_alt, sd = desvio_alt/sqrt(n_50)), add = T, 
+      lwd = 2, col = &quot;blue&quot;)
+
+hist(media200, freq  = F, add = T, col = rgb(0,1,0,0.3))
+curve(dnorm(x, mean = mi_alt, sd = desvio_alt/sqrt(n_200)), add = T, 
+      lwd = 2, col = &quot;green&quot;)
+
+# legenda
+
+legend(&quot;topright&quot;, legend=c(&quot;n = 5&quot;,&quot;n = 50&quot;, &quot;n = 200&quot;), 
+       col=c(rgb(1,0,0,0.3), rgb(0,0,1,0.3), rgb(0,1,0,0.3)), pt.cex=2, pch=15)</code></pre>
+<p><img src="aulas_modulo2_files/figure-html/1.4-2.png" width="672" /></p>
+<p><br></p>
+<ul>
+<li><strong>Distribuição amostral da média: População Normal</strong></li>
+</ul>
+<div class="figure" style="text-align: center">
+<img src="dist_med_norm.png" alt="**Fig 6.** Distribuição amostral das médias - População Normal" width="50%" />
+<p class="caption">
+<strong>Fig 6.</strong> Distribuição amostral das médias - População Normal
+</p>
+</div>
+<p><br></p>
+<pre class="r"><code>### Exemplo 3: Distribuição amostral da média - População não Normal
+
+rm(list = ls())
+n_pop &lt;- 10000
+lamb &lt;- 5
+
+n_5 &lt;- 5
+n_50 &lt;- 50
+n_200 &lt;- 200
+
+set.seed(12345)
+x_pois &lt;- rpois(n = n_pop, lambda = lamb)
+med_pois &lt;- mean(x_pois)
+sd_pois &lt;- sd(x_pois)
+
+amostra5 = matrix(0, ncol = 1000, nrow = n_5)
+amostra50 = matrix(0, ncol = 1000, nrow = n_50)
+amostra200 = matrix(0, ncol = 1000, nrow = n_200)
+
+media5 &lt;- media50 &lt;- media200 &lt;- 0
+
+for(j in 1:1000)
+{
+  amostra5[,j] = sample(x_pois, size = n_5, replace = T)
+  media5[j] = mean(amostra5[,j])
+  amostra50[,j] = sample(x_pois, size = n_50, replace = T)
+  media50[j] = mean(amostra50[,j])
+  amostra200[,j] = sample(x_pois, size = n_200, replace = T)
+  media200[j] = mean(amostra200[,j])
+}
+
+
+## Histogramas lado a lado
+
+par(mfrow = c(1,3))
+hist(media5, xlim =  c(min(media5), max(media5)), ylim = c(0, 0.5), 
+     xlab = &#39;Médias das amostras&#39;, main = &quot;n=5&quot;, freq  = F, col = rgb(1,0,0,0.3))
+curve(dnorm(x, mean = med_pois, sd = sd_pois/sqrt(n_5)), add = T, 
+      lwd = 2, col = &quot;red&quot;)
+
+hist(media50, freq  = F, xlim = c(min(media50), max(media50)), 
+     xlab = &#39;Médias das amostras&#39;, main = &quot;n=50&quot;, ylim = c(0, 1.3), col = rgb(0,0,1,0.3))
+curve(dnorm(x, mean = med_pois, sd = sd_pois/sqrt(n_50)), add = T,
+      lwd = 2, col = &quot;blue&quot;)
+
+hist(media200, freq  = F, xlim = c(min(media200), max(media200)), 
+     xlab = &#39;Médias das amostras&#39;, main = &quot;n=200&quot;, ylim = c(0, 2.5), col = rgb(0,1,0,0.3))
+curve(dnorm(x, mean = med_pois, sd = sd_pois/sqrt(n_200)), add = T, 
+      lwd = 2, col = &quot;green&quot;)</code></pre>
+<p><img src="aulas_modulo2_files/figure-html/1.5-1.png" width="672" /></p>
+<pre class="r"><code>## Histogramas sobrepostos
+
+par(mfrow = c(1,1))
+hist(media5, xlim =  c(min(media5), max(media5)), ylim = c(0,2.5), 
+     xlab = &#39;Médias das amostras&#39;, main = &quot;&quot;, freq  = F, col = rgb(1,0,0,0.3))
+curve(dnorm(x, mean = med_pois, sd = sd_pois/sqrt(n_5)), add = T, 
+      lwd = 2, col = &quot;red&quot;)
+hist(media50, freq  = F, add = T, col = rgb(0,0,1,0.3))
+curve(dnorm(x, mean = med_pois, sd = sd_pois/sqrt(n_50)), add = T, 
+      lwd = 2, col = &quot;blue&quot;)
+hist(media200, freq  = F, add = T, col = rgb(0,1,0,0.3))
+curve(dnorm(x, mean = med_pois, sd = sd_pois/sqrt(n_200)), add = T, 
+      lwd = 2, col = &quot;green&quot;)
+
+# legenda
+legend(&quot;topright&quot;, legend=c(&quot;n = 50&quot;,&quot;n = 100&quot;, &quot;n = 200&quot;), col=c(rgb(1,0,0,0.3), rgb(0,0,1,0.3), rgb(0,1,0,0.3)), pt.cex=2, pch=15 )</code></pre>
+<p><img src="aulas_modulo2_files/figure-html/1.5-2.png" width="672" /></p>
+<p><br></p>
+<ul>
+<li><strong>Distribuição amostral da média: População não Normal</strong></li>
+</ul>
+<div class="figure" style="text-align: center">
+<img src="dist_med_nnorm.png" alt="**Fig 7.** Distribuição amostral das médias - População não Normal" width="50%" />
+<p class="caption">
+<strong>Fig 7.</strong> Distribuição amostral das médias - População não Normal
+</p>
+</div>
+<p><br></p>
+<pre class="r"><code>### Exemplo 4: Distribuição amostral da proporção
+
+rm(list = ls())
+n_pop &lt;- 10000
+n_5 &lt;- 5
+n_50 &lt;- 50
+n_200 &lt;- 200
+
+set.seed(12345)
+x_bern = rbinom(n_pop, 1, 0.3) # p = 0.3
+med_bern &lt;- mean(x_bern)
+sd_bern &lt;- sd(x_bern)
+
+amostra5 = matrix(0, ncol = 1000, nrow = n_5)
+amostra50 = matrix(0, ncol = 1000, nrow = n_50)
+amostra200 = matrix(0, ncol = 1000, nrow = n_200)
+
+pchap5 &lt;- pchap50 &lt;- pchap200 &lt;- 0
+
+for(j in 1:1000)
+{
+  amostra5[,j] = sample(x_bern, size = n_5, replace = T)
+  pchap5[j] = mean(amostra5[,j])
+  amostra50[,j] = sample(x_bern, size = n_50, replace = T)
+  pchap50[j] = mean(amostra50[,j])
+  amostra200[,j] = sample(x_bern, size = n_200, replace = T)
+  pchap200[j] = mean(amostra200[,j])
+}
+
+
+## Histogramas lado a lado
+
+par(mfrow = c(1,3))
+hist(pchap5, xlim =  c(min(pchap5), max(pchap5)), ylim = c(0, 4), 
+     xlab = &#39;Proporções das amostras&#39;, main = &quot;n=5&quot;, freq  = F, col = rgb(1,0,0,0.3))
+curve(dnorm(x, mean = med_bern, sd = sd_bern/sqrt(n_5)), add = T, 
+      lwd = 2, col = &quot;red&quot;)
+
+hist(pchap50, freq  = F, xlim = c(min(pchap50), max(pchap50)), 
+     xlab = &#39;Proporções das amostras&#39;, main = &quot;n=50&quot;, ylim = c(0, 7.5), col = rgb(0,0,1,0.3))
+curve(dnorm(x, mean = med_bern, sd = sd_bern/sqrt(n_50)), add = T,
+      lwd = 2, col = &quot;blue&quot;)
+
+hist(pchap200, freq  = F, xlim = c(min(pchap200), max(pchap200)), 
+     xlab = &#39;Proporções das amostras&#39;, main = &quot;n=200&quot;, ylim = c(0, 13), col = rgb(0,1,0,0.3))
+curve(dnorm(x, mean = med_bern, sd = sd_bern/sqrt(n_200)), add = T, 
+      lwd = 2, col = &quot;green&quot;)</code></pre>
+<p><img src="aulas_modulo2_files/figure-html/1.6-1.png" width="672" /></p>
+<pre class="r"><code>## Histogramas sobrepostos
+
+par(mfrow = c(1,1))
+hist(pchap5, xlim =  c(min(pchap5), max(pchap5)), ylim = c(0, 13), 
+     xlab = &#39;Proporções das amostras&#39;, main = &quot;&quot;, freq  = F, col = rgb(1,0,0,0.3))
+curve(dnorm(x, mean = med_bern, sd = sd_bern/sqrt(n_5)), add = T, 
+      lwd = 2, col = &quot;red&quot;)
+hist(pchap50, freq  = F, add = T, col = rgb(0,0,1,0.3))
+curve(dnorm(x, mean = med_bern, sd = sd_bern/sqrt(n_50)), add = T, 
+      lwd = 2, col = &quot;blue&quot;)
+hist(pchap200, freq  = F, add = T, col = rgb(0,1,0,0.3))
+curve(dnorm(x, mean = med_bern, sd = sd_bern/sqrt(n_200)), add = T, 
+      lwd = 2, col = &quot;green&quot;)
+
+# legenda
+legend(&quot;topright&quot;, legend=c(&quot;n = 50&quot;,&quot;n = 100&quot;, &quot;n = 200&quot;), col=c(rgb(1,0,0,0.3), rgb(0,0,1,0.3), rgb(0,1,0,0.3)), pt.cex=2, pch=15 )</code></pre>
+<p><img src="aulas_modulo2_files/figure-html/1.6-2.png" width="672" /></p>
+<p><br></p>
+<ul>
+<li><strong>Distribuição amostral da proporção</strong></li>
+</ul>
+<div class="figure" style="text-align: center">
+<img src="dist_prop.png" alt="**Fig 8.** Distribuição amostral das médias - População não Normal" width="50%" />
+<p class="caption">
+<strong>Fig 8.</strong> Distribuição amostral das médias - População não Normal
+</p>
+</div>
+<p><br></p>
+<p><strong>Exemplo 5 no R:</strong> Os salários de funcionários de uma empresa seguem distribuição Normal, com média 1500 e desvio padrão 250. Calcule a probabilidade de que os salários médios das amostras de tamanhos 10 estejam entre 1400 e 1600.</p>
+<p><br></p>
+<p><img src="dist_med_ex1.png" width="30%" style="display: block; margin: auto;" /></p>
+<p><br></p>
+<pre class="r"><code>### Exemplo 5: Calculando probabilidades para as médias das amostras
+
+pnorm(1600, mean = 1500, sd = 250/sqrt(10)) - pnorm(1400, mean = 1500, sd = 250/sqrt(10))</code></pre>
+<pre><code>[1] 0.7940968</code></pre>
+<pre class="r"><code>## Plotando a região
+
+mx &lt;- 1500
+sdx &lt;- 250/sqrt(10)
+x &lt;- seq(1000, 2000,length=1000)
+fx &lt;- dnorm(x, mean = mx, sd = sdx)
+
+plot(x, fx, type = &quot;n&quot;, xlab=&quot;médias das amostras&quot;, ylab=&quot;&quot;,
+     main=&quot;&quot;, axes = T)
+
+li &lt;- 1400; ls &lt;- 1600
+i &lt;- x &gt;= li &amp; x &lt;= ls
+lines(x, fx)
+polygon(c(li, x[i], ls), c(0, fx[i], 0), col=rgb(1,0,0,0.3))</code></pre>
+<p><img src="aulas_modulo2_files/figure-html/1.7-1.png" width="672" /></p>
+<p><br></p>
+<p><strong>Exemplo 6 no R:</strong> Suponha que estamos interessados em estimar a proporção de consumidores de certo produto. Considerando a seleção de uma amostra aleatória de 300 pessoas, calcule a probabilidade de que a proporção amostral de consumidores seja de, no mínimo, 35%, sabendo que a verdadeira proporção é de 40%.</p>
+<p><br></p>
+<p><img src="dist_med_ex2.png" width="30%" style="display: block; margin: auto;" /></p>
+<p><br></p>
+<pre class="r"><code>### Exemplo 6: Calculando probabilidades para as proporções das amostras
+
+1 - pnorm(0.35, mean = 0.4, sd = sqrt(0.4*(1-0.4)/300)) </code></pre>
+<pre><code>[1] 0.9614501</code></pre>
+<pre class="r"><code># ou
+
+pnorm(0.35, mean = 0.4, sd = sqrt(0.4*(1-0.4)/300), lower.tail = F) </code></pre>
+<pre><code>[1] 0.9614501</code></pre>
+<pre class="r"><code>## Plotando a região
+
+mp &lt;- 0.4
+sdp &lt;- sqrt(0.4*(1-0.4)/300)
+p &lt;- seq(0.2, 0.6,length=1000)
+fp &lt;- dnorm(p, mean = mp, sd = sdp)
+
+plot(p, fp, type = &quot;n&quot;, xlab=&quot;proporções das amostras&quot;, ylab=&quot;&quot;,
+     main=&quot;Normal Distribution&quot;, axes = T)
+
+li &lt;- 0.35; ls &lt;- 0.8
+i &lt;- p &gt;= li &amp; p &lt;= ls
+lines(p, fp)
+polygon(c(li, p[i], ls), c(0, fp[i], 0), col=rgb(0,1,0,0.3))</code></pre>
+<p><img src="aulas_modulo2_files/figure-html/1.8-1.png" width="672" /></p>
+<p><br></p>
+<p><strong>Exercícios no R:</strong><br />
+1 - Admite-se que as alturas dos estudantes de uma universidade seguem distribuição Normal com média 172.72 cm e desvio padrão 7.62 cm. Calcule a probabilidade de que a altura média amostral se encontre entre 169.67 cm e 173.48 cm, considerando amostras aleatórias de 25 estudantes. <strong>R: 0.6683</strong>.<br />
+2 - Suponha que 60% da população de uma certa cidade seja a favor da criação de um fundo público para fins de criação de áreas de lazer. Se 150 pessoas forem selecionadas aleatoriamente e entrevistadas, qual a probabilidade de que a proporção amostral de pessoas favoráveis seja menor que 0.52? <strong>R:0.0227</strong></p>
+<!-- **Exemplo - Dados da Web (web_data.csv:)** -->
+<!-- Uma empresa que vende um serviço deseja testar qual das duas layout na Web faz um trabalho de venda melhor. Uma possível variável para a empresa é o número de cliques nas informações detalhadas página de destino. Outra possibilidade melhor é quanto tempo as pessoas passam na página. É razoável que uma apresentação da web que prenda a atenção das pessoas por mais tempo levará a mais vendas. Portanto, a métrica usada é o tempo da sessão, comparando a página A à página B. -->
+<!-- - Lendo os dados: -->
+<!-- ```{R kkkkk} -->
+<!-- web_data <- read.csv("https://felipebarletta.github.io/DAEST/web_data.csv", header = T, sep = ',') -->
+<!-- attach(web_data) ## facilita o chamamento das variáveis -->
+<!-- ``` -->
+<!-- - Renomeando as variáveis: -->
+<!-- ```{R k1} -->
+<!-- plot(Time~Page) -->
+<!-- # ou -->
+<!-- page_A <- subset(web_data, subset = Page=='A') -->
+<!-- page_B <- subset(web_data, subset = Page=='B') -->
+<!-- par(mfrow = c(1,2)) -->
+<!-- boxplot(page_A$Time) -->
+<!-- boxplot(page_B$Time) -->
+<!-- # ou -->
+<!-- library(ggplot2) -->
+<!-- ggplot(web_data, aes(x=Page, y=Time) )+  -->
+<!--     geom_boxplot() -->
+<!-- ``` -->
+<!-- - Medidas -->
+<!-- ```{R k2} -->
+<!-- mean_PagA <- mean(page_A)  -->
+<!-- mean_PagB <- mean(page_B)  -->
+<!-- tapply(Time, Page, summary) -->
+<!-- ``` -->
+<!-- # Distribuições Amostrais -->
+<!-- ```{R k3} -->
+<!-- ``` -->
+<!-- ## Distribuição amostral da média -->
+<!-- ```{R k4} -->
+<!-- ``` -->
+<!-- ## Distribuição amostral da proporção -->
+<!-- # Intervalos de Confiança (06/10/2020) -->
+<!-- # Testes de Hipóteses (20/10/2020) -->
+</div>
 
 <center>
   <hr width="100%" size="3px">
@@ -476,7 +1043,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeCodeFolding("show" === "show");
+  window.initializeCodeFolding("hide" === "show");
 });
 </script>
 
