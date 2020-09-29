@@ -1,9 +1,13 @@
 ---
-title: "Comandos das aulas do curso"
+title: "Comandos do `R` utilizados nas aulas"
 output:
   html_document:
-    toc: false
+    toc: true
     code_folding: show
+    toc_depth: 2
+    toc_float:
+      collapsed: no
+      smooth_scroll: no
 ---
 
 ```{r setup, include=FALSE, cache=FALSE}
@@ -15,102 +19,56 @@ knitr::opts_chunk$set(echo = TRUE,
 ```
 
 
-```{css, echo=FALSE}
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
-.toc-content {
-padding-left: 0;
-padding-right: 0;
-margin-left: -95px;
-}
-table.dataTable thead th {
-text-align: left;
-}
-table.dataTable tbody th, table.dataTable tbody td {
-padding: 8px 18px;
-}
-table.dataTable thead th, table.dataTable thead td {
-padding: 8px 18px 8px 18px;
-border-bottom: 1px solid #111;
-}
-body {
-font-family: Roboto;
-font-size: 14px;
-line-height: 1.529;
-}
-h1.title {
-padding-top: 30px;
-top: 34px;
-left: 390px;
-width: 832px;
-height: 77px;
-text-align: left;
-letter-spacing: 1px;
-color: #000000;
-opacity: 1;
-margin: 0;
-font-size: 30px;
-line-height: 47px;
-font-family: 'Roboto', sans-serif;
-display: inline-block;
-max-width: 100%;
-}
-h4.date {
-font-family: "Roboto Mono", Roboto, sans-serif;
-font-size: 20px;
-color: #000000;
-line-height: 26px;
-font-weight: 400;
-letter-spacing: 0;
-}
-body::before {
-content: '';
-height: 168px;
-width: 100%;
-position: absolute;
-top: 0;
-left: 0;
-background: #FFFAFA;
-z-index: -1;
-}
-
-@media only screen and (min-width: 1600px) {
-#header {
-background: url(http://www.utfpr.edu.br/icones/cabecalho/logo-utfpr/@@images/image.png) #FFFAFA right center no-repeat padding-box;
-background-size: 210px;
-}
-```
 <br>
 <br>
 <br>
 
-Abaixo estão os comandos do `R` utilizados durante as aulas.
+# **Aula 01** - $01/09/2020$:
 
-
-## Módulo 1 - Probabilidade
-
-- **Aula 01** - $01/09/2020$:
-
-## Primiro exemplo
+## Introdução ao `R`
 
 ```{R}
+## Criando um vetor de números
 x <- c(1,2,3,4,5,6,7,80)
 x
+
+## verificando a classe do objeto
 class(x)
+
+## Selecionando o valor do vetor na posição 8
 x[8]
-X <- matrix(data= c(1,2,3,4),ncol = 2, byrow=TRUE)
+
+
+## Criando uma matriz
+X <- matrix(data= c(1,2,3,4),
+            ncol = 2, 
+            byrow=TRUE)
 X
-Y <- matrix(c(2,4,5,8,6,8),ncol=2, byrow = TRUE)
+Y <- matrix(c(2,4,5,8,6,8),
+            ncol=2, 
+            byrow = TRUE)
 Y
+
+## Multiplicando as duas matrizes
 Y%*%X
+
+## Selcionando o valor da linha 1 coluna 2 da matriz Y
 Y[1,2]
 ```
-### Funções estatística básica
+
+## Funções estatística básica
+
 ```{r est_basica}
+## Criando um vetor aleatório de 100 valores de uma distribuição Normal com média 0 e variância 1
 x <- rnorm(100)
+
+## Inspecionando os primeiros valores do vetor
 head(x,n=3)
+
+## Inspecionando os últimos valores do vetor
 tail(x,n=3)
 
-#### Media = somatório x_i/n
+## Media = somatório x_i/n - Função para méria aritmética
 media <- function(x){
     soma = 0
     for(i in 1:length(x))
@@ -123,7 +81,8 @@ media(x)
 mean(x)
 ```
 
-#### Intervalo de confiança
+## Intervalo de confiança
+
 ```{r IC}
 # LI = media - Z*desvio_padrão/raiz(n)
 # LS = media + Z*desvio_padrão/raiz(n)
@@ -141,44 +100,64 @@ IC <- function(x, conf = 0.95){
 IC(x)
 ```
 
-#### Exemplo de acesso a dados
+## Exemplo de acesso a dados
+
 ```{R dados}
-### Listando arquivos
+## Listando arquivos
 dir(pattern = '.csv')
 
+## Carregando um conjunto de dados no formato csv
 dados <- read.csv("hospital.csv",
                   header = TRUE, sep ='\t')
 head(dados)
 dim(dados)
+
+## Estrutura dos dados
 str(dados)
 ```
 
-### Sumário dos dados
+## Sumário dos dados
+
 ```{r summary}
+## Aplicando a função media criada
 media(dados$idade)
+
+## Listando os nomes das variáveis
 names(dados)
+
+## Selecionando apenas as variáveis numéricas
 var_num <- dados[,c(1,3:8)]
 str(var_num)
 
+## Resumo da variável idade
 summary(dados$idade)
 
+
+## Resumo de todas variáveis numéricas
 for(i in 1:length(names(var_num))){
     print(summary(var_num[i]))
     }
 ```
 
 ## Gráficos
-```{r graph, results='hide'}
-plot(var_num$idade)
-hist(var_num$idade)
 
+```{r graph, results='hide'}
+## Gráfico de dispersão
+plot(var_num$idade)
+
+## Histograma
+hist(var_num$idade)
+```
+
+```{R graphAll, results='hide'}
+## Histograma de todas as variáveis numéricas
 par(mfrow=c(2,4))
 lapply(var_num,hist)
 
 ```
 
-#### ggplot2
-### lattice
+## Gráfico - ggplot2
+
 ```{R,ggplot}
 library(ggplot2)
 
@@ -189,27 +168,40 @@ ggplot(df, aes(id,value)) +
     facet_grid(serie ~ .)
 ```
 
-##### Probabilidade
-#### Exemplo de espaço amostra
+## Probabilidade
+
+### Exemplo de espaço amostra
+
 ```{R omega1}
 ## Lançamento de dois dados
+
+### QUantidade de possibilidades
 6^2
+
+## Número de faces
 amostral <- 1:6
 amostral
 
+## Espaço amostral
 n <- 3000
-sorteio <- NULL
+sorteio1 <- NULL
 for(i in 1:n)
-    sorteio <- c(sorteio,paste(sample(x = amostral,
-                                      replace = TRUE,
-                                size = 2),collapse =""))
+    sorteio1 <- c(sorteio1,
+                  paste(sample(x = amostral,
+                               replace = TRUE,
+                               size = 2),
+                        collapse =""))
 
-length(unique(sorteio))
-sorteio <- sort(unique(sorteio))
-sorteio
+length(unique(sorteio1))
+sorteio1 <- sort(unique(sorteio1))
+sorteio1
 
 ## Lançamento de três dados
+
+### QUantidade de possibilidades
 6^3
+
+## Espaço amostral
 n <- 3000
 sorteio2 <- NULL
 for(i in 1:n)
@@ -223,29 +215,37 @@ sorteio2
 ```
 
 ### Exemplo definição clássica de probab.
+
 ```{R defClass}
-### E1= (1,1)
-library(prob)
-
-
-#a <- urnsamples(amostral,
-#           size = 2,
-#           replace = TRUE)
-
+### E1= (1,1) - Calcular probabilidade dos dados terem faces iguais
+amostral <- 1:6
 amostral
-sorteio2
-dado1 <- substr(sorteio,1,1)
-dado2 <- substr(sorteio,2,2)
-iguais <- ifelse(dado1 == dado2, sorteio,"excluir")
+
+## Selcionando a primeira face do dado
+dado1 <- substr(sorteio1,1,1)
+## Selcionando a segunda face do dado
+dado2 <- substr(sorteio1,2,2)
+## Verificando se são iguais
+iguais <- ifelse(dado1 == dado2, sorteio1,"excluir")
 iguais
+
+## Guardando as face iguais em um objeto
 iguais <- iguais[iguais != "excluir"]
-PE1 <- length(iguais)/length(sorteio)
+
+## Aplicando a definição clássica de probabilidade
+PE1 <- length(iguais)/length(sorteio1)
 PE1
+
+## Calculando a probabilidade de pelo menos um dados ter face 1
+d_1 <- ifelse(stringr::str_detect(sorteio1,"1"),"Sim","Não")
+table(d_1)/length(sorteio1)
+
+table(d_1)
 
 ```
 
 
-- **Aula 02** - $15/09/2020$:
+# **Aula 02** - $15/09/2020$:
 
 ## União e intersecção
 
@@ -256,7 +256,7 @@ B <- 1:3
 C <- c(2,4,6)
 D <- c(2,3,5)
 
-                                        # Função União
+## Função União
 uniao <- function(a,b){
     u = a
     for(i in 1:length(b))
@@ -269,9 +269,10 @@ uniao <- function(a,b){
 uniao(A,B)
 uniao(A,C)
 
+# Função pronta do R
 union(A,C)
 
-                                        # Função para intersecção
+## Função para intersecção
 
 Inter <- function(a,b){
     inte <- NULL
@@ -284,10 +285,21 @@ Inter <- function(a,b){
 Inter(a=A, b=B)
 Inter(A,D)
 
+# Função pronta do R
 intersect(A,D)
 
+## Complementares
 amostral <- 1:6
-A
+
+# A complementar
+Ac <- amostral[-A]
+# B complementar
+Bc <- amostral[-B]
+# A união Ac
+uniao(A, Ac)
+
+# B intersecção com Bc
+Inter(B, Bc)
 ```
 
 
@@ -329,7 +341,8 @@ PA+(1-PA)
 
 ```
 
-## Probabilidade condicional
+##
+Probabilidade condicional
 ```{R AdadoB}
 library(ggplot2)
 ggplot(dados, aes(idade, fill = alta.motivo, colour = alta.motivo)) +
@@ -339,22 +352,31 @@ ggplot(dados, aes(idade, fill = alta.motivo, colour = alta.motivo)) +
 table(dados$alta.motivo)
 PO <- table(dados$alta.motivo)[2]/nrow(dados)
 PO
-### P(O | idade >= 55) = P(O inter idade >=55)/P(idade >=55)
+# Criando faixa etária
 dados$f_idade <- ifelse(dados$idade < 55,
                         "F1",
                         "F2")
 table(dados$f_idade)
+## Probabilidade idade >=55
 PF2 <- table(dados$f_idade)[2]/nrow(dados)
 PF2
 table(dados$f_idade,dados$alta.motivo)
+## P(O | idade >= 55) = P(O inter idade >=55)/P(idade >=55)
 POinterF2 <- 330/nrow(dados)
 POinterF2
 POdadoF2 <- POinterF2/PF2
 POdadoF2
+
+##P(O | "idade <= 55") = P(O inter "<=55")/P("<=55")
+PF1 <- 1-PF2
+POdadoF1 <- (101/nrow(dados))/PF1
+POdadoF1
+
 ```
 
 
 ## Regra do produto Independência de eventos
+
 ```{R Prod_Ind}
 table(dados$Temp_nivel,dados$Resp_nivel)
 
@@ -370,6 +392,7 @@ PAdadoB
 ```{R UTI}
 library(dplyr)
 
+## Filtrando setores que interessam
 UTI <- dados %>%
     filter(setor %in% c('UTIG',
                         'UTIC',
@@ -378,13 +401,12 @@ UTI <- dados %>%
 UTI$setor <- droplevels(UTI$setor)
 table(UTI$setor)
 
-#PA1 = P(O inter UTIG)  = P(O | UTIG)*P(UTIG)
-POuti <- table(UTI$alta.motivo)[2]/nrow(UTI)
-PUTIG <- table(UTI$setor)[2]/nrow(UTI)
-PUTIG*POuti
-table(UTI$alta.motivo,UTI$setor)
-171/nrow(UTI)
+### P(O e UTIG) ou P(O e UTIP) ou P(O e UTIC)
+### P(O e UTIG) + P(O e UTIP) + P(O e UTIC)
+### P(O |UTIG)*P(UTIG) + P(O | UTIP)*P(UTIP) + P(O | UTIC)*PUTIC)
+#### TMA probabilidade Total
 
+#PA1 = P(O inter UTIG)  = P(O | UTIG)*P(UTIG)
 
 PA1 <- table(UTI$setor,UTI$alta.motivo)[5]/nrow(UTI)
 PA2 <- table(UTI$setor,UTI$alta.motivo)[6]/nrow(UTI)
@@ -392,37 +414,33 @@ PA3 <- table(UTI$setor,UTI$alta.motivo)[4]/nrow(UTI)
 PA1
 PA2
 PA3
+
+PO <- PA1 +  PA2 + PA3
+PO
+
+
+PUTIG <- table(UTI$setor)[2]/nrow(UTI)
+POdadoUTIG <- PA1/PUTIG
+### P(O | UTIG)*P(UTIG)
+POdadoUTIG
+
+
+
 # PA1 U PA2 U PA3
 # TMA DA PROBABILIDADE TOTAL
 PoUTI  <- PA1+PA2+PA3
 PoUTI
-                                        #P(O | UTIG) = PA1/PUTIG
+
+#P(O | UTIG) = PA1/PUTIG
 PA1 / (174/nrow(UTI))
 
-```
-
-```{R condicional}
-# P(UTIP inter O) = P (O | UTIP) * P(O)
+### P(O | UTIP)*P(UTIP)
 PUTIP <- length(UTI$setor[UTI$setor == 'UTIP'])/nrow(UTI)
-PUTIP
-PUTIPdadoO <- PA2/PUTIP
-PUTIPdadoO
-
-# P(UTIC inter O) = P (O | UTIC) * P(O)
-PUTIC <- length(UTI$setor[UTI$setor == 'UTIC'])/nrow(UTI)
-PUTIC
-PUTICdadoO <- PA3/PUTIC
-PUTICdadoO
-
-
-# P(UTIG inter O) = P (O | UTIG) * P(O)
-PUTIG <- length(UTI$setor[UTI$setor == 'UTIG'])/nrow(UTI)
-PUTIG
-PUTIGdadoO <- PA1/PUTIG
-PUTIGdadoO
-
-
+POdadoUTIP <- PA2/PUTIP
+POdadoUTIP
 ```
+
+
 
 
 ## TMA BAYES
@@ -473,5 +491,440 @@ plot(df$X,
      xlab = 'V.A.',
      ylab = 'F(x)= P[X<=x]',
      type = 's')
+
+```
+
+# **Aula 03** - $22/09/2020$:
+
+# Modelo uniforme discreto
+
+```{R unidsicreto}
+# X: face do dado
+amostral <- 1:6
+sorteio <- sample(amostral,100000,replace=TRUE)
+prop.table(table(sorteio))
+
+## P[X=2]
+1/6
+
+```
+
+## Gráfico modelo uniforme (f.p.)
+
+```{R, grafico_uni}
+x <-1:6
+px <- dunif(x,
+            max=6)
+plot(x,
+     px,
+     xlab='V.A.',
+     ylab='P[X=x]',
+     ylim = c(0,1),
+     type = 'h')
+
+Fx <- punif(x,
+            max=6)
+plot(x,
+     Fx,
+     xlab='V.A.',
+     ylab='P[X<=x]',
+     ylim = c(0,1),
+     type = 's')
+
+```
+
+
+## Modelo Bernoulli
+
+```{R ber}
+dados <- read.csv('hospital.csv',
+                  header = TRUE,
+                  sep = '\t')
+
+table(dados$alta.motivo)
+
+# 1 - Obito
+# 0 - Melhorado
+
+ber <- function(x,p){
+    px = p^x*(1-p)^(1-x)
+    return(px)
+    }
+prop.table(table(dados$alta.motivo))
+P  <- 0.08578284
+# P[X = 1]
+ber(x = 1, p = P)
+# P[X = 0]
+ber(x = 0, p = P)
+```
+
+## Gráfico modelo Bernoulli
+```{R, graph_ber}
+
+plot(0:1,
+     c(ber(0,P),ber(1,P)),
+     type = 'h',
+     xlab = 'V.A.',
+     ylab = 'P[X=x]',
+     axes = FALSE)
+axis(1,c(0,1))
+axis(2,seq(0,1,.1))
+box()
+
+```
+
+
+## Modelo Binomial
+
+```{R binom}
+P
+# P[X = 1]
+dbinom(x = 1,
+       size = 10,
+       prob = P)
+```
+
+## Gráfico binomial f.p.
+```{R graph_binom}
+x <-0:150
+px <- dbinom(0:150,
+             size = 1000,
+             prob = P)
+
+plot(x,
+     px,
+     type = 'h',
+     ylim = c(0,max(px))
+     )
+
+
+Fx <- pbinom(0:150,
+             size = 1000,
+             prob = P)
+plot(x,
+     Fx,
+     type = 's',
+     ylim = c(0,1),
+     ylab = 'F(x) = P[X<=x]',
+     xlab = 'V.A.'
+     )
+
+
+```
+
+## Modelo geométrico
+```{R geom}
+#P[X = 10]
+dgeom(10,
+      prob = P)
+
+#P[X = 0]
+dgeom(0,
+      prob = P)
+
+#P[X = 1]
+dgeom(1,
+      prob = P)
+
+#P[X<=1]
+pgeom(1,prob = P)
+
+```
+
+## Gráfico modelo geométrico
+```{R graph_geom}
+x <-0:100
+px <-dgeom(x,
+           prob = P)
+
+plot(x,
+     px,
+     xlab ='V.A.',
+     ylab = 'P[X=x]',
+     type = 'h')
+
+                                        # Fx
+Fx <- pgeom(x,
+            prob = P)
+plot(x,
+     Fx,
+     xlab ='V.A.',
+     ylab = 'P[X<=x]',
+     type = 's')
+```
+
+
+## Modelo Poison
+```{R poison}
+table(dados$alta.motivo)
+lambda <- 429/180
+lambda
+
+### Prob de occorrer 2 óbitos em 1 um dia - P[X = 2]
+dpois(x=2,
+      lambda = lambda)
+## P[x <= 5]
+ppois(5,lambda)
+
+```
+
+## Gráficos - modelo Poison
+```{R graph_pos}
+x <-0:15
+px <-dpois(x,lambda)
+
+plot(x,
+     px,
+     xlab = 'V.A.',
+     ylab = 'P[X=x]',
+     type = 'h',
+     axes = FALSE)
+axis(1,seq(0,15,1))
+axis(2,seq(0,1,0.01),cex.axis = .5)
+box()
+
+## Fx
+
+Fx <- ppois(x,lambda)
+
+plot(x,
+     Fx,
+     xlab = 'V.A.',
+     ylab = 'P[X<=x]',
+     type = 's',
+     axes = FALSE)
+axis(1,seq(0,15,1))
+axis(2,seq(0,1,0.01),cex.axis = .5)
+box()
+
+## P[X <= 3]
+ppois(3,lambda)
+```
+
+
+## VA contínua
+
+```{R cont}
+fx <- function(x){
+    fx = ifelse(x >2 & x<6,
+                0.025*x+0.15,0)
+    return(fx)
+}
+integrate(fx,
+          lower = 2,
+          upper = 6)$value
+
+
+curve(fx,
+      2,6)
+
+
+## P[2 < X < 3 ]
+integrate(fx,
+          2,
+          3)$value
+# P[X<=5 ]
+integrate(fx,
+          -Inf,
+          5)$value
+
+## Gráfico Fx
+curve(fx,
+      2,6,
+      xlim = c(0,8))
+x <- seq(2,5,0.01)
+lines(x,
+      fx(x),
+      type = 'h',
+      col = 'grey')
+```
+
+## Exemplo 2
+
+```{R ex2}
+fx <- function(x){
+    fx = ifelse(x < 0 ,
+                0,
+                2*exp(-2*x))
+    return(fx)
+    }
+
+integrate(fx,0,Inf)$value
+
+##P[X > 1]
+integrate(fx,
+          1,Inf)$value
+
+# P[0.2 < X < 0.8]
+integrate(fx,
+          0.2,0.8)$value
+```
+
+## Gráfico de f(x)
+
+```{R graph_ex2}
+plot(fx,
+     0,5,
+     xlab = 'V.A',
+     ylab = 'f(x)',
+     col = 'darkblue')
+abline(v = seq(0,5,1),
+       h = seq(0,2,1),
+       lty = 2,
+       col = 'gray70')
+polygon(x=c(1,seq(1,5,l=20)),
+        y=c(0,fx(seq(1,5,l=20))),
+        density=65)
+polygon(x=c(0.2,seq(0.2,0.8,l=20),0.8),
+        y=c(0,fx(seq(0.2,0.8,l=20)),0),
+        density=65)
+text(c(1.3,0.5),
+     c(0.08,0.08),
+     c(expression(0.135,0.468)),
+     col=c('darkred','darkred'))
+
+```
+
+## Modelo uniforme contínuo
+```{R, unif_cont}
+x <- runif(5,0,1)
+### Gráficos
+par(mfrow=c(1,2))
+curve(dunif(x, 2, 5),
+      xlim = c(0, 7),
+      ylab = 'f(x)')
+
+curve(punif(x, 2, 5),
+      xlim = c(0, 7),
+      ylab = 'F(x)')
+
+
+```
+
+## Modelo exponencial
+
+```{R exp}
+# Calcular a probabilidade P[X ≥ 400).
+1-pexp(400,
+       rate = 1/500)
+ # i. Use a função básica do `R`
+1-pexp(400,rate=1/500)
+
+ #ii. Crie uma função no `R` e compare os resultados
+fx <- function(x, lambda = 500) {
+    fx <- ifelse(x < 0, 0,
+    (1/lambda) * exp(-x/lambda))
+    return(fx)
+}
+integrate(fx, 400, Inf)$value
+
+## Gráficos
+x <- seq(0,
+         3000,
+         l = 200)
+fx <- dexp(x,
+           rate = 1/500)
+
+par(mfrow=c(1,2))
+plot(x,
+     fx,
+     type = "l",
+     axes=F,
+     col='tomato',
+     xlab='Valores de x',
+     ylab=substitute(paste(italic('f(x)'))),cex.lab=.7)
+ax <- c(400, 400, x[x > 400], 3000, 3000)
+ay <- c(0, dexp(c(400, x[x > 400], 3000), 1/500), 0)
+polygon(ax, ay,col='tomato',density=50)
+title('P[X > 400]',cex.main=.7)
+axis(1, at=seq(0,3000,100), cex.axis=0.5)
+axis(2, at=seq(0,1,.0005),cex.axis=0.5)
+box()
+
+
+
+Fx <- pexp(x, rate = 1/500)
+plot(x, Fx, type = "l",axes=F,col='tomato',xlab='Valores de x',
+     ylab=substitute(paste(italic('f(x)'))),cex.lab=.7)
+title('Gráfico Função de Distribuição',cex.main=.7)
+axis(1, at=seq(0,3000,100), cex.axis=0.5)
+axis(2, at=seq(0,1,.05),cex.axis=0.5)
+box()
+
+```
+
+## Modelo gaussiano ou normal
+
+```{R normal}
+x <- seq(10,90,0.1)
+fx <- dnorm(x,
+            mean = 50,
+            sd = 10
+            )
+plot(x,
+     fx,
+     xlab = 'V.A',
+     ylab = 'f(x)',
+     type = 'l')
+segments(x0 = 50, y0=0,
+         x1 = 50 , y1 = dnorm(mean(x),mean = 50, sd = 10))
+
+```
+
+## Distribuição normal padrão
+
+```{R, Znorm}
+# Z = X - media(x)/sd(x)
+Z <-(x-mean(x))/sd(x)
+summary(Z)
+sd(Z)
+
+fz <- dnorm(Z, mean = 0, sd = 1)
+plot(Z,
+     fz,
+     type = "l",
+     xlab = "Z", ylab = "f(z)")
+segments(x0 = 0, y0 = 0, x1 = 0, y1 = dnorm(mean(Z),0,1))
+
+```
+
+## Escrevendo a função
+```{R fz}
+fz <- function(z){
+    fz <- (1/sqrt(2*pi))*exp(-z^2/2)
+    return(fz)
+}
+
+## P[X <=30]
+pnorm(q = 30,
+      mean = 50,
+      sd = 10)
+pnorm((30-50)/10,
+      mean = 0,
+      sd = 1)
+
+
+integrate(fz,
+          -Inf,
+          (30-50)/10)$value
+
+pnorm(3)
+integrate(fz,
+          -1,1)$value
+
+par(mfrow=c(1,2))
+## Gráfico da função densidade de probabilidade
+z <- seq(-3, 3, 0.01)
+fz <-dnorm(z,0,1)
+plot(z,fz, type='l',xlab='Valores de x',
+     ylab=substitute(paste(italic('f(x)'))),cex.lab=.7,col='tomato')
+title('Gráfico Função de Densidade de Probabilidade',cex.main=.7)
+
+## Gráfico da função de distribuição
+Fx<-pnorm(z,0,1)
+plot(z, Fx, type = "l",
+     lwd=2, xlab='Valores de x',
+     ylab=substitute(paste(italic('F(x)'))),cex.lab=.7,col='tomato')
+title('Gráfico Função de Distribuição',cex.main=.7)
 
 ```
