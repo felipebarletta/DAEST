@@ -308,7 +308,7 @@ $(document).ready(function () {
       <a href="web_data.csv">web_data.csv</a>
     </li>
     <li>
-      <a href="web_data.html">web_data.html</a>
+      <a href="income800.csv">income800.csv</a>
     </li>
     <li>
       <a href="hospital.csv">hospital.csv</a>
@@ -967,42 +967,158 @@ polygon(c(li, p[i], ls), c(0, fp[i], 0), col=rgb(0,1,0,0.3))</code></pre>
 <p><strong>Exercícios no R:</strong><br />
 1 - Admite-se que as alturas dos estudantes de uma universidade seguem distribuição Normal com média 172.72 cm e desvio padrão 7.62 cm. Calcule a probabilidade de que a altura média amostral se encontre entre 169.67 cm e 173.48 cm, considerando amostras aleatórias de 25 estudantes. <strong>R: 0.6683</strong>.<br />
 2 - Suponha que 60% da população de uma certa cidade seja a favor da criação de um fundo público para fins de criação de áreas de lazer. Se 150 pessoas forem selecionadas aleatoriamente e entrevistadas, qual a probabilidade de que a proporção amostral de pessoas favoráveis seja menor que 0.52? <strong>R:0.0227</strong></p>
-<!-- **Exemplo - Dados da Web (web_data.csv:)** -->
-<!-- Uma empresa que vende um serviço deseja testar qual das duas layout na Web faz um trabalho de venda melhor. Uma possível variável para a empresa é o número de cliques nas informações detalhadas página de destino. Outra possibilidade melhor é quanto tempo as pessoas passam na página. É razoável que uma apresentação da web que prenda a atenção das pessoas por mais tempo levará a mais vendas. Portanto, a métrica usada é o tempo da sessão, comparando a página A à página B. -->
-<!-- - Lendo os dados: -->
-<!-- ```{R kkkkk} -->
-<!-- web_data <- read.csv("https://felipebarletta.github.io/DAEST/web_data.csv", header = T, sep = ',') -->
-<!-- attach(web_data) ## facilita o chamamento das variáveis -->
-<!-- ``` -->
-<!-- - Renomeando as variáveis: -->
-<!-- ```{R k1} -->
-<!-- plot(Time~Page) -->
-<!-- # ou -->
-<!-- page_A <- subset(web_data, subset = Page=='A') -->
-<!-- page_B <- subset(web_data, subset = Page=='B') -->
-<!-- par(mfrow = c(1,2)) -->
-<!-- boxplot(page_A$Time) -->
-<!-- boxplot(page_B$Time) -->
-<!-- # ou -->
-<!-- library(ggplot2) -->
-<!-- ggplot(web_data, aes(x=Page, y=Time) )+  -->
-<!--     geom_boxplot() -->
-<!-- ``` -->
-<!-- - Medidas -->
-<!-- ```{R k2} -->
-<!-- mean_PagA <- mean(page_A)  -->
-<!-- mean_PagB <- mean(page_B)  -->
-<!-- tapply(Time, Page, summary) -->
-<!-- ``` -->
-<!-- # Distribuições Amostrais -->
-<!-- ```{R k3} -->
-<!-- ``` -->
-<!-- ## Distribuição amostral da média -->
-<!-- ```{R k4} -->
-<!-- ``` -->
-<!-- ## Distribuição amostral da proporção -->
-<!-- # Intervalos de Confiança (06/10/2020) -->
-<!-- # Testes de Hipóteses (20/10/2020) -->
+<p><br> <br></p>
+</div>
+<div id="estimação-por-intervalo-06102020" class="section level1">
+<h1><span class="header-section-number">2</span> Estimação por intervalo (06/10/2020)</h1>
+<p><br> <br></p>
+<p><strong>Tipos de estimação:</strong> - Estimação pontual - Estimação por intervalo</p>
+<p><br></p>
+<p><img src="aula21.png" width="10%" style="display: block; margin: auto;" /></p>
+<p><br></p>
+<p><strong>Exemplo 7 no R:</strong><br />
+1- Uma empresa deseja estudar seus layouts na Web. Assim, coletaram quanto tempo as pessoas passam em cada uma das página A ou B. Construir um intervalo para o tempo médio de permanencia na página A, com 95% e 99% de confiança, sabendo que os tempos médios de permanência na página A seguem distribuição Normal com desvio-padrão 1.<br />
+2 - No item anterior, qual o tamanho de amostra necessário para se obter um erro de 0.17 com 99% de confiança?</p>
+<p><br></p>
+<pre class="r"><code>### Exemplo 7 no R: web_data.csv - variância conhecida
+
+## Lendo os dados:
+
+rm(list = ls())
+web_data &lt;- read.csv(&quot;https://felipebarletta.github.io/DAEST/web_data.csv&quot;, header = T, sep = &#39;,&#39;)
+attach(web_data) ## facilita o chamamento das variáveis
+
+## Renomeando as variáveis:
+
+plot(time~page)</code></pre>
+<p><img src="aulas_modulo2_files/figure-html/ex7-1.png" width="672" /></p>
+<pre class="r"><code>page_A &lt;- subset(web_data, subset = page==&#39;A&#39;) 
+page_B &lt;- subset(web_data, subset = page==&#39;B&#39;) 
+
+## Medidas 
+mean_PagA &lt;- mean(page_A$time) 
+mean_PagB &lt;- mean(page_B$time)  
+tapply(time, page, summary) </code></pre>
+<pre><code>$A
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  0.290   1.375   1.800   1.883   2.520   4.410 
+
+$B
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  1.210   1.653   2.080   1.992   2.277   2.810 </code></pre>
+<pre class="r"><code>## Intervalo de confiança para o tempo médio na pag A - var conhecida
+
+sigA &lt;- 1
+medA &lt;- mean(page_A$time)
+nA &lt;- length(page_A$time)
+
+## Considerando 95% de confiança
+
+conf &lt;- 0.95
+alpha = 1 - conf
+(z &lt;- qnorm(1-alpha/2))</code></pre>
+<pre><code>[1] 1.959964</code></pre>
+<pre class="r"><code>(e &lt;- z*sigA/sqrt(nA))</code></pre>
+<pre><code>[1] 0.2771808</code></pre>
+<pre class="r"><code>(IC_mi_PageA &lt;- c(medA-e, medA+e))</code></pre>
+<pre><code>[1] 1.606219 2.160581</code></pre>
+<pre class="r"><code>## Temos 95% de confiança de que o verdadeiro tempo médio de permanência na página A está entre: 1.606219 e 2.160581.
+ 
+
+## Considerando 99% de confiança
+
+conf &lt;- 0.99
+alpha = 1 - conf
+(z &lt;- qnorm(1-alpha/2))</code></pre>
+<pre><code>[1] 2.575829</code></pre>
+<pre class="r"><code>(e &lt;- z*sigA/sqrt(nA))</code></pre>
+<pre><code>[1] 0.3642773</code></pre>
+<pre class="r"><code>(IC_mi_PageA &lt;- c(medA-e, medA+e))</code></pre>
+<pre><code>[1] 1.519123 2.247677</code></pre>
+<pre class="r"><code>## Temos 99% de confiança de que o verdadeiro tempo médio de permanência na página A está entre: 1.519123 e 2.247677.
+
+## Tamanho amostral
+
+e &lt;- 0.17; sigA &lt;- 1; alpha &lt;- 0.01
+round(n &lt;- (qnorm(1-alpha/2)*sigA/e)^2)</code></pre>
+<pre><code>[1] 230</code></pre>
+<p><br> <br></p>
+<pre class="r"><code>### Exemplos 8 no R: loans_income.csv - variância desconhecida
+
+## Lendo os dados:
+
+rm(list = ls())
+income_data &lt;- read.csv(&quot;https://felipebarletta.github.io/DAEST/income800.csv&quot;, header = T, sep = &#39;,&#39;)
+attach(income_data) ## facilita o chamamento das variáveis
+
+## observação, os dados não tem distribuição Normal, mas pelo TLC a aproximação para as médias pode ser usada
+
+hist(x)</code></pre>
+<p><img src="aulas_modulo2_files/figure-html/ex8-1.png" width="672" /></p>
+<pre class="r"><code>summary(x)</code></pre>
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  10000   45000   63900   68204   85000  196000 </code></pre>
+<pre class="r"><code>## Intervalo de confiança para o tempo médio de vida - var desconhecida
+
+sig_inc &lt;- sd(x)
+med_inc &lt;- mean(x)
+n_inc &lt;- length(x)
+
+## Considerando 95% de confiança
+
+conf &lt;- 0.95
+alpha = 1 - conf
+(t &lt;- qt(1-alpha/2, df = n_inc-1))</code></pre>
+<pre><code>[1] 1.962937</code></pre>
+<pre class="r"><code>(e &lt;- t*sig_inc/sqrt(n_inc))</code></pre>
+<pre><code>[1] 2205.214</code></pre>
+<pre class="r"><code>(IC_mi_inc &lt;- c(med_inc-e, med_inc+e))</code></pre>
+<pre><code>[1] 65998.69 70409.12</code></pre>
+<pre class="r"><code>## ou
+
+#install.packages(&quot;gmodels&quot;)
+library(&quot;gmodels&quot;)
+
+ci(x) ## var desconhecida - estat t-student</code></pre>
+<pre><code>  Estimate   CI lower   CI upper Std. Error 
+ 68203.905  65998.691  70409.119   1123.425 </code></pre>
+<p><br> <br></p>
+<pre class="r"><code>### Exemplos 9 no R: Vendas - IC variancia
+
+rm(list = ls())
+vendas &lt;- c(275,258,242,229,225,134,227,249,259,191)</code></pre>
+<pre class="r"><code>n &lt;- length(vendas)
+s &lt;- sd(vendas)
+conf &lt;- 0.90
+alpha = 1-conf
+chisq1 = qchisq(alpha/2, df = n-1)
+chisq2 = qchisq(alpha/2, df = n-1, lower.tail = F)
+
+(IC_sig = c((n-1)*(s^2)/chisq2, (n-1)*(s^2)/chisq1))</code></pre>
+<pre><code>[1]  881.5485 4485.5320</code></pre>
+<p><br> <br></p>
+<pre class="r"><code>### Exemplos 10 no R: Melanoma - IC proporção
+
+rm(list = ls())
+library(&quot;MASS&quot;)
+#data(package = &quot;MASS&quot;) ## conjuntos de dados do pacote
+# data()  ## conjuntos de dados do R
+
+data(&quot;Melanoma&quot;)
+?Melanoma  ## descrição dos dados
+unique(Melanoma$sex)</code></pre>
+<pre><code>[1] 1 0</code></pre>
+<pre class="r"><code>table(Melanoma$sex)</code></pre>
+<pre><code>
+  0   1 
+126  79 </code></pre>
+<pre class="r"><code>n_mel &lt;- nrow(Melanoma)
+p_chap &lt;- sum(sum(Melanoma$sex == 0)/n_mel)
+conf &lt;- 0.90
+alpha = 1-conf
+e &lt;- qnorm(1-alpha/2)*sqrt(p_chap*(1-p_chap)/n_mel)
+(IC_prop &lt;- c(p_chap-e, p_chap+e))</code></pre>
+<pre><code>[1] 0.5587234 0.6705449</code></pre>
 </div>
 
 <center>

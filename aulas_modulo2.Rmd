@@ -562,57 +562,168 @@ polygon(c(li, p[i], ls), c(0, fp[i], 0), col=rgb(0,1,0,0.3))
 2 - Suponha que 60\% da população de uma certa cidade seja a favor da criação de um fundo público para fins de criação de áreas de lazer. Se 150 pessoas forem selecionadas aleatoriamente e entrevistadas, qual a probabilidade de que a proporção amostral de pessoas favoráveis seja menor que 0.52? **R:0.0227**
 
 
+<br>
+<br>
 
-<!-- **Exemplo - Dados da Web (web_data.csv:)** -->
-<!-- Uma empresa que vende um serviço deseja testar qual das duas layout na Web faz um trabalho de venda melhor. Uma possível variável para a empresa é o número de cliques nas informações detalhadas página de destino. Outra possibilidade melhor é quanto tempo as pessoas passam na página. É razoável que uma apresentação da web que prenda a atenção das pessoas por mais tempo levará a mais vendas. Portanto, a métrica usada é o tempo da sessão, comparando a página A à página B. -->
+# Estimação por intervalo (06/10/2020)
 
-<!-- - Lendo os dados: -->
-<!-- ```{R kkkkk} -->
-<!-- web_data <- read.csv("https://felipebarletta.github.io/DAEST/web_data.csv", header = T, sep = ',') -->
-<!-- attach(web_data) ## facilita o chamamento das variáveis -->
-<!-- ``` -->
+<br>
+<br>
 
-<!-- - Renomeando as variáveis: -->
+**Tipos de estimação:**
+- Estimação pontual
+- Estimação por intervalo
 
-<!-- ```{R k1} -->
-<!-- plot(Time~Page) -->
+<br>
 
-<!-- # ou -->
+```{r aula21, echo = FALSE, fig.align = 'center', out.width = "10%"}
+knitr::include_graphics("aula21.png")
+```
 
-<!-- page_A <- subset(web_data, subset = Page=='A') -->
-<!-- page_B <- subset(web_data, subset = Page=='B') -->
-<!-- par(mfrow = c(1,2)) -->
-<!-- boxplot(page_A$Time) -->
-<!-- boxplot(page_B$Time) -->
+<br>
 
-<!-- # ou -->
-
-<!-- library(ggplot2) -->
-<!-- ggplot(web_data, aes(x=Page, y=Time) )+  -->
-<!--     geom_boxplot() -->
-<!-- ``` -->
-
-<!-- - Medidas -->
-<!-- ```{R k2} -->
-<!-- mean_PagA <- mean(page_A)  -->
-<!-- mean_PagB <- mean(page_B)  -->
-<!-- tapply(Time, Page, summary) -->
-<!-- ``` -->
-
-<!-- # Distribuições Amostrais -->
-<!-- ```{R k3} -->
-
-<!-- ``` -->
-
-<!-- ## Distribuição amostral da média -->
-<!-- ```{R k4} -->
-
-<!-- ``` -->
-<!-- ## Distribuição amostral da proporção -->
+**Exemplo 7 no R:**\
+1- Uma empresa deseja estudar seus layouts na Web. Assim, coletaram quanto tempo as pessoas passam em cada uma das página A ou B. Construir um intervalo para o tempo médio de permanencia na página A, com 95\% e 99\% de confiança, sabendo que os tempos médios de permanência na página A seguem distribuição Normal com desvio-padrão 1.\
+2 - No item anterior, qual o tamanho de amostra necessário para se obter um erro de 0.17 com 99\% de confiança?
 
 
-<!-- # Intervalos de Confiança (06/10/2020) -->
+<br>
+```{R ex7}
+### Exemplo 7 no R: web_data.csv - variância conhecida
 
-<!-- # Testes de Hipóteses (20/10/2020) -->
+## Lendo os dados:
 
+rm(list = ls())
+web_data <- read.csv("https://felipebarletta.github.io/DAEST/web_data.csv", header = T, sep = ',')
+attach(web_data) ## facilita o chamamento das variáveis
 
+## Renomeando as variáveis:
+
+plot(time~page)
+
+page_A <- subset(web_data, subset = page=='A') 
+page_B <- subset(web_data, subset = page=='B') 
+
+## Medidas 
+mean_PagA <- mean(page_A$time) 
+mean_PagB <- mean(page_B$time)  
+tapply(time, page, summary) 
+
+## Intervalo de confiança para o tempo médio na pag A - var conhecida
+
+sigA <- 1
+medA <- mean(page_A$time)
+nA <- length(page_A$time)
+
+## Considerando 95% de confiança
+
+conf <- 0.95
+alpha = 1 - conf
+(z <- qnorm(1-alpha/2))
+(e <- z*sigA/sqrt(nA))
+(IC_mi_PageA <- c(medA-e, medA+e))
+
+## Temos 95% de confiança de que o verdadeiro tempo médio de permanência na página A está entre: 1.606219 e 2.160581.
+ 
+
+## Considerando 99% de confiança
+
+conf <- 0.99
+alpha = 1 - conf
+(z <- qnorm(1-alpha/2))
+(e <- z*sigA/sqrt(nA))
+
+(IC_mi_PageA <- c(medA-e, medA+e))
+
+## Temos 99% de confiança de que o verdadeiro tempo médio de permanência na página A está entre: 1.519123 e 2.247677.
+
+## Tamanho amostral
+
+e <- 0.17; sigA <- 1; alpha <- 0.01
+round(n <- (qnorm(1-alpha/2)*sigA/e)^2)
+``` 
+
+<br>
+<br>
+
+```{R ex8}
+### Exemplos 8 no R: loans_income.csv - variância desconhecida
+
+## Lendo os dados:
+
+rm(list = ls())
+income_data <- read.csv("https://felipebarletta.github.io/DAEST/income800.csv", header = T, sep = ',')
+attach(income_data) ## facilita o chamamento das variáveis
+
+## observação, os dados não tem distribuição Normal, mas pelo TLC a aproximação para as médias pode ser usada
+
+hist(x)
+summary(x)
+
+## Intervalo de confiança para o tempo médio de vida - var desconhecida
+
+sig_inc <- sd(x)
+med_inc <- mean(x)
+n_inc <- length(x)
+
+## Considerando 95% de confiança
+
+conf <- 0.95
+alpha = 1 - conf
+(t <- qt(1-alpha/2, df = n_inc-1))
+(e <- t*sig_inc/sqrt(n_inc))
+
+(IC_mi_inc <- c(med_inc-e, med_inc+e))
+
+## ou
+
+#install.packages("gmodels")
+library("gmodels")
+
+ci(x) ## var desconhecida - estat t-student
+```
+
+<br>
+<br>
+
+```{R ex9}
+### Exemplos 9 no R: Vendas - IC variancia
+
+rm(list = ls())
+vendas <- c(275,258,242,229,225,134,227,249,259,191)
+```
+
+```{R ex9.1}
+n <- length(vendas)
+s <- sd(vendas)
+conf <- 0.90
+alpha = 1-conf
+chisq1 = qchisq(alpha/2, df = n-1)
+chisq2 = qchisq(alpha/2, df = n-1, lower.tail = F)
+
+(IC_sig = c((n-1)*(s^2)/chisq2, (n-1)*(s^2)/chisq1))
+```
+
+<br>
+<br>
+
+```{R ex10}
+### Exemplos 10 no R: Melanoma - IC proporção
+
+rm(list = ls())
+library("MASS")
+#data(package = "MASS") ## conjuntos de dados do pacote
+# data()  ## conjuntos de dados do R
+
+data("Melanoma")
+?Melanoma  ## descrição dos dados
+unique(Melanoma$sex)
+table(Melanoma$sex)
+
+n_mel <- nrow(Melanoma)
+p_chap <- sum(sum(Melanoma$sex == 0)/n_mel)
+conf <- 0.90
+alpha = 1-conf
+e <- qnorm(1-alpha/2)*sqrt(p_chap*(1-p_chap)/n_mel)
+(IC_prop <- c(p_chap-e, p_chap+e))
+``` 
