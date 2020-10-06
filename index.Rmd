@@ -157,20 +157,17 @@ O projeto de extensão “Probabilidade e inferência com aplicações em `R`”
 
 ### Módulo 2
 
-- **Dias:** $29$ de setembro, $06$ e $20$ de outubro
 - **Professor Responsável:**
     - Angélica Maria Tortola Ribeiro, DAEST/UTFPR - **email: angelicaribeiro@utfpr.edu.br**
 
       - **Aula 01** - $29/09/2020:$ **Terminologias e Distribuições Amostrais**
-
-
+      
       - **Aula 02** - $06/10/2020$: **Estimação por Intervalo**
-
 
       - **Aula 03** - $20/10/2020$: **Testes de Hipóteses** 
       
 - **Horários de atendimento do professor:**
-    
+  - Quarta e quinta: das 17:00 às 19:00 (online). Outros horários podem ser agendados previamente por e-mail.
     
     
 

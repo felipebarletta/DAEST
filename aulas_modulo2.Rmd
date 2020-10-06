@@ -570,8 +570,8 @@ polygon(c(li, p[i], ls), c(0, fp[i], 0), col=rgb(0,1,0,0.3))
 <br>
 <br>
 
-**Tipos de estimação:**
-- Estimação pontual
+**Tipos de estimação:**\
+- Estimação pontual\
 - Estimação por intervalo
 
 <br>
@@ -597,24 +597,24 @@ rm(list = ls())
 web_data <- read.csv("https://felipebarletta.github.io/DAEST/web_data.csv", header = T, sep = ',')
 attach(web_data) ## facilita o chamamento das variáveis
 
-## Renomeando as variáveis:
-
 plot(time~page)
 
 page_A <- subset(web_data, subset = page=='A') 
 page_B <- subset(web_data, subset = page=='B') 
 
-## Medidas 
-mean_PagA <- mean(page_A$time) 
-mean_PagB <- mean(page_B$time)  
-tapply(time, page, summary) 
+## Medidas Amostrais
+
+(medA <- mean(page_A$time))
+(nA <- length(page_A$time))
+(tapply(web_data$time, web_data$page, summary))
+sd(page_A$time)
+
+
+## Medidas Populacionais
+
+sigA <- 1 ## desvio-padrão populacional 
 
 ## Intervalo de confiança para o tempo médio na pag A - var conhecida
-
-sigA <- 1
-medA <- mean(page_A$time)
-nA <- length(page_A$time)
-
 ## Considerando 95% de confiança
 
 conf <- 0.95
@@ -662,12 +662,11 @@ summary(x)
 
 ## Intervalo de confiança para o tempo médio de vida - var desconhecida
 
-sig_inc <- sd(x)
-med_inc <- mean(x)
-n_inc <- length(x)
-
 ## Considerando 95% de confiança
 
+sig_inc <- sd(income_data$x) ## desvio-padrão amostral
+med_inc <- mean(x) ## média amostral
+(n_inc <- length(x))
 conf <- 0.95
 alpha = 1 - conf
 (t <- qt(1-alpha/2, df = n_inc-1))
@@ -691,6 +690,9 @@ ci(x) ## var desconhecida - estat t-student
 
 rm(list = ls())
 vendas <- c(275,258,242,229,225,134,227,249,259,191)
+
+## ou 
+## vendas <- scan()  ## se copiar os dados de outro lugar e colar no R
 ```
 
 ```{R ex9.1}
@@ -698,6 +700,12 @@ n <- length(vendas)
 s <- sd(vendas)
 conf <- 0.90
 alpha = 1-conf
+
+## observação
+## qnorm -> quantil da distribuição Normal
+## qt -> quantil da distribuição t
+## qchisq -> quantil da distribuição qui-quadrado
+
 chisq1 = qchisq(alpha/2, df = n-1)
 chisq2 = qchisq(alpha/2, df = n-1, lower.tail = F)
 
@@ -721,9 +729,11 @@ unique(Melanoma$sex)
 table(Melanoma$sex)
 
 n_mel <- nrow(Melanoma)
-p_chap <- sum(sum(Melanoma$sex == 0)/n_mel)
+(p_chap <- sum(Melanoma$sex == 0)/n_mel)
 conf <- 0.90
 alpha = 1-conf
 e <- qnorm(1-alpha/2)*sqrt(p_chap*(1-p_chap)/n_mel)
 (IC_prop <- c(p_chap-e, p_chap+e))
+
+## Temos 90% de confiança de que a verdadeira proporção de mulheres com melanoma na população está entre 55,87% e 67,05%
 ``` 
