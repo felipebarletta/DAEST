@@ -30,8 +30,8 @@ navbar:
       menu:
       - text: "web_data.csv"
         href: web_data.csv
-      - text: "web_data.html"
-        href: web_data.html
+      - text: "income800.csv"
+        href: income800.csv
       - text: "hospital.csv"
         href: hospital.csv  
     - text: "Referências"
