@@ -305,6 +305,12 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="durabilidade.txt">durabilidade.txt</a>
+    </li>
+    <li>
+      <a href="notas.txt">notas.txt</a>
+    </li>
+    <li>
       <a href="web_data.csv">web_data.csv</a>
     </li>
     <li>
@@ -339,7 +345,7 @@ $(document).ready(function () {
       <a href="slides/Modulo1_Aula3.pdf">Módulo1 - Aula 3 - Distribuições de Probabilidade contínua</a>
     </li>
     <li>
-      <a href="slides/Modulo2_Aula1.pdf">Módulo2 - Inferência Estatística</a>
+      <a href="slides/Modulo2_Aulas_1_e_2.pdf">Módulo2 - Inferência Estatística</a>
     </li>
   </ul>
 </li>
@@ -972,7 +978,9 @@ polygon(c(li, p[i], ls), c(0, fp[i], 0), col=rgb(0,1,0,0.3))</code></pre>
 <div id="estimação-por-intervalo-06102020" class="section level1">
 <h1><span class="header-section-number">2</span> Estimação por intervalo (06/10/2020)</h1>
 <p><br> <br></p>
-<p><strong>Tipos de estimação:</strong> - Estimação pontual - Estimação por intervalo</p>
+<p><strong>Tipos de estimação:</strong><br />
+- Estimação pontual<br />
+- Estimação por intervalo</p>
 <p><br></p>
 <p><img src="aula21.png" width="10%" style="display: block; margin: auto;" /></p>
 <p><br></p>
@@ -988,17 +996,18 @@ rm(list = ls())
 web_data &lt;- read.csv(&quot;https://felipebarletta.github.io/DAEST/web_data.csv&quot;, header = T, sep = &#39;,&#39;)
 attach(web_data) ## facilita o chamamento das variáveis
 
-## Renomeando as variáveis:
-
 plot(time~page)</code></pre>
 <p><img src="aulas_modulo2_files/figure-html/ex7-1.png" width="672" /></p>
 <pre class="r"><code>page_A &lt;- subset(web_data, subset = page==&#39;A&#39;) 
 page_B &lt;- subset(web_data, subset = page==&#39;B&#39;) 
 
-## Medidas 
-mean_PagA &lt;- mean(page_A$time) 
-mean_PagB &lt;- mean(page_B$time)  
-tapply(time, page, summary) </code></pre>
+## Medidas Amostrais
+
+(medA &lt;- mean(page_A$time))</code></pre>
+<pre><code>[1] 1.8834</code></pre>
+<pre class="r"><code>(nA &lt;- length(page_A$time))</code></pre>
+<pre><code>[1] 50</code></pre>
+<pre class="r"><code>(tapply(web_data$time, web_data$page, summary))</code></pre>
 <pre><code>$A
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
   0.290   1.375   1.800   1.883   2.520   4.410 
@@ -1006,12 +1015,13 @@ tapply(time, page, summary) </code></pre>
 $B
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
   1.210   1.653   2.080   1.992   2.277   2.810 </code></pre>
-<pre class="r"><code>## Intervalo de confiança para o tempo médio na pag A - var conhecida
+<pre class="r"><code>sd(page_A$time)</code></pre>
+<pre><code>[1] 0.8671266</code></pre>
+<pre class="r"><code>## Medidas Populacionais
 
-sigA &lt;- 1
-medA &lt;- mean(page_A$time)
-nA &lt;- length(page_A$time)
+sigA &lt;- 1 ## desvio-padrão populacional 
 
+## Intervalo de confiança para o tempo médio na pag A - var conhecida
 ## Considerando 95% de confiança
 
 conf &lt;- 0.95
@@ -1060,13 +1070,13 @@ hist(x)</code></pre>
   10000   45000   63900   68204   85000  196000 </code></pre>
 <pre class="r"><code>## Intervalo de confiança para o tempo médio de vida - var desconhecida
 
-sig_inc &lt;- sd(x)
-med_inc &lt;- mean(x)
-n_inc &lt;- length(x)
-
 ## Considerando 95% de confiança
 
-conf &lt;- 0.95
+sig_inc &lt;- sd(income_data$x) ## desvio-padrão amostral
+med_inc &lt;- mean(x) ## média amostral
+(n_inc &lt;- length(x))</code></pre>
+<pre><code>[1] 800</code></pre>
+<pre class="r"><code>conf &lt;- 0.95
 alpha = 1 - conf
 (t &lt;- qt(1-alpha/2, df = n_inc-1))</code></pre>
 <pre><code>[1] 1.962937</code></pre>
@@ -1086,11 +1096,20 @@ ci(x) ## var desconhecida - estat t-student</code></pre>
 <pre class="r"><code>### Exemplos 9 no R: Vendas - IC variancia
 
 rm(list = ls())
-vendas &lt;- c(275,258,242,229,225,134,227,249,259,191)</code></pre>
+vendas &lt;- c(275,258,242,229,225,134,227,249,259,191)
+
+## ou 
+## vendas &lt;- scan()  ## se copiar os dados de outro lugar e colar no R</code></pre>
 <pre class="r"><code>n &lt;- length(vendas)
 s &lt;- sd(vendas)
 conf &lt;- 0.90
 alpha = 1-conf
+
+## observação
+## qnorm -&gt; quantil da distribuição Normal
+## qt -&gt; quantil da distribuição t
+## qchisq -&gt; quantil da distribuição qui-quadrado
+
 chisq1 = qchisq(alpha/2, df = n-1)
 chisq2 = qchisq(alpha/2, df = n-1, lower.tail = F)
 
@@ -1113,12 +1132,299 @@ unique(Melanoma$sex)</code></pre>
   0   1 
 126  79 </code></pre>
 <pre class="r"><code>n_mel &lt;- nrow(Melanoma)
-p_chap &lt;- sum(sum(Melanoma$sex == 0)/n_mel)
-conf &lt;- 0.90
+(p_chap &lt;- sum(Melanoma$sex == 0)/n_mel)</code></pre>
+<pre><code>[1] 0.6146341</code></pre>
+<pre class="r"><code>conf &lt;- 0.90
 alpha = 1-conf
 e &lt;- qnorm(1-alpha/2)*sqrt(p_chap*(1-p_chap)/n_mel)
 (IC_prop &lt;- c(p_chap-e, p_chap+e))</code></pre>
 <pre><code>[1] 0.5587234 0.6705449</code></pre>
+<pre class="r"><code>## Temos 90% de confiança de que a verdadeira proporção de mulheres com melanoma na população está entre 55,87% e 67,05%</code></pre>
+<p><br> <br></p>
+</div>
+<div id="testes-de-hipóteses-20102020" class="section level1">
+<h1><span class="header-section-number">3</span> Testes de Hipóteses (20/10/2020)</h1>
+<p><br></p>
+<pre class="r"><code>### Exemplo 11 no R: Teste para a média com variância desconhecida
+
+rm(list = ls())
+income_data &lt;- read.csv(&quot;https://felipebarletta.github.io/DAEST/income800.csv&quot;, header = T, sep = &#39;,&#39;)
+attach(income_data) ## facilita o chamamento das variáveis
+
+
+## Teste mi bilateral: H0: mi = 70000
+mi0 &lt;- 70000 ## hipótese H0
+alpha &lt;- 0.05
+xb_inc &lt;- mean(income_data$x); sd_inc &lt;- sd(income_data$x)
+n_inc &lt;- length(income_data$x)
+(t0 &lt;- (xb_inc-mi0)/(sd_inc/sqrt(n_inc)))</code></pre>
+<pre><code>[1] -1.598767</code></pre>
+<pre class="r"><code>(ti &lt;- qt(alpha/2, df = n_inc-1))</code></pre>
+<pre><code>[1] -1.962937</code></pre>
+<pre class="r"><code>(ts &lt;- qt(1-alpha/2, df = n_inc-1))</code></pre>
+<pre><code>[1] 1.962937</code></pre>
+<pre class="r"><code># ti &lt; t0 &lt; ts =&gt; não rejeita H0
+
+(p_valor &lt;- 2*pt(abs(t0), df = n_inc-1, lower.tail = F))</code></pre>
+<pre><code>[1] 0.1102678</code></pre>
+<pre class="r"><code># p-valor &gt; alpha =&gt; não rejeita H0
+
+## ou
+t.test(income_data$x, mu = 70000, conf.level = 0.05)</code></pre>
+<pre><code>
+    One Sample t-test
+
+data:  income_data$x
+t = -1.5988, df = 799, p-value = 0.1103
+alternative hypothesis: true mean is not equal to 70000
+5 percent confidence interval:
+ 68133.44 68274.37
+sample estimates:
+mean of x 
+  68203.9 </code></pre>
+<pre class="r"><code>## Teste mi unilateral à esquerda: H0: mi &gt;= 70000
+
+mi0 &lt;- 70000 ## hipótese H0
+alpha &lt;- 0.05
+xb_inc &lt;- mean(income_data$x); sd_inc &lt;- sd(income_data$x)
+n_inc &lt;- length(income_data$x)
+
+(t0 &lt;- (xb_inc-mi0)/(sd_inc/sqrt(n_inc)))</code></pre>
+<pre><code>[1] -1.598767</code></pre>
+<pre class="r"><code>(ti &lt;- qt(alpha, df = n_inc-1))</code></pre>
+<pre><code>[1] -1.646763</code></pre>
+<pre class="r"><code># t0 &gt; ti =&gt; não rejeita H0
+
+(p_valor &lt;- pt(t0, df = n_inc-1))</code></pre>
+<pre><code>[1] 0.05513391</code></pre>
+<pre class="r"><code># p-valor &gt; alpha =&gt; não rejeita H0
+
+## ou
+t.test(income_data$x, mu = 70000, alternative = &quot;less&quot;, conf.level = 0.05)</code></pre>
+<pre><code>
+    One Sample t-test
+
+data:  income_data$x
+t = -1.5988, df = 799, p-value = 0.05513
+alternative hypothesis: true mean is less than 70000
+5 percent confidence interval:
+     -Inf 66353.89
+sample estimates:
+mean of x 
+  68203.9 </code></pre>
+<pre class="r"><code>## Teste mi unilateral à direita: H0: mi &lt;= 70000
+
+mi0 &lt;- 70000 ## hipótese H0
+alpha &lt;- 0.05
+xb_inc &lt;- mean(income_data$x); sd_inc &lt;- sd(income_data$x)
+n_inc &lt;- length(income_data$x)
+
+(t0 &lt;- (xb_inc-mi0)/(sd_inc/sqrt(n_inc)))</code></pre>
+<pre><code>[1] -1.598767</code></pre>
+<pre class="r"><code>(ts &lt;- qt(alpha, df = n_inc-1, lower.tail = F))</code></pre>
+<pre><code>[1] 1.646763</code></pre>
+<pre class="r"><code># t0 &lt; ts =&gt; não rejeita H0
+
+(p_valor &lt;- pt(t0, df = n_inc-1, lower.tail = F))</code></pre>
+<pre><code>[1] 0.9448661</code></pre>
+<pre class="r"><code># p-valor &gt; alpha =&gt; não rejeita H0
+
+## ou
+t.test(income_data$x, mu = 70000, alternative = &quot;greater&quot;, conf.level = 0.05)</code></pre>
+<pre><code>
+    One Sample t-test
+
+data:  income_data$x
+t = -1.5988, df = 799, p-value = 0.9449
+alternative hypothesis: true mean is greater than 70000
+5 percent confidence interval:
+ 70053.92      Inf
+sample estimates:
+mean of x 
+  68203.9 </code></pre>
+<p><br> <br></p>
+<pre class="r"><code>### Exemplos 12 - Teste para a variância
+
+#install.packages(&quot;EnvStats&quot;)
+require(EnvStats)
+
+## Teste var bilateral: H0: var = 10^9
+alpha &lt;- 0.05
+xb_inc &lt;- mean(income_data$x); sd_inc &lt;- sd(income_data$x)
+n_inc &lt;- length(income_data$x)
+var0 &lt;- 10^9 ## hipótese H0
+
+(qui0 &lt;- (n_inc-1)*(sd_inc^2)/var0)</code></pre>
+<pre><code>[1] 806.7245</code></pre>
+<pre class="r"><code>(quii &lt;- qchisq(alpha/2, df = n_inc-1))</code></pre>
+<pre><code>[1] 722.5616</code></pre>
+<pre class="r"><code>(quis &lt;- qchisq(1-alpha/2, df = n_inc-1))</code></pre>
+<pre><code>[1] 879.2263</code></pre>
+<pre class="r"><code># quii &lt; qui0 &gt; quis =&gt; Não rejeita H0
+
+(p_valor &lt;- 2*pchisq(abs(qui0), df = n_inc-1, lower.tail = F))</code></pre>
+<pre><code>[1] 0.8342304</code></pre>
+<pre class="r"><code># p-valor &gt; alpha =&gt; não rejeita H0
+
+## ou
+varTest(income_data$x, sigma.squared = 10^9, conf.level = 0.05)</code></pre>
+<pre><code>
+    Chi-Squared Test on Variance
+
+data:  income_data$x
+Chi-Squared = 806.72, df = 799, p-value = 0.8342
+alternative hypothesis: true variance is not equal to 1e+09
+5 percent confidence interval:
+ 1007345987 1013688766
+sample estimates:
+  variance 
+1009667720 </code></pre>
+<pre class="r"><code>## Teste var unilateral à direita: H0: var &lt;= 10^9
+varTest(income_data$x, sigma.squared = 10^9, alternative = &quot;greater&quot;,
+        conf.level = 0.05)</code></pre>
+<pre><code>
+    Chi-Squared Test on Variance
+
+data:  income_data$x
+Chi-Squared = 806.72, df = 799, p-value = 0.4171
+alternative hypothesis: true variance is greater than 1e+09
+5 percent confidence interval:
+ 1098475858        Inf
+sample estimates:
+  variance 
+1009667720 </code></pre>
+<pre class="r"><code>## Teste var unilateral à esquerda: H0: var &lt;= 1000000000
+varTest(income_data$x, sigma.squared = 10^9, alternative = &quot;less&quot;,
+        conf.level = 0.05)</code></pre>
+<pre><code>
+    Chi-Squared Test on Variance
+
+data:  income_data$x
+Chi-Squared = 806.72, df = 799, p-value = 0.5829
+alternative hypothesis: true variance is less than 1e+09
+5 percent confidence interval:
+         0 931692137
+sample estimates:
+  variance 
+1009667720 </code></pre>
+<p><br> <br></p>
+<pre class="r"><code>### Exemplo 13 no R: Comparando dois grupos
+
+## Teste para variancias
+rm(list = ls())
+dura_data &lt;- read.table(&quot;https://felipebarletta.github.io/DAEST/durabilidade.txt&quot;, header = T)
+attach(dura_data) ## facilita o chamamento das variáveis
+
+boxplot(dura_data$durabilidade~dura_data$empresa)</code></pre>
+<p><img src="aulas_modulo2_files/figure-html/ex13-1.png" width="672" /></p>
+<pre class="r"><code>alpha = 0.05
+emp_a &lt;- subset(dura_data, dura_data$empresa == &quot;A&quot;)
+emp_b &lt;- subset(dura_data, dura_data$empresa == &quot;B&quot;)
+na &lt;- length(emp_a$durabilidade)
+nb &lt;- length(emp_b$durabilidade)
+var_a &lt;- var(emp_a$durabilidade)
+var_b &lt;- var(emp_b$durabilidade)
+xb_a &lt;- mean(emp_a$durabilidade)
+xb_b &lt;- mean(emp_b$durabilidade)
+
+(F0 &lt;- var_a/var_b)</code></pre>
+<pre><code>[1] 0.8264009</code></pre>
+<pre class="r"><code>(F1 &lt;- qf(alpha/2, df1 = na-1, df2 = nb-1))</code></pre>
+<pre><code>[1] 0.7639102</code></pre>
+<pre class="r"><code>(F2 &lt;- qf(1-alpha/2, df1 = na-1, df2 = nb-1))</code></pre>
+<pre><code>[1] 1.317123</code></pre>
+<pre class="r"><code>curve(df(x, df1 = na-1, df2 = nb-1), 0.5,2)
+abline(v = F0)</code></pre>
+<p><img src="aulas_modulo2_files/figure-html/ex13-2.png" width="672" /></p>
+<pre class="r"><code>(p_val &lt;- 2*pf(F0, df1 = na-1, df2 = nb-1))</code></pre>
+<pre><code>[1] 0.1651459</code></pre>
+<pre class="r"><code>var.test(emp_a$durabilidade, emp_b$durabilidade, alternative = &quot;two.sided&quot;, conf.level = 0.05)</code></pre>
+<pre><code>
+    F test to compare two variances
+
+data:  emp_a$durabilidade and emp_b$durabilidade
+F = 0.8264, num df = 249, denom df = 179, p-value = 0.1651
+alternative hypothesis: true ratio of variances is not equal to 1
+5 percent confidence interval:
+ 0.818381 0.832747
+sample estimates:
+ratio of variances 
+         0.8264009 </code></pre>
+<pre class="r"><code>## ou
+var.test(dura_data$durabilidade~dura_data$empresa, alternative = &quot;two.sided&quot;, conf.level = 0.05)</code></pre>
+<pre><code>
+    F test to compare two variances
+
+data:  dura_data$durabilidade by dura_data$empresa
+F = 0.8264, num df = 249, denom df = 179, p-value = 0.1651
+alternative hypothesis: true ratio of variances is not equal to 1
+5 percent confidence interval:
+ 0.818381 0.832747
+sample estimates:
+ratio of variances 
+         0.8264009 </code></pre>
+<pre class="r"><code>## Teste para medias
+
+sp &lt;- sqrt(((na-1)*var_a+(nb-1)*var_b)/(na+nb-2))
+(t0 &lt;- (xb_a-xb_b)/(sp*sqrt((1/na)+(1/nb))))</code></pre>
+<pre><code>[1] -13.68831</code></pre>
+<pre class="r"><code>(p_val &lt;- 2*pt(abs(t0), df = (na+nb-2), lower.tail = F))</code></pre>
+<pre><code>[1] 1.246594e-35</code></pre>
+<pre class="r"><code>t.test(emp_a$durabilidade, emp_b$durabilidade, 
+      var.equal = T, alternative = &quot;two.sided&quot;)</code></pre>
+<pre><code>
+    Two Sample t-test
+
+data:  emp_a$durabilidade and emp_b$durabilidade
+t = -13.688, df = 428, p-value &lt; 2.2e-16
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -67.08510 -50.23846
+sample estimates:
+mean of x mean of y 
+ 325.1160  383.7778 </code></pre>
+<pre class="r"><code>## Rejeita H0, as médias são diferentes ##</code></pre>
+<p><br> <br></p>
+<pre class="r"><code>### Exemplos 14 - Teste para a proporção
+### Exemplo 14 no R: Teste para proporção
+
+rm(list = ls())
+notas_data &lt;- read.table(&quot;https://felipebarletta.github.io/DAEST/notas.txt&quot;, header = T)
+attach(notas_data) ## facilita o chamamento das variáveis
+
+boxplot(notas_data$notas~notas_data$turmas)</code></pre>
+<p><img src="aulas_modulo2_files/figure-html/ex14-1.png" width="672" /></p>
+<pre class="r"><code>sexo_F &lt;- sum(notas_data$sexo == &quot;F&quot;)
+n &lt;- length(notas_data$sexo)
+(p_chap &lt;- sexo_F/n)</code></pre>
+<pre><code>[1] 0.5205128</code></pre>
+<pre class="r"><code>p0 &lt;- 0.6
+  
+alpha = 0.05
+(z0 &lt;- (p_chap-p0)/sqrt(p0*(1-p0)/n))</code></pre>
+<pre><code>[1] -3.204231</code></pre>
+<pre class="r"><code>(z1 &lt;- qnorm(alpha/2))</code></pre>
+<pre><code>[1] -1.959964</code></pre>
+<pre class="r"><code>(z2 &lt;- qnorm(1-alpha/2))</code></pre>
+<pre><code>[1] 1.959964</code></pre>
+<pre class="r"><code>(p_val &lt;- 2*pnorm(abs(z0), lower.tail = F))</code></pre>
+<pre><code>[1] 0.001354239</code></pre>
+<pre class="r"><code>## ou para grandes amostras, podemos usar a aproximação:
+
+prop.test(sexo_F, n, p = 0.6, alternative = &quot;two.sided&quot;,
+          correct = F)</code></pre>
+<pre><code>
+    1-sample proportions test without continuity correction
+
+data:  sexo_F out of n, null probability 0.6
+X-squared = 10.267, df = 1, p-value = 0.001354
+alternative hypothesis: true p is not equal to 0.6
+95 percent confidence interval:
+ 0.4709732 0.5696523
+sample estimates:
+        p 
+0.5205128 </code></pre>
+<pre class="r"><code>## Rejeita H0 ##</code></pre>
 </div>
 
 <center>
