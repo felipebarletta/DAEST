@@ -28,6 +28,10 @@ navbar:
       href: aulas_modulo3.html
     - text: "Dados"
       menu:
+      - text: "durabilidade.txt"
+        href: durabilidade.txt  
+      - text: "notas.txt"
+        href: notas.txt  
       - text: "web_data.csv"
         href: web_data.csv
       - text: "income800.csv"
