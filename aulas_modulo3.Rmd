@@ -15,12 +15,208 @@ knitr::opts_chunk$set(echo = TRUE,
 ```
 
 
-- **Aula 01** - $27/10/2020:$ **Introdução a análise de regressão**
+# Simulação de possíveis correlações
+# Diagrama de dispersão 
+
+# Plotando todos no mesmo gráfico
+
+```{r}
+par(mfrow=c(2,3))
+```
+
+# Correlação perfeita positiva
+```{r}
+x<-seq(-100, 100)
+y1<-x*2.53
+plot(x, y1, main = "Correlação perfeita positiva",ylab = "y",col="blue")
+
+```
+# Correlação perfeita negativa
+```{r}
+x<-seq(-100, 100)
+y2<- -x*2.53
+plot(x, y2, main = "Correlação perfeita positiva",ylab = "y",col="blue")
+
+```
+
+# Alta correlação positiva
+```{r}
+y3<-rnorm(y1,y1,20)
+plot(x,y3,main="Alta correlação positiva",ylab = "y",col="blue")
+
+```
+
+# Alta correlação
+```{r}
+y4<-rnorm(y1,(-1)*y1,20)
+plot(x,y4,main="Alta correlação negativa",ylab = "y",col="blue")
+
+```
+
+# Baixa correlação positiva
+```{r}
+y5<-rnorm(y1,y1,500)
+plot(x,y5,main="Baixa correlação",ylab = "y",col="blue")
+
+```
+
+# Correlação não linear
+```{r}
+y6<- rnorm(x, x^2, 1000)
+plot(x,y6,main="Correlação não linear",ylab = "y",col="blue")
+
+```
+
+#-----------------------------------Exercício 1-------------------------------------------------------
+
+```{r}
+distancia<-scan(text="20.00 60.00 15.00 45.00 35.00 80.00 70.00 73.00 28.00 85.00")
+consumo<-scan(text=" 1.33 5.45 1.66 3.46 2.92 6.15 4.11 5.00 2.95 6.54")
+
+#Cálculo da correlação linear simples
+xbarra<-mean(distancia)
+ybarra<-mean(consumo)
+sumxy<-sum(distancia*consumo)
+sumx2<-sum(distancia^2)
+sumy2<-sum(consumo^2)
+n<-length(consumo)
+r<-(sumxy-n*xbarra*ybarra) / (sqrt((sumx2-n*(xbarra^2))*(sumy2-n*(ybarra^2))))
+r
+r^2
+
+```
 
 
 
+# Crianção da função para a correlação e coeficiente de determinação
+```{r}
+correlacao<-function(x,y){
+  sumxy<-sum(x*y)
+  xbarra<-mean(x)
+  ybarra<-mean(y)
+  sumx2<-sum(x^2)
+  sumy2<-sum(y^2)
+  n<-length(x)
+  r<-(sumxy-n*xbarra*ybarra) / (sqrt((sumx2-n*(xbarra^2))*(sumy2-n*(ybarra^2))))
+  r2<-r^2
+  return(list(coef.correlacao=r,coef.determinacao=r2))
+}
+correlacao(distancia,consumo)
 
-- **Aula 02** - $03/11/2020$: **Regressão simples**
+```
+
+# Função disponível no R
+```{r}
+cor(consumo,distancia)
+
+```
+
+# Diagrama de dispersão x= Distância y= Consumo
+```{r}
+plot(distancia, consumo, main="Consumo x Distância", ylab= "Consumo (l)", xlab="Distância (km)",
+     pch=16, col="blue",cex.main=1.5, cex=1.5,cex.lab=1.2, cex.axis=1,bty="l")
+abline(h=seq(0,7,1), v=seq(0,90, 10), lty=3, col="gray")
+text(30,5, "r=-0.95 ",col = "red",cex = 1.2)
+text(30,4.5, "r2=0.90",col = "red",cex = 1.2)
+
+```
+
+# Exercício 1 continuação
+
+# Criação da função do teste
+```{r}
+test.c<-function(r,n){
+  t<-r*sqrt((n-2)/(1-r^2))
+  return(t)
+}
+
+```
+
+# Usando a função com o valor de r arredondado
+```{r}
+r<-0.95
+n<-10
+test.c(r,n)
+alpha<-0.05
+qt(alpha/2, df = n-2)
+qt(1-(alpha/2), df = n-2)
+
+```
+
+#Fazendo o teste (t.calc>t.crit)
+```{r}
+test.c(r,n) > qt(alpha/2, df = n-2) | test.c(r,n) < qt(1-(alpha/2), df = n-2) 
+
+```
+
+# Não aceita H0. Há correlação, com 95% de confiança.
+
+#Usando a função disponível no R
+```{r}
+cor.test(distancia,consumo)
+
+```
+
+# Acréscimo na função anterior - opção 1
+```{r}
+correlacao<-function(x,y){
+  sumxy<-sum(x*y)
+  xbarra<-mean(x)
+  ybarra<-mean(y)
+  sumx2<-sum(x^2)
+  sumy2<-sum(y^2)
+  n<-length(x)
+  r<-(sumxy-n*xbarra*ybarra) / (sqrt((sumx2-n*(xbarra^2))*(sumy2-n*(ybarra^2))))
+  r2<-r^2
+  t<-r*sqrt((n-2)/(1-r^2))
+  return(list(coef.correlacao=r,coef.determinacao=r2, teste.calc=t))
+}
+correlacao(distancia,consumo)
+
+```
+
+# Usando a função sem arredondamento - opção 2
+```{r}
+r<-cor(distancia,consumo)
+n<-10
+test.c(r,n)
+
+```
 
 
-- **Aula 03** - $10/11/2020$: **ANOVA**
+#---------------------------------- Gráfico para duas variáveis no eixo y-------------------------------
+
+# Construção do gráfico das variáveis com dois diferentes eixos y
+```{r}
+dev.off() # Limpa padrão gráfico
+x<-1:10 # Eixo x
+par(mar=c(5.1, 4.1, 4.1, 6.1)) # Estipula as margens para plotar o gráfico
+
+```
+
+## Primeiro gráfico: Consumo
+```{r}
+plot(x, consumo, pch=16, axes=FALSE, xlab="", ylab="", 
+     type="b",col="black", main="Consumo x Distância")
+# Eixo para a variável consumo
+axis(2, ylim=c(0,max(consumo)),col="black") 
+mtext("Consumo",side=2,line=2,col="black")
+## Permitir uma nova figura no mesmo gráfico
+par(new=TRUE)
+
+## Segundo gráfico: Distância
+plot(x,distancia, pch=15,  xlab="", ylab="", 
+     axes=FALSE, type="b", col="red")
+# Eixo para a variável consumo
+axis(4, ylim=c(0,max(distancia)),col="red",col.axis="red") 
+mtext("Distância",side=4,line=2,col="red")
+
+## Eixo x
+axis(1,1:10)
+mtext("Amostra",side=1,col="black",line=2)  
+
+## Adicionando a legenda
+legend("topleft",legend=c("Consumo","Distância"),
+       text.col=c("black","red"),pch=c(16,15),col=c("black","red"))
+
+```
