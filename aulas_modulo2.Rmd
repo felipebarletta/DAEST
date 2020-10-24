@@ -737,3 +737,185 @@ e <- qnorm(1-alpha/2)*sqrt(p_chap*(1-p_chap)/n_mel)
 
 ## Temos 90% de confiança de que a verdadeira proporção de mulheres com melanoma na população está entre 55,87% e 67,05%
 ``` 
+
+<br>
+<br>
+
+# Testes de Hipóteses (20/10/2020)
+
+<br>
+
+```{R ex11}
+### Exemplo 11 no R: Teste para a média com variância desconhecida
+
+rm(list = ls())
+income_data <- read.csv("https://felipebarletta.github.io/DAEST/income800.csv", header = T, sep = ',')
+attach(income_data) ## facilita o chamamento das variáveis
+
+
+## Teste mi bilateral: H0: mi = 70000
+mi0 <- 70000 ## hipótese H0
+alpha <- 0.05
+xb_inc <- mean(income_data$x); sd_inc <- sd(income_data$x)
+n_inc <- length(income_data$x)
+(t0 <- (xb_inc-mi0)/(sd_inc/sqrt(n_inc)))
+(ti <- qt(alpha/2, df = n_inc-1))
+(ts <- qt(1-alpha/2, df = n_inc-1))
+# ti < t0 < ts => não rejeita H0
+
+(p_valor <- 2*pt(abs(t0), df = n_inc-1, lower.tail = F))
+# p-valor > alpha => não rejeita H0
+
+## ou
+t.test(income_data$x, mu = 70000, conf.level = 0.05)
+
+
+## Teste mi unilateral à esquerda: H0: mi >= 70000
+
+mi0 <- 70000 ## hipótese H0
+alpha <- 0.05
+xb_inc <- mean(income_data$x); sd_inc <- sd(income_data$x)
+n_inc <- length(income_data$x)
+
+(t0 <- (xb_inc-mi0)/(sd_inc/sqrt(n_inc)))
+(ti <- qt(alpha, df = n_inc-1))
+# t0 > ti => não rejeita H0
+
+(p_valor <- pt(t0, df = n_inc-1))
+# p-valor > alpha => não rejeita H0
+
+## ou
+t.test(income_data$x, mu = 70000, alternative = "less", conf.level = 0.05)
+
+
+## Teste mi unilateral à direita: H0: mi <= 70000
+
+mi0 <- 70000 ## hipótese H0
+alpha <- 0.05
+xb_inc <- mean(income_data$x); sd_inc <- sd(income_data$x)
+n_inc <- length(income_data$x)
+
+(t0 <- (xb_inc-mi0)/(sd_inc/sqrt(n_inc)))
+(ts <- qt(alpha, df = n_inc-1, lower.tail = F))
+# t0 < ts => não rejeita H0
+
+(p_valor <- pt(t0, df = n_inc-1, lower.tail = F))
+# p-valor > alpha => não rejeita H0
+
+## ou
+t.test(income_data$x, mu = 70000, alternative = "greater", conf.level = 0.05)
+``` 
+
+<br>
+<br>
+
+```{R ex12}
+### Exemplos 12 - Teste para a variância
+
+#install.packages("EnvStats")
+require(EnvStats)
+
+## Teste var bilateral: H0: var = 10^9
+alpha <- 0.05
+xb_inc <- mean(income_data$x); sd_inc <- sd(income_data$x)
+n_inc <- length(income_data$x)
+var0 <- 10^9 ## hipótese H0
+
+(qui0 <- (n_inc-1)*(sd_inc^2)/var0)
+(quii <- qchisq(alpha/2, df = n_inc-1))
+(quis <- qchisq(1-alpha/2, df = n_inc-1))
+# quii < qui0 > quis => Não rejeita H0
+
+(p_valor <- 2*pchisq(abs(qui0), df = n_inc-1, lower.tail = F))
+# p-valor > alpha => não rejeita H0
+
+## ou
+varTest(income_data$x, sigma.squared = 10^9, conf.level = 0.05)
+
+## Teste var unilateral à direita: H0: var <= 10^9
+varTest(income_data$x, sigma.squared = 10^9, alternative = "greater",
+        conf.level = 0.05)
+
+## Teste var unilateral à esquerda: H0: var <= 1000000000
+varTest(income_data$x, sigma.squared = 10^9, alternative = "less",
+        conf.level = 0.05)
+
+``` 
+
+<br>
+<br>
+
+```{R ex13}
+### Exemplo 13 no R: Comparando dois grupos
+
+## Teste para variancias
+rm(list = ls())
+dura_data <- read.table("https://felipebarletta.github.io/DAEST/durabilidade.txt", header = T)
+attach(dura_data) ## facilita o chamamento das variáveis
+
+boxplot(dura_data$durabilidade~dura_data$empresa)
+
+alpha = 0.05
+emp_a <- subset(dura_data, dura_data$empresa == "A")
+emp_b <- subset(dura_data, dura_data$empresa == "B")
+na <- length(emp_a$durabilidade)
+nb <- length(emp_b$durabilidade)
+var_a <- var(emp_a$durabilidade)
+var_b <- var(emp_b$durabilidade)
+xb_a <- mean(emp_a$durabilidade)
+xb_b <- mean(emp_b$durabilidade)
+
+(F0 <- var_a/var_b)
+(F1 <- qf(alpha/2, df1 = na-1, df2 = nb-1))
+(F2 <- qf(1-alpha/2, df1 = na-1, df2 = nb-1))
+
+curve(df(x, df1 = na-1, df2 = nb-1), 0.5,2)
+abline(v = F0)
+(p_val <- 2*pf(F0, df1 = na-1, df2 = nb-1))
+
+var.test(emp_a$durabilidade, emp_b$durabilidade, alternative = "two.sided", conf.level = 0.05)
+## ou
+var.test(dura_data$durabilidade~dura_data$empresa, alternative = "two.sided", conf.level = 0.05)
+
+## Teste para medias
+
+sp <- sqrt(((na-1)*var_a+(nb-1)*var_b)/(na+nb-2))
+(t0 <- (xb_a-xb_b)/(sp*sqrt((1/na)+(1/nb))))
+(p_val <- 2*pt(abs(t0), df = (na+nb-2), lower.tail = F))
+
+t.test(emp_a$durabilidade, emp_b$durabilidade, 
+      var.equal = T, alternative = "two.sided")
+## Rejeita H0, as médias são diferentes ##
+``` 
+
+<br>
+<br>
+
+```{R ex14}
+### Exemplos 14 - Teste para a proporção
+### Exemplo 14 no R: Teste para proporção
+
+rm(list = ls())
+notas_data <- read.table("https://felipebarletta.github.io/DAEST/notas.txt", header = T)
+attach(notas_data) ## facilita o chamamento das variáveis
+
+boxplot(notas_data$notas~notas_data$turmas)
+
+sexo_F <- sum(notas_data$sexo == "F")
+n <- length(notas_data$sexo)
+(p_chap <- sexo_F/n)
+p0 <- 0.6
+  
+alpha = 0.05
+(z0 <- (p_chap-p0)/sqrt(p0*(1-p0)/n))
+
+(z1 <- qnorm(alpha/2))
+(z2 <- qnorm(1-alpha/2))
+(p_val <- 2*pnorm(abs(z0), lower.tail = F))
+
+## ou para grandes amostras, podemos usar a aproximação:
+
+prop.test(sexo_F, n, p = 0.6, alternative = "two.sided",
+          correct = F)
+## Rejeita H0 ##
+``` 
