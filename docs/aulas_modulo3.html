@@ -33,6 +33,15 @@
  gtag('config', 'UA-66454501-8');
 </script>
 
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+      </style>
+
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
   pre:not([class]) {
@@ -304,10 +313,16 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="durabilidade.txt">durabilidade.txt</a>
+    </li>
+    <li>
+      <a href="notas.txt">notas.txt</a>
+    </li>
+    <li>
       <a href="web_data.csv">web_data.csv</a>
     </li>
     <li>
-      <a href="web_data.html">web_data.html</a>
+      <a href="income800.csv">income800.csv</a>
     </li>
     <li>
       <a href="hospital.csv">hospital.csv</a>
@@ -338,7 +353,7 @@ $(document).ready(function () {
       <a href="slides/Modulo1_Aula3.pdf">Módulo1 - Aula 3 - Distribuições de Probabilidade contínua</a>
     </li>
     <li>
-      <a href="slides/Modulo2_Aula1.pdf">Módulo2 - Inferência Estatística</a>
+      <a href="slides/Modulo2_Aulas_123.pdf">Módulo2 - Inferência Estatística</a>
     </li>
   </ul>
 </li>
@@ -367,11 +382,178 @@ $(document).ready(function () {
 </div>
 
 
-<ul>
-<li><p><strong>Aula 01</strong> - <span class="math inline">\(27/10/2020:\)</span> <strong>Introdução a análise de regressão</strong></p></li>
-<li><p><strong>Aula 02</strong> - <span class="math inline">\(03/11/2020\)</span>: <strong>Regressão simples</strong></p></li>
-<li><p><strong>Aula 03</strong> - <span class="math inline">\(10/11/2020\)</span>: <strong>ANOVA</strong></p></li>
-</ul>
+<div id="correlação-271020" class="section level1">
+<h1>Correlação (27/10/20)</h1>
+<div id="simulação-de-exemplos-de-possíveis-correlações" class="section level2">
+<h2>Simulação de exemplos de possíveis correlações</h2>
+<pre class="r"><code># Diagrama de dispersão
+# Plotando todos no mesmo gráfico
+par(mfrow=c(2,3))
+# Correlação perfeita positiva
+x&lt;-seq(-100, 100)
+y1&lt;-x*2.53
+plot(x, y1, main = &quot;Correlação perfeita positiva&quot;,ylab = &quot;y&quot;,col=&quot;blue&quot;)
+
+# Correlação perfeita negativa
+x&lt;-seq(-100, 100)
+y2&lt;- -x*2.53
+plot(x, y2, main = &quot;Correlação perfeita positiva&quot;,ylab = &quot;y&quot;,col=&quot;blue&quot;)
+
+# Alta correlação positiva
+y3&lt;-rnorm(y1,y1,20)
+plot(x,y3,main=&quot;Alta correlação positiva&quot;,ylab = &quot;y&quot;,col=&quot;blue&quot;)
+
+# Alta correlação
+y4&lt;-rnorm(y1,(-1)*y1,20)
+plot(x,y4,main=&quot;Alta correlação negativa&quot;,ylab = &quot;y&quot;,col=&quot;blue&quot;)
+
+# Baixa correlação positiva
+y5&lt;-rnorm(y1,y1,500)
+plot(x,y5,main=&quot;Baixa correlação&quot;,ylab = &quot;y&quot;,col=&quot;blue&quot;)
+
+# Correlação não linear
+y6&lt;- rnorm(x, x^2, 1000)
+plot(x,y6,main=&quot;Correlação não linear&quot;,ylab = &quot;y&quot;,col=&quot;blue&quot;)</code></pre>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+</div>
+<div id="exercício-1" class="section level2">
+<h2>Exercício 1</h2>
+<pre class="r"><code>distancia&lt;-scan(text=&quot;20.00 60.00 15.00 45.00 35.00 80.00 70.00 73.00 28.00 85.00&quot;)
+consumo&lt;-scan(text=&quot; 1.33 5.45 1.66 3.46 2.92 6.15 4.11 5.00 2.95 6.54&quot;)
+
+#Cálculo da correlação linear simples
+xbarra&lt;-mean(distancia)
+ybarra&lt;-mean(consumo)
+sumxy&lt;-sum(distancia*consumo)
+sumx2&lt;-sum(distancia^2)
+sumy2&lt;-sum(consumo^2)
+n&lt;-length(consumo)
+r&lt;-(sumxy-n*xbarra*ybarra) / (sqrt((sumx2-n*(xbarra^2))*(sumy2-n*(ybarra^2))))
+r</code></pre>
+<pre><code>[1] 0.9475761</code></pre>
+<pre class="r"><code>r^2</code></pre>
+<pre><code>[1] 0.8979004</code></pre>
+<pre class="r"><code># Crianção da função para a correlação e coeficiente de determinação
+correlacao&lt;-function(x,y){
+  sumxy&lt;-sum(x*y)
+  xbarra&lt;-mean(x)
+  ybarra&lt;-mean(y)
+  sumx2&lt;-sum(x^2)
+  sumy2&lt;-sum(y^2)
+  n&lt;-length(x)
+  r&lt;-(sumxy-n*xbarra*ybarra) / (sqrt((sumx2-n*(xbarra^2))*(sumy2-n*(ybarra^2))))
+  r2&lt;-r^2
+  return(list(coef.correlacao=r,coef.determinacao=r2))
+}
+correlacao(distancia,consumo)</code></pre>
+<pre><code>$coef.correlacao
+[1] 0.9475761
+
+$coef.determinacao
+[1] 0.8979004</code></pre>
+<pre class="r"><code># Função disponível no R
+cor(consumo,distancia)</code></pre>
+<pre><code>[1] 0.9475761</code></pre>
+<pre class="r"><code># Diagrama de dispersão x= Distância y= Consumo
+plot(distancia, consumo, main=&quot;Consumo x Distância&quot;, ylab= &quot;Consumo (l)&quot;, xlab=&quot;Distância (km)&quot;,
+     pch=16, col=&quot;blue&quot;,cex.main=1.5, cex=1.5,cex.lab=1.2, cex.axis=1,bty=&quot;l&quot;)
+abline(h=seq(0,7,1), v=seq(0,90, 10), lty=3, col=&quot;gray&quot;)
+text(30,5, &quot;r=-0.95 &quot;,col = &quot;red&quot;,cex = 1.2)
+text(30,4.5, &quot;r2=0.90&quot;,col = &quot;red&quot;,cex = 1.2)</code></pre>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code># Criação da função do teste
+test.c&lt;-function(r,n){
+  t&lt;-r*sqrt((n-2)/(1-r^2))
+  return(t)
+}</code></pre>
+<pre class="r"><code># Usando a função com o valor de r arredondado
+r&lt;-0.95
+n&lt;-10
+test.c(r,n)</code></pre>
+<pre><code>[1] 8.605305</code></pre>
+<pre class="r"><code>alpha&lt;-0.05
+qt(alpha/2, df = n-2)</code></pre>
+<pre><code>[1] -2.306004</code></pre>
+<pre class="r"><code>qt(1-(alpha/2), df = n-2)</code></pre>
+<pre><code>[1] 2.306004</code></pre>
+<pre class="r"><code>#Fazendo o teste (t.calc&gt;t.crit)
+test.c(r,n) &gt; qt(alpha/2, df = n-2) | test.c(r,n) &lt; qt(1-(alpha/2), df = n-2) </code></pre>
+<pre><code>[1] TRUE</code></pre>
+<pre class="r"><code># Não aceita H0. Há correlação, com 95% de confiança.</code></pre>
+<pre class="r"><code>#Usando a função disponível no R
+cor.test(distancia,consumo)</code></pre>
+<pre><code>
+    Pearson&#39;s product-moment correlation
+
+data:  distancia and consumo
+t = 8.3878, df = 8, p-value = 3.101e-05
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.7882117 0.9878390
+sample estimates:
+      cor 
+0.9475761 </code></pre>
+<pre class="r"><code># Acréscimo na função anterior - opção 1
+correlacao&lt;-function(x,y){
+  sumxy&lt;-sum(x*y)
+  xbarra&lt;-mean(x)
+  ybarra&lt;-mean(y)
+  sumx2&lt;-sum(x^2)
+  sumy2&lt;-sum(y^2)
+  n&lt;-length(x)
+  r&lt;-(sumxy-n*xbarra*ybarra) / (sqrt((sumx2-n*(xbarra^2))*(sumy2-n*(ybarra^2))))
+  r2&lt;-r^2
+  t&lt;-r*sqrt((n-2)/(1-r^2))
+  return(list(coef.correlacao=r,coef.determinacao=r2, teste.calc=t))
+}
+correlacao(distancia,consumo)</code></pre>
+<pre><code>$coef.correlacao
+[1] 0.9475761
+
+$coef.determinacao
+[1] 0.8979004
+
+$teste.calc
+[1] 8.387781</code></pre>
+<pre class="r"><code># Usando a função sem arredondamento - opção 2
+r&lt;-cor(distancia,consumo)
+n&lt;-10
+test.c(r,n)</code></pre>
+<pre><code>[1] 8.387781</code></pre>
+</div>
+<div id="gráfico-para-duas-variáveis-no-eixo-y" class="section level2">
+<h2>Gráfico para duas variáveis no eixo y</h2>
+<pre class="r"><code># Construção do gráfico das variáveis com dois diferentes eixos y
+#dev.off() # Limpa padrão gráfico
+x&lt;-1:10 # Eixo x
+par(mar=c(5.1, 4.1, 4.1, 6.1)) # Estipula as margens para plotar o gráfico
+
+## Primeiro eixo: Consumo
+plot(x, consumo, pch=16, axes=FALSE, xlab=&quot;&quot;, ylab=&quot;&quot;, 
+     type=&quot;b&quot;,col=&quot;black&quot;, main=&quot;Consumo x Distância&quot;)
+# Eixo para a variável consumo
+axis(2, ylim=c(0,max(consumo)),col=&quot;black&quot;) 
+mtext(&quot;Consumo&quot;,side=2,line=2,col=&quot;black&quot;)
+## Permitir uma nova figura no mesmo gráfico
+par(new=TRUE)
+
+## Segundo eixe: Distância
+plot(x,distancia, pch=15,  xlab=&quot;&quot;, ylab=&quot;&quot;, 
+     axes=FALSE, type=&quot;b&quot;, col=&quot;red&quot;)
+# Eixo para a variável consumo
+axis(4, ylim=c(0,max(distancia)),col=&quot;red&quot;,col.axis=&quot;red&quot;) 
+mtext(&quot;Distância&quot;,side=4,line=2,col=&quot;red&quot;)
+
+## Eixo x
+axis(1,1:10)
+mtext(&quot;Amostra&quot;,side=1,col=&quot;black&quot;,line=2)  
+
+## Adicionando a legenda
+legend(&quot;topleft&quot;,legend=c(&quot;Consumo&quot;,&quot;Distância&quot;),
+       text.col=c(&quot;black&quot;,&quot;red&quot;),pch=c(16,15),col=c(&quot;black&quot;,&quot;red&quot;))</code></pre>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+</div>
+</div>
 
 <center>
   <hr width="100%" size="3px">
