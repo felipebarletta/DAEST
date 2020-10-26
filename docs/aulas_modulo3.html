@@ -355,6 +355,9 @@ $(document).ready(function () {
     <li>
       <a href="slides/Modulo2_Aulas_123.pdf">Módulo2 - Inferência Estatística</a>
     </li>
+    <li>
+      <a href="slides/Modulo3.pdf">Módulo 3 - Inferência Estatística II</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -384,8 +387,8 @@ $(document).ready(function () {
 
 <div id="correlação-271020" class="section level1">
 <h1>Correlação (27/10/20)</h1>
-<div id="simulação-de-exemplos-de-possíveis-correlações" class="section level2">
-<h2>Simulação de exemplos de possíveis correlações</h2>
+<div id="simulação-exemplos-de-possíveis-correlações" class="section level2">
+<h2>Simulação: Exemplos de possíveis correlações</h2>
 <pre class="r"><code># Diagrama de dispersão
 # Plotando todos no mesmo gráfico
 par(mfrow=c(2,3))
@@ -552,6 +555,113 @@ mtext(&quot;Amostra&quot;,side=1,col=&quot;black&quot;,line=2)
 legend(&quot;topleft&quot;,legend=c(&quot;Consumo&quot;,&quot;Distância&quot;),
        text.col=c(&quot;black&quot;,&quot;red&quot;),pch=c(16,15),col=c(&quot;black&quot;,&quot;red&quot;))</code></pre>
 <p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<pre class="r"><code>help(mtcars)</code></pre>
+<pre class="r"><code>head(mtcars)</code></pre>
+<pre><code>                   mpg cyl disp  hp drat    wt  qsec vs am gear carb
+Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</code></pre>
+<pre class="r"><code>summary(mtcars)</code></pre>
+<pre><code>      mpg             cyl             disp             hp       
+ Min.   :10.40   Min.   :4.000   Min.   : 71.1   Min.   : 52.0  
+ 1st Qu.:15.43   1st Qu.:4.000   1st Qu.:120.8   1st Qu.: 96.5  
+ Median :19.20   Median :6.000   Median :196.3   Median :123.0  
+ Mean   :20.09   Mean   :6.188   Mean   :230.7   Mean   :146.7  
+ 3rd Qu.:22.80   3rd Qu.:8.000   3rd Qu.:326.0   3rd Qu.:180.0  
+ Max.   :33.90   Max.   :8.000   Max.   :472.0   Max.   :335.0  
+      drat             wt             qsec             vs        
+ Min.   :2.760   Min.   :1.513   Min.   :14.50   Min.   :0.0000  
+ 1st Qu.:3.080   1st Qu.:2.581   1st Qu.:16.89   1st Qu.:0.0000  
+ Median :3.695   Median :3.325   Median :17.71   Median :0.0000  
+ Mean   :3.597   Mean   :3.217   Mean   :17.85   Mean   :0.4375  
+ 3rd Qu.:3.920   3rd Qu.:3.610   3rd Qu.:18.90   3rd Qu.:1.0000  
+ Max.   :4.930   Max.   :5.424   Max.   :22.90   Max.   :1.0000  
+       am              gear            carb      
+ Min.   :0.0000   Min.   :3.000   Min.   :1.000  
+ 1st Qu.:0.0000   1st Qu.:3.000   1st Qu.:2.000  
+ Median :0.0000   Median :4.000   Median :2.000  
+ Mean   :0.4062   Mean   :3.688   Mean   :2.812  
+ 3rd Qu.:1.0000   3rd Qu.:4.000   3rd Qu.:4.000  
+ Max.   :1.0000   Max.   :5.000   Max.   :8.000  </code></pre>
+<pre class="r"><code>#Variáveis selecionadas
+dat&lt;-mtcars[,c(1,2,3,4,5,6,7,8)]</code></pre>
+<pre class="r"><code>#Verifica se há dado faltante
+is.na(dat)</code></pre>
+<pre><code>                      mpg   cyl  disp    hp  drat    wt  qsec    vs
+Mazda RX4           FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Mazda RX4 Wag       FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Datsun 710          FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Hornet 4 Drive      FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Hornet Sportabout   FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Valiant             FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Duster 360          FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Merc 240D           FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Merc 230            FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Merc 280            FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Merc 280C           FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Merc 450SE          FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Merc 450SL          FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Merc 450SLC         FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Cadillac Fleetwood  FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Lincoln Continental FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Chrysler Imperial   FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Fiat 128            FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Honda Civic         FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Toyota Corolla      FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Toyota Corona       FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Dodge Challenger    FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+AMC Javelin         FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Camaro Z28          FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Pontiac Firebird    FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Fiat X1-9           FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Porsche 914-2       FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Lotus Europa        FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Ford Pantera L      FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Ferrari Dino        FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Maserati Bora       FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+Volvo 142E          FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
+<pre class="r"><code># Verifica a quantidade de dados faltantes
+sum(is.na(dat))</code></pre>
+<pre><code>[1] 0</code></pre>
+<pre class="r"><code># Matriz de correlação
+res &lt;- cor(dat)
+res</code></pre>
+<pre><code>            mpg        cyl       disp         hp        drat         wt
+mpg   1.0000000 -0.8521620 -0.8475514 -0.7761684  0.68117191 -0.8676594
+cyl  -0.8521620  1.0000000  0.9020329  0.8324475 -0.69993811  0.7824958
+disp -0.8475514  0.9020329  1.0000000  0.7909486 -0.71021393  0.8879799
+hp   -0.7761684  0.8324475  0.7909486  1.0000000 -0.44875912  0.6587479
+drat  0.6811719 -0.6999381 -0.7102139 -0.4487591  1.00000000 -0.7124406
+wt   -0.8676594  0.7824958  0.8879799  0.6587479 -0.71244065  1.0000000
+qsec  0.4186840 -0.5912421 -0.4336979 -0.7082234  0.09120476 -0.1747159
+vs    0.6640389 -0.8108118 -0.7104159 -0.7230967  0.44027846 -0.5549157
+            qsec         vs
+mpg   0.41868403  0.6640389
+cyl  -0.59124207 -0.8108118
+disp -0.43369788 -0.7104159
+hp   -0.70822339 -0.7230967
+drat  0.09120476  0.4402785
+wt   -0.17471588 -0.5549157
+qsec  1.00000000  0.7445354
+vs    0.74453544  1.0000000</code></pre>
+<pre class="r"><code>round(res, 2)</code></pre>
+<pre><code>       mpg   cyl  disp    hp  drat    wt  qsec    vs
+mpg   1.00 -0.85 -0.85 -0.78  0.68 -0.87  0.42  0.66
+cyl  -0.85  1.00  0.90  0.83 -0.70  0.78 -0.59 -0.81
+disp -0.85  0.90  1.00  0.79 -0.71  0.89 -0.43 -0.71
+hp   -0.78  0.83  0.79  1.00 -0.45  0.66 -0.71 -0.72
+drat  0.68 -0.70 -0.71 -0.45  1.00 -0.71  0.09  0.44
+wt   -0.87  0.78  0.89  0.66 -0.71  1.00 -0.17 -0.55
+qsec  0.42 -0.59 -0.43 -0.71  0.09 -0.17  1.00  0.74
+vs    0.66 -0.81 -0.71 -0.72  0.44 -0.55  0.74  1.00</code></pre>
+<pre class="r"><code>library(corrplot)
+corrplot(cor(dat), method = &quot;circle&quot;)</code></pre>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<pre class="r"><code>corrplot(cor(mtcars), method =&#39;number&#39;)</code></pre>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-20-2.png" width="672" /></p>
 </div>
 </div>
 
