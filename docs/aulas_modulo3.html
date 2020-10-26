@@ -660,10 +660,17 @@ vs    0.66 -0.81 -0.71 -0.72  0.44 -0.55  0.74  1.00</code></pre>
 <pre class="r"><code># Biblioteca corrplot
 # install.packages(&quot;corrplot&quot;)
 library(corrplot)
-corrplot(cor(dat), method = &quot;circle&quot;)</code></pre>
+
+corrplot(cor(dat), method = &quot;circle&quot;) # method = &quot;circle&quot; é o default</code></pre>
 <p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <pre class="r"><code>corrplot(cor(dat), method =&#39;number&#39;)</code></pre>
 <p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-19-2.png" width="672" /></p>
+<pre class="r"><code>corrplot(cor(dat), type = &quot;upper&quot;)</code></pre>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-19-3.png" width="672" /></p>
+<pre class="r"><code>corrplot(cor(dat), type = &quot;lower&quot;)</code></pre>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-19-4.png" width="672" /></p>
+<pre class="r"><code>corrplot.mixed(cor(dat))</code></pre>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-19-5.png" width="672" /></p>
 </div>
 </div>
 

@@ -242,8 +242,12 @@ round(res, 2)
 # Biblioteca corrplot
 # install.packages("corrplot")
 library(corrplot)
-corrplot(cor(dat), method = "circle")
+
+corrplot(cor(dat), method = "circle") # method = "circle" é o default
 corrplot(cor(dat), method ='number')
+corrplot(cor(dat), type = "upper")
+corrplot(cor(dat), type = "lower")
+corrplot.mixed(cor(dat))
 ```
 
 
