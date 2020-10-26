@@ -387,8 +387,8 @@ $(document).ready(function () {
 
 <div id="correlação-271020" class="section level1">
 <h1>Correlação (27/10/20)</h1>
-<div id="simulação-exemplos-de-possíveis-correlações" class="section level2">
-<h2>Simulação: Exemplos de possíveis correlações</h2>
+<div id="exemplos-de-possíveis-correlações" class="section level2">
+<h2>Exemplos de possíveis correlações</h2>
 <pre class="r"><code># Diagrama de dispersão
 # Plotando todos no mesmo gráfico
 par(mfrow=c(2,3))
@@ -479,11 +479,11 @@ qt(alpha/2, df = n-2)</code></pre>
 <pre><code>[1] -2.306004</code></pre>
 <pre class="r"><code>qt(1-(alpha/2), df = n-2)</code></pre>
 <pre><code>[1] 2.306004</code></pre>
-<pre class="r"><code>#Fazendo o teste (t.calc&gt;t.crit)
+<pre class="r"><code># Fazendo o teste (t.calc&gt;t.crit)
 test.c(r,n) &gt; qt(alpha/2, df = n-2) | test.c(r,n) &lt; qt(1-(alpha/2), df = n-2) </code></pre>
 <pre><code>[1] TRUE</code></pre>
-<pre class="r"><code># Não aceita H0. Há correlação, com 95% de confiança.</code></pre>
-<pre class="r"><code>#Usando a função disponível no R
+<pre class="r"><code># Rejeitamos H0. Há correlação, com 95% de confiança.</code></pre>
+<pre class="r"><code># Usando a função disponível no R
 cor.test(distancia,consumo)</code></pre>
 <pre><code>
     Pearson&#39;s product-moment correlation
@@ -527,7 +527,7 @@ test.c(r,n)</code></pre>
 <div id="gráfico-para-duas-variáveis-no-eixo-y" class="section level2">
 <h2>Gráfico para duas variáveis no eixo y</h2>
 <pre class="r"><code># Construção do gráfico das variáveis com dois diferentes eixos y
-#dev.off() # Limpa padrão gráfico
+# dev.off() # Limpa padrão gráfico
 x&lt;-1:10 # Eixo x
 par(mar=c(5.1, 4.1, 4.1, 6.1)) # Estipula as margens para plotar o gráfico
 
@@ -555,8 +555,8 @@ mtext(&quot;Amostra&quot;,side=1,col=&quot;black&quot;,line=2)
 legend(&quot;topleft&quot;,legend=c(&quot;Consumo&quot;,&quot;Distância&quot;),
        text.col=c(&quot;black&quot;,&quot;red&quot;),pch=c(16,15),col=c(&quot;black&quot;,&quot;red&quot;))</code></pre>
 <p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-<pre class="r"><code>help(mtcars)</code></pre>
-<pre class="r"><code>head(mtcars)</code></pre>
+<pre class="r"><code># help(mtcars)
+head(mtcars)</code></pre>
 <pre><code>                   mpg cyl disp  hp drat    wt  qsec vs am gear carb
 Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
 Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
@@ -586,9 +586,9 @@ Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</code></pre
  Mean   :0.4062   Mean   :3.688   Mean   :2.812  
  3rd Qu.:1.0000   3rd Qu.:4.000   3rd Qu.:4.000  
  Max.   :1.0000   Max.   :5.000   Max.   :8.000  </code></pre>
-<pre class="r"><code>#Variáveis selecionadas
+<pre class="r"><code># Variáveis selecionadas
 dat&lt;-mtcars[,c(1,2,3,4,5,6,7,8)]</code></pre>
-<pre class="r"><code>#Verifica se há dado faltante
+<pre class="r"><code># Verifica se há dado faltante
 is.na(dat)</code></pre>
 <pre><code>                      mpg   cyl  disp    hp  drat    wt  qsec    vs
 Mazda RX4           FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
@@ -657,11 +657,13 @@ drat  0.68 -0.70 -0.71 -0.45  1.00 -0.71  0.09  0.44
 wt   -0.87  0.78  0.89  0.66 -0.71  1.00 -0.17 -0.55
 qsec  0.42 -0.59 -0.43 -0.71  0.09 -0.17  1.00  0.74
 vs    0.66 -0.81 -0.71 -0.72  0.44 -0.55  0.74  1.00</code></pre>
-<pre class="r"><code>library(corrplot)
+<pre class="r"><code># Biblioteca corrplot
+# install.packages(&quot;corrplot&quot;)
+library(corrplot)
 corrplot(cor(dat), method = &quot;circle&quot;)</code></pre>
-<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
-<pre class="r"><code>corrplot(cor(mtcars), method =&#39;number&#39;)</code></pre>
-<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-20-2.png" width="672" /></p>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<pre class="r"><code>corrplot(cor(dat), method =&#39;number&#39;)</code></pre>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-19-2.png" width="672" /></p>
 </div>
 </div>
 
