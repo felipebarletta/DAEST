@@ -475,12 +475,13 @@ n&lt;-10
 test.c(r,n)</code></pre>
 <pre><code>[1] 8.605305</code></pre>
 <pre class="r"><code>alpha&lt;-0.05
-qt(alpha/2, df = n-2)</code></pre>
-<pre><code>[1] -2.306004</code></pre>
-<pre class="r"><code>qt(1-(alpha/2), df = n-2)</code></pre>
-<pre><code>[1] 2.306004</code></pre>
-<pre class="r"><code># Fazendo o teste (t.calc&gt;t.crit)
-test.c(r,n) &gt; qt(alpha/2, df = n-2) | test.c(r,n) &lt; qt(1-(alpha/2), df = n-2) </code></pre>
+inf&lt;-qt(alpha/2, df = n-2)
+sup&lt;-qt(1-(alpha/2), df = n-2)</code></pre>
+<pre class="r"><code># Fazendo o teste de hipóteses (t.calc &gt; -t.crit | t.calc &lt; +t.crit)
+test.c(r,n) &lt; inf | test.c(r,n) &gt; sup</code></pre>
+<pre><code>[1] TRUE</code></pre>
+<pre class="r"><code># Fazendo o teste (|t.calc|&gt;|t.crit|)
+abs(test.c(r,n)) &gt; sup</code></pre>
 <pre><code>[1] TRUE</code></pre>
 <pre class="r"><code># Rejeitamos H0. Há correlação, com 95% de confiança.</code></pre>
 <pre class="r"><code># Usando a função disponível no R
@@ -523,6 +524,22 @@ r&lt;-cor(distancia,consumo)
 n&lt;-10
 test.c(r,n)</code></pre>
 <pre><code>[1] 8.387781</code></pre>
+<pre class="r"><code># Construção do teste graficamente
+x &lt;- seq(- 10, 10, by = 0.01) 
+fx&lt;-dt(x, df=n-2)
+plot(x,fx, type=&quot;l&quot;, col=&#39;black&#39;,cex.main=1.5, cex=1.5,cex.lab=1.2, cex.axis=1,bty=&quot;l&quot;)
+polygon(x = c(2.306004, seq(2.306004, 10, 0.01), 10),
+        y = c(0, dt(seq(2.306004, 10,  0.01),df=n-2), 0), 
+        col = &#39;blue&#39;,density=50)
+polygon(x = c(-10, seq(-10,-2.306004,  0.01), -2.306004),
+        y = c(0, dt(seq(-10,-2.306004,  0.01),df=n-2), 0), 
+        col = &#39;blue&#39;,density=50)
+abline(v=c(inf,sup), lty=3, col=&quot;blue&quot;)
+text(-4,0.1, &quot;Região de rejeição&quot;,col = &quot;blue&quot;,cex = 1,srt = 90)
+text(4,0.1, &quot;Região de rejeição&quot;,col = &quot;blue&quot;,cex = 1,srt = 90)
+abline(v=test.c(r,n), lty=3, col=&quot;red&quot;)
+text(8,0.1, &quot;t.calc &gt; t.crit&quot;,col = &quot;red&quot;,cex = 1,srt = 90)</code></pre>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 </div>
 <div id="gráfico-para-duas-variáveis-no-eixo-y" class="section level2">
 <h2>Gráfico para duas variáveis no eixo y</h2>
@@ -554,7 +571,7 @@ mtext(&quot;Amostra&quot;,side=1,col=&quot;black&quot;,line=2)
 ## Adicionando a legenda
 legend(&quot;topleft&quot;,legend=c(&quot;Consumo&quot;,&quot;Distância&quot;),
        text.col=c(&quot;black&quot;,&quot;red&quot;),pch=c(16,15),col=c(&quot;black&quot;,&quot;red&quot;))</code></pre>
-<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <pre class="r"><code># help(mtcars)
 head(mtcars)</code></pre>
 <pre><code>                   mpg cyl disp  hp drat    wt  qsec vs am gear carb
@@ -657,20 +674,34 @@ drat  0.68 -0.70 -0.71 -0.45  1.00 -0.71  0.09  0.44
 wt   -0.87  0.78  0.89  0.66 -0.71  1.00 -0.17 -0.55
 qsec  0.42 -0.59 -0.43 -0.71  0.09 -0.17  1.00  0.74
 vs    0.66 -0.81 -0.71 -0.72  0.44 -0.55  0.74  1.00</code></pre>
+</div>
+<div id="outras-formas-de-visualizar-a-correlação-entre-variáveis" class="section level2">
+<h2>Outras formas de visualizar a correlação entre variáveis</h2>
+<pre class="r"><code># Biblioteca PerformanceAnalytics
+library(&quot;PerformanceAnalytics&quot;)
+chart.Correlation(dat, histogram = TRUE)</code></pre>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<pre class="r"><code># Bibioteca GGally
+# install.packages(&quot;GGally&quot;)
+library(GGally)
+ggpairs(dat)</code></pre>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<pre class="r"><code>ggcorr(dat, nbreaks=8, palette=&#39;RdGy&#39;, label=TRUE, label_size=5, label_color=&#39;white&#39;)</code></pre>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-21-2.png" width="672" /></p>
 <pre class="r"><code># Biblioteca corrplot
 # install.packages(&quot;corrplot&quot;)
 library(corrplot)
 
 corrplot(cor(dat), method = &quot;circle&quot;) # method = &quot;circle&quot; é o default</code></pre>
-<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <pre class="r"><code>corrplot(cor(dat), method =&#39;number&#39;)</code></pre>
-<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-19-2.png" width="672" /></p>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-22-2.png" width="672" /></p>
 <pre class="r"><code>corrplot(cor(dat), type = &quot;upper&quot;)</code></pre>
-<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-19-3.png" width="672" /></p>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-22-3.png" width="672" /></p>
 <pre class="r"><code>corrplot(cor(dat), type = &quot;lower&quot;)</code></pre>
-<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-19-4.png" width="672" /></p>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-22-4.png" width="672" /></p>
 <pre class="r"><code>corrplot.mixed(cor(dat))</code></pre>
-<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-19-5.png" width="672" /></p>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-22-5.png" width="672" /></p>
 </div>
 </div>
 

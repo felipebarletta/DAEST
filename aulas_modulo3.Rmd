@@ -121,15 +121,17 @@ r<-0.95
 n<-10
 test.c(r,n)
 alpha<-0.05
-qt(alpha/2, df = n-2)
-qt(1-(alpha/2), df = n-2)
+inf<-qt(alpha/2, df = n-2)
+sup<-qt(1-(alpha/2), df = n-2)
 
 ```
 
 
 ```{r}
-# Fazendo o teste (t.calc>t.crit)
-test.c(r,n) > qt(alpha/2, df = n-2) | test.c(r,n) < qt(1-(alpha/2), df = n-2) 
+# Fazendo o teste de hipóteses (t.calc > -t.crit | t.calc < +t.crit)
+test.c(r,n) < inf | test.c(r,n) > sup
+# Fazendo o teste (|t.calc|>|t.crit|)
+abs(test.c(r,n)) > sup
 # Rejeitamos H0. Há correlação, com 95% de confiança.
 
 ```
@@ -169,6 +171,23 @@ r<-cor(distancia,consumo)
 n<-10
 test.c(r,n)
 
+```
+```{r}
+# Construção do teste graficamente
+x <- seq(- 10, 10, by = 0.01) 
+fx<-dt(x, df=n-2)
+plot(x,fx, type="l", col='black',cex.main=1.5, cex=1.5,cex.lab=1.2, cex.axis=1,bty="l")
+polygon(x = c(2.306004, seq(2.306004, 10, 0.01), 10),
+        y = c(0, dt(seq(2.306004, 10,  0.01),df=n-2), 0), 
+        col = 'blue',density=50)
+polygon(x = c(-10, seq(-10,-2.306004,  0.01), -2.306004),
+        y = c(0, dt(seq(-10,-2.306004,  0.01),df=n-2), 0), 
+        col = 'blue',density=50)
+abline(v=c(inf,sup), lty=3, col="blue")
+text(-4,0.1, "Região de rejeição",col = "blue",cex = 1,srt = 90)
+text(4,0.1, "Região de rejeição",col = "blue",cex = 1,srt = 90)
+abline(v=test.c(r,n), lty=3, col="red")
+text(8,0.1, "t.calc > t.crit",col = "red",cex = 1,srt = 90)
 ```
 
 
@@ -238,6 +257,25 @@ res <- cor(dat)
 res
 round(res, 2)
 ```
+
+## Outras formas de visualizar a correlação entre variáveis
+
+```{r}
+# Biblioteca PerformanceAnalytics
+library("PerformanceAnalytics")
+chart.Correlation(dat, histogram = TRUE)
+
+```
+
+```{r}
+# Bibioteca GGally
+# install.packages("GGally")
+library(GGally)
+ggpairs(dat)
+ggcorr(dat, nbreaks=8, palette='RdGy', label=TRUE, label_size=5, label_color='white')
+```
+
+
 ```{r}
 # Biblioteca corrplot
 # install.packages("corrplot")
