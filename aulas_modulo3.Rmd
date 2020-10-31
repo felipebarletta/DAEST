@@ -288,5 +288,144 @@ corrplot(cor(dat), type = "lower")
 corrplot.mixed(cor(dat))
 ```
 
+# Regressão (03/11/20)
+
+## Exemplo Renda x Despesa
+
+```{r,fig.height=6,fig.width=9}
+Renda<-c(2,4,6,5,3,7,6,7,5,4,3,2,1)
+Despesas<-c(1,2,3,3,1,3,3.5,4,2.5,2,1.5,1,1)
+base<-data.frame(Renda,Despesas)
+plot(base$Renda, base$Despesas, main= "Renda x despesas", ylab= "Despesas", xlab="Renda", ylim=c(0,5),xlim=c(0,8),
+     pch=16, col="blue",cex.main=1.5, cex=1.5,cex.lab=1.2, cex.axis=1,bty="l")
+abline(h=seq(0,5,0.5), v=seq(0,8,0.5), lty=3, col="gray")
+lines(0:8,rep(mean(base$Despesas),9), col="black")
+lines(0:8,(0:8)/2, col="green")
+lines(0:8,0.05233+0.50581*0:8, col="red")
+legend("topleft",legend=c("Modelo 1: Y=2.2 + e","Modelo 2: Y=2X + e",
+                          "Modelo 3: Y=0.05233+0.50581x + e"),
+       text.col=c("black","green","red"),col=c("black","green","red"))
+
+model1<-rep(mean(base$Renda),length(base$Renda))
+model2<-base$Renda/2
+model3<-0.05233+0.50581*base$Renda
+
+sum((base$Despesas-model1)^2)
+sum((base$Despesas-model2)^2)
+sum((base$Despesas-model3)^2)
+
+```
+
+## Exercício 1 continuação
+
+```{r}
+# x:Distancia y:Consumo
+# Construindo a função
+Distancia<-scan(text="20.00 60.00 15.00 45.00 35.00 80.00 70.00 73.00 28.00 85.00")
+Consumo<-scan(text="1.33 5.45 1.66 3.46 2.92 6.15 4.11 5.00 2.95 6.54")
+sumxy<-sum(Distancia*Consumo)
+xbarra<-mean(Distancia)
+ybarra<-mean(Consumo)
+sumx2<-sum(Distancia^2)
+n<-length(Distancia)
+beta1<-(sumxy-n*xbarra*ybarra)/(sumx2-n*(xbarra^2))
+beta0<-ybarra-beta1*xbarra
+beta1
+beta0
+
+estima<-function(Distancia,Consumo){
+  sumxy<-sum(Distancia*Consumo)
+  xbarra<-mean(Distancia)
+  ybarra<-mean(Consumo)
+  sumx2<-sum(Distancia^2)
+  n<-length(Distancia)
+  beta1<-(sumxy-n*xbarra*ybarra)/(sumx2-n*(xbarra^2))
+  beta0<-ybarra-beta1*xbarra
+  return(list(Beta0=beta0,Beta1=beta1))
+}
+
+estima(Distancia,Consumo)
+# Resultado pela função do R y~x
+model<-lm(Consumo~Distancia)
+
+# Coeficientes do modelo
+coef(model)
+#Valores preditos
+predict(model)
+#Resíduos
+residuals(model)
+abs(predict(model)-Consumo)
+# A variabilidade em Y causada por uma unidade em X é de 0.06625223
+# Gráfico de dispersão com o modelo ajustado
+plot(Distancia, Consumo, main="Consumo x Distância", ylab= "Consumo (l)", xlab="Distância (km)",
+     pch=16, col="blue",cex.main=1.5, cex=1.5,cex.lab=1.2, cex.axis=1,bty="l")
+abline(h=seq(0,7,1), v=seq(0,90, 10), lty=3, col="gray")
+abline(model,col="red") 
+text(20,5,"Y=0.57+0.066X+e", col="red")
+
+# Predição do consumo de combustível para uma distância de 37.00 km
+
+estima<-function(Distancia,Consumo,valor){
+  sumxy<-sum(Distancia*Consumo)
+  xbarra<-mean(Distancia)
+  ybarra<-mean(Consumo)
+  sumx2<-sum(Distancia^2)
+  n<-length(Distancia)
+  beta1<-(sumxy-n*xbarra*ybarra)/(sumx2-n*(xbarra^2))
+  beta0<-ybarra-beta1*xbarra
+  pred<-beta0+beta1*valor
+  return(list(Beta0=beta0,Beta1=beta1,Predição=pred))
+}
+estima(Distancia, Consumo, 37.00)
+
+```
+## Quarteto Asconbe
+
+```{r}
+# Este exemplo mostra a importância da visualização dos dados.
+# O quarteto Anscombes consiste em 4 conjuntos de dados x, y que foram publicados por Francis Anscombe em um paper de 1973.
+head(anscombe)
+# Média
+sapply(1:8, function(x) mean(anscombe[ , x]))
+# Variância
+sapply(1:8, function(x) var(anscombe[ , x]))
+# Coorelação
+sapply(1:4, function(x) cor(anscombe[ , x], anscombe[ , x+4]))
+
+par(mfrow=c(2,2))
+plot(y1~x1,anscombe,main = "y1 ~ x1",col="blue",pch=16)
+plot(y2~x2,anscombe,main = "y2 ~ x2",col="blue",pch=16)
+plot(y3~x3,anscombe,main = "y3 ~ x3",col="blue",pch=16)
+plot(y4~x4,anscombe,main = "y4 ~ x4",col="blue",pch=16)
+model1<-lm(y1~x1,anscombe)
+model1
+model2<-lm(y2~x2,anscombe)
+model2
+model3<-lm(y3~x3,anscombe)
+model3
+model4<-lm(y4~x4,anscombe)
+model4
+par(mfrow=c(2,2))
+plot(y1~x1,anscombe,main = "y1 ~ x1",col="blue",pch=16)
+abline(model1, col="red")
+plot(y2~x2,anscombe,main = "y2 ~ x2",col="blue",pch=16)
+abline(model2, col="red")
+plot(y3~x3,anscombe,main = "y3 ~ x3",col="blue",pch=16)
+abline(model3, col="red")
+plot(y4~x4,anscombe,main = "y4 ~ x4",col="blue",pch=16)
+abline(model4, col="red")
+
+```
+```{r}
+#Livro: Noções de probabilidade e Estatística. Marcos N. Magalhães e Antonio Carlos P. Lima. 7 #edição, 2015. 
+url <- "https://www.ime.usp.br/~noproest/dados/questionario.txt"
+filename <- "questionario.txt" 
+downloader::download(url, destfile=filename)
+dat<-read.table("questionario.txt",head=T)
+head(dat)
+
+library(ggplot2)
+#ggplot(data=dados,aes(y=Y,x=X))+geom_point()
+```
 
 

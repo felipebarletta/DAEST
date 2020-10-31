@@ -38,6 +38,8 @@ navbar:
         href: income800.csv
       - text: "hospital.csv"
         href: hospital.csv  
+      - text: "questionario.txt"
+        href: questionario.txt
     - text: "Referências"
       href: referencias.html
     - text: "Recursos computacionais"

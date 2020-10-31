@@ -327,6 +327,9 @@ $(document).ready(function () {
     <li>
       <a href="hospital.csv">hospital.csv</a>
     </li>
+    <li>
+      <a href="questionario.txt">questionario.txt</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -702,6 +705,214 @@ corrplot(cor(dat), method = &quot;circle&quot;) # method = &quot;circle&quot; é
 <p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-22-4.png" width="672" /></p>
 <pre class="r"><code>corrplot.mixed(cor(dat))</code></pre>
 <p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-22-5.png" width="672" /></p>
+</div>
+</div>
+<div id="regressão-031120" class="section level1">
+<h1>Regressão (03/11/20)</h1>
+<div id="exemplo-renda-x-despesa" class="section level2">
+<h2>Exemplo Renda x Despesa</h2>
+<pre class="r"><code>Renda&lt;-c(2,4,6,5,3,7,6,7,5,4,3,2,1)
+Despesas&lt;-c(1,2,3,3,1,3,3.5,4,2.5,2,1.5,1,1)
+base&lt;-data.frame(Renda,Despesas)
+plot(base$Renda, base$Despesas, main= &quot;Renda x despesas&quot;, ylab= &quot;Despesas&quot;, xlab=&quot;Renda&quot;, ylim=c(0,5),xlim=c(0,8),
+     pch=16, col=&quot;blue&quot;,cex.main=1.5, cex=1.5,cex.lab=1.2, cex.axis=1,bty=&quot;l&quot;)
+abline(h=seq(0,5,0.5), v=seq(0,8,0.5), lty=3, col=&quot;gray&quot;)
+lines(0:8,rep(mean(base$Despesas),9), col=&quot;black&quot;)
+lines(0:8,(0:8)/2, col=&quot;green&quot;)
+lines(0:8,0.05233+0.50581*0:8, col=&quot;red&quot;)
+legend(&quot;topleft&quot;,legend=c(&quot;Modelo 1: Y=2.2 + e&quot;,&quot;Modelo 2: Y=2X + e&quot;,
+                          &quot;Modelo 3: Y=0.05233+0.50581x + e&quot;),
+       text.col=c(&quot;black&quot;,&quot;green&quot;,&quot;red&quot;),col=c(&quot;black&quot;,&quot;green&quot;,&quot;red&quot;))</code></pre>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-23-1.png" width="864" /></p>
+<pre class="r"><code>model1&lt;-rep(mean(base$Renda),length(base$Renda))
+model2&lt;-base$Renda/2
+model3&lt;-0.05233+0.50581*base$Renda
+
+sum((base$Despesas-model1)^2)</code></pre>
+<pre><code>[1] 67.28846</code></pre>
+<pre class="r"><code>sum((base$Despesas-model2)^2)</code></pre>
+<pre><code>[1] 1.5</code></pre>
+<pre class="r"><code>sum((base$Despesas-model3)^2)</code></pre>
+<pre><code>[1] 1.421512</code></pre>
+</div>
+<div id="exercício-1-continuação" class="section level2">
+<h2>Exercício 1 continuação</h2>
+<pre class="r"><code># x:Distancia y:Consumo
+# Construindo a função
+Distancia&lt;-scan(text=&quot;20.00 60.00 15.00 45.00 35.00 80.00 70.00 73.00 28.00 85.00&quot;)
+Consumo&lt;-scan(text=&quot;1.33 5.45 1.66 3.46 2.92 6.15 4.11 5.00 2.95 6.54&quot;)
+sumxy&lt;-sum(Distancia*Consumo)
+xbarra&lt;-mean(Distancia)
+ybarra&lt;-mean(Consumo)
+sumx2&lt;-sum(Distancia^2)
+n&lt;-length(Distancia)
+beta1&lt;-(sumxy-n*xbarra*ybarra)/(sumx2-n*(xbarra^2))
+beta0&lt;-ybarra-beta1*xbarra
+beta1</code></pre>
+<pre><code>[1] 0.06625223</code></pre>
+<pre class="r"><code>beta0</code></pre>
+<pre><code>[1] 0.5715111</code></pre>
+<pre class="r"><code>estima&lt;-function(Distancia,Consumo){
+  sumxy&lt;-sum(Distancia*Consumo)
+  xbarra&lt;-mean(Distancia)
+  ybarra&lt;-mean(Consumo)
+  sumx2&lt;-sum(Distancia^2)
+  n&lt;-length(Distancia)
+  beta1&lt;-(sumxy-n*xbarra*ybarra)/(sumx2-n*(xbarra^2))
+  beta0&lt;-ybarra-beta1*xbarra
+  return(list(Beta0=beta0,Beta1=beta1))
+}
+
+estima(Distancia,Consumo)</code></pre>
+<pre><code>$Beta0
+[1] 0.5715111
+
+$Beta1
+[1] 0.06625223</code></pre>
+<pre class="r"><code># Resultado pela função do R y~x
+model&lt;-lm(Consumo~Distancia)
+
+# Coeficientes do modelo
+coef(model)</code></pre>
+<pre><code>(Intercept)   Distancia 
+ 0.57151111  0.06625223 </code></pre>
+<pre class="r"><code>#Valores preditos
+predict(model)</code></pre>
+<pre><code>       1        2        3        4        5        6        7        8 
+1.896556 4.546645 1.565295 3.552861 2.890339 5.871689 5.209167 5.407924 
+       9       10 
+2.426574 6.202951 </code></pre>
+<pre class="r"><code>#Resíduos
+residuals(model)</code></pre>
+<pre><code>          1           2           3           4           5           6 
+-0.56655568  0.90335516  0.09470546 -0.09286140  0.02966088  0.27831059 
+          7           8           9          10 
+-1.09916712 -0.40792381  0.52342649  0.33704944 </code></pre>
+<pre class="r"><code>abs(predict(model)-Consumo)</code></pre>
+<pre><code>         1          2          3          4          5          6          7 
+0.56655568 0.90335516 0.09470546 0.09286140 0.02966088 0.27831059 1.09916712 
+         8          9         10 
+0.40792381 0.52342649 0.33704944 </code></pre>
+<pre class="r"><code># A variabilidade em Y causada por uma unidade em X é de 0.06625223
+# Gráfico de dispersão com o modelo ajustado
+plot(Distancia, Consumo, main=&quot;Consumo x Distância&quot;, ylab= &quot;Consumo (l)&quot;, xlab=&quot;Distância (km)&quot;,
+     pch=16, col=&quot;blue&quot;,cex.main=1.5, cex=1.5,cex.lab=1.2, cex.axis=1,bty=&quot;l&quot;)
+abline(h=seq(0,7,1), v=seq(0,90, 10), lty=3, col=&quot;gray&quot;)
+abline(model,col=&quot;red&quot;) 
+text(20,5,&quot;Y=0.57+0.066X+e&quot;, col=&quot;red&quot;)</code></pre>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<pre class="r"><code># Predição do consumo de combustível para uma distância de 37.00 km
+
+estima&lt;-function(Distancia,Consumo,valor){
+  sumxy&lt;-sum(Distancia*Consumo)
+  xbarra&lt;-mean(Distancia)
+  ybarra&lt;-mean(Consumo)
+  sumx2&lt;-sum(Distancia^2)
+  n&lt;-length(Distancia)
+  beta1&lt;-(sumxy-n*xbarra*ybarra)/(sumx2-n*(xbarra^2))
+  beta0&lt;-ybarra-beta1*xbarra
+  pred&lt;-beta0+beta1*valor
+  return(list(Beta0=beta0,Beta1=beta1,Predição=pred))
+}
+estima(Distancia, Consumo, 37.00)</code></pre>
+<pre><code>$Beta0
+[1] 0.5715111
+
+$Beta1
+[1] 0.06625223
+
+$Predição
+[1] 3.022844</code></pre>
+</div>
+<div id="quarteto-asconbe" class="section level2">
+<h2>Quarteto Asconbe</h2>
+<pre class="r"><code># Este exemplo mostra a importância da visualização dos dados.
+# O quarteto Anscombes consiste em 4 conjuntos de dados x, y que foram publicados por Francis Anscombe em um paper de 1973.
+head(anscombe)</code></pre>
+<pre><code>  x1 x2 x3 x4   y1   y2    y3   y4
+1 10 10 10  8 8.04 9.14  7.46 6.58
+2  8  8  8  8 6.95 8.14  6.77 5.76
+3 13 13 13  8 7.58 8.74 12.74 7.71
+4  9  9  9  8 8.81 8.77  7.11 8.84
+5 11 11 11  8 8.33 9.26  7.81 8.47
+6 14 14 14  8 9.96 8.10  8.84 7.04</code></pre>
+<pre class="r"><code># Média
+sapply(1:8, function(x) mean(anscombe[ , x]))</code></pre>
+<pre><code>[1] 9.000000 9.000000 9.000000 9.000000 7.500909 7.500909 7.500000 7.500909</code></pre>
+<pre class="r"><code># Variância
+sapply(1:8, function(x) var(anscombe[ , x]))</code></pre>
+<pre><code>[1] 11.000000 11.000000 11.000000 11.000000  4.127269  4.127629  4.122620
+[8]  4.123249</code></pre>
+<pre class="r"><code># Coorelação
+sapply(1:4, function(x) cor(anscombe[ , x], anscombe[ , x+4]))</code></pre>
+<pre><code>[1] 0.8164205 0.8162365 0.8162867 0.8165214</code></pre>
+<pre class="r"><code>par(mfrow=c(2,2))
+plot(y1~x1,anscombe,main = &quot;y1 ~ x1&quot;,col=&quot;blue&quot;,pch=16)
+plot(y2~x2,anscombe,main = &quot;y2 ~ x2&quot;,col=&quot;blue&quot;,pch=16)
+plot(y3~x3,anscombe,main = &quot;y3 ~ x3&quot;,col=&quot;blue&quot;,pch=16)
+plot(y4~x4,anscombe,main = &quot;y4 ~ x4&quot;,col=&quot;blue&quot;,pch=16)</code></pre>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<pre class="r"><code>model1&lt;-lm(y1~x1,anscombe)
+model1</code></pre>
+<pre><code>
+Call:
+lm(formula = y1 ~ x1, data = anscombe)
+
+Coefficients:
+(Intercept)           x1  
+     3.0001       0.5001  </code></pre>
+<pre class="r"><code>model2&lt;-lm(y2~x2,anscombe)
+model2</code></pre>
+<pre><code>
+Call:
+lm(formula = y2 ~ x2, data = anscombe)
+
+Coefficients:
+(Intercept)           x2  
+      3.001        0.500  </code></pre>
+<pre class="r"><code>model3&lt;-lm(y3~x3,anscombe)
+model3</code></pre>
+<pre><code>
+Call:
+lm(formula = y3 ~ x3, data = anscombe)
+
+Coefficients:
+(Intercept)           x3  
+     3.0025       0.4997  </code></pre>
+<pre class="r"><code>model4&lt;-lm(y4~x4,anscombe)
+model4</code></pre>
+<pre><code>
+Call:
+lm(formula = y4 ~ x4, data = anscombe)
+
+Coefficients:
+(Intercept)           x4  
+     3.0017       0.4999  </code></pre>
+<pre class="r"><code>par(mfrow=c(2,2))
+plot(y1~x1,anscombe,main = &quot;y1 ~ x1&quot;,col=&quot;blue&quot;,pch=16)
+abline(model1, col=&quot;red&quot;)
+plot(y2~x2,anscombe,main = &quot;y2 ~ x2&quot;,col=&quot;blue&quot;,pch=16)
+abline(model2, col=&quot;red&quot;)
+plot(y3~x3,anscombe,main = &quot;y3 ~ x3&quot;,col=&quot;blue&quot;,pch=16)
+abline(model3, col=&quot;red&quot;)
+plot(y4~x4,anscombe,main = &quot;y4 ~ x4&quot;,col=&quot;blue&quot;,pch=16)
+abline(model4, col=&quot;red&quot;)</code></pre>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-25-2.png" width="672" /></p>
+<pre class="r"><code>#Livro: Noções de probabilidade e Estatística. Marcos N. Magalhães e Antonio Carlos P. Lima. 7 #edição, 2015. 
+url &lt;- &quot;https://www.ime.usp.br/~noproest/dados/questionario.txt&quot;
+filename &lt;- &quot;questionario.txt&quot; 
+downloader::download(url, destfile=filename)
+dat&lt;-read.table(&quot;questionario.txt&quot;,head=T)
+head(dat)</code></pre>
+<pre><code>  Id Turma Sexo Idade  Alt Peso Filhos Fuma Toler Exerc Cine OpCine TV OpTV
+1  1     A    F    17 1.60 60.5      2  NAO     P     0    1      B 16    R
+2  2     A    F    18 1.69 55.0      1  NAO     M     0    1      B  7    R
+3  3     A    M    18 1.85 72.8      2  NAO     P     5    2      M 15    R
+4  4     A    M    25 1.85 80.9      2  NAO     P     5    2      B 20    R
+5  5     A    F    19 1.58 55.0      1  NAO     M     2    2      B  5    R
+6  6     A    M    19 1.76 60.0      3  NAO     M     2    1      B  2    R</code></pre>
+<pre class="r"><code>library(ggplot2)
+#ggplot(data=dados,aes(y=Y,x=X))+geom_point()</code></pre>
 </div>
 </div>
 
