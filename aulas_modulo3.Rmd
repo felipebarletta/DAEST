@@ -288,7 +288,7 @@ corrplot(cor(dat), type = "lower")
 corrplot.mixed(cor(dat))
 ```
 
-# Regressão (03/11/20)
+# Regressão Linear Simples (03/11/20)
 
 ## Exemplo Renda x Despesa
 
@@ -296,23 +296,28 @@ corrplot.mixed(cor(dat))
 Renda<-c(2,4,6,5,3,7,6,7,5,4,3,2,1)
 Despesas<-c(1,2,3,3,1,3,3.5,4,2.5,2,1.5,1,1)
 base<-data.frame(Renda,Despesas)
-plot(base$Renda, base$Despesas, main= "Renda x despesas", ylab= "Despesas", xlab="Renda", ylim=c(0,5),xlim=c(0,8),
-     pch=16, col="blue",cex.main=1.5, cex=1.5,cex.lab=1.2, cex.axis=1,bty="l")
+head(base)
+plot(base$Renda, base$Despesas, main= "Renda x despesas", ylab= "Despesas", xlab="Renda", ylim=c(0,5),xlim=c(0,8), pch=16, col="blue",cex.main=1.5, cex=1.5,cex.lab=1.2, 
+     cex.axis=1,bty="l")
 abline(h=seq(0,5,0.5), v=seq(0,8,0.5), lty=3, col="gray")
 lines(0:8,rep(mean(base$Despesas),9), col="black")
 lines(0:8,(0:8)/2, col="green")
 lines(0:8,0.05233+0.50581*0:8, col="red")
-legend("topleft",legend=c("Modelo 1: Y=2.2 + e","Modelo 2: Y=2X + e",
-                          "Modelo 3: Y=0.05233+0.50581x + e"),
+legend("topleft",legend=c("Modelo 1: Y=2.2 + e","Modelo 2: Y=X/2 + e",
+                          "Modelo 3: Y=0.05233+0.50581X + e"),
        text.col=c("black","green","red"),col=c("black","green","red"))
 
+# Modelos possíveis
 model1<-rep(mean(base$Renda),length(base$Renda))
+model1
 model2<-base$Renda/2
+model2
 model3<-0.05233+0.50581*base$Renda
-
-sum((base$Despesas-model1)^2)
-sum((base$Despesas-model2)^2)
-sum((base$Despesas-model3)^2)
+model3
+# Erro quadrático médio
+sum((base$Despesas-model1)^2)/length(base$Despesas)
+sum((base$Despesas-model2)^2)/length(base$Despesas)
+sum((base$Despesas-model3)^2)/length(base$Despesas)
 
 ```
 
@@ -320,7 +325,7 @@ sum((base$Despesas-model3)^2)
 
 ```{r}
 # x:Distancia y:Consumo
-# Construindo a função
+# Construindo a fórmula
 Distancia<-scan(text="20.00 60.00 15.00 45.00 35.00 80.00 70.00 73.00 28.00 85.00")
 Consumo<-scan(text="1.33 5.45 1.66 3.46 2.92 6.15 4.11 5.00 2.95 6.54")
 sumxy<-sum(Distancia*Consumo)
@@ -333,6 +338,7 @@ beta0<-ybarra-beta1*xbarra
 beta1
 beta0
 
+# Construindo a função
 estima<-function(Distancia,Consumo){
   sumxy<-sum(Distancia*Consumo)
   xbarra<-mean(Distancia)
@@ -350,21 +356,36 @@ model<-lm(Consumo~Distancia)
 
 # Coeficientes do modelo
 coef(model)
-#Valores preditos
+# Valores preditos
 predict(model)
-#Resíduos
+# Resíduos
 residuals(model)
-abs(predict(model)-Consumo)
+#Resíduos
+predict(model)-Consumo
+# Avaliação dos resíduos pelo gráfico
+plot(resid(model) ~ predict(model),pch=16, ylab= "Resíduo", xlab="Y esperado",
+     cex.main=1.5, cex=1.5,cex.lab=1.2, cex.axis=1,bty="l") # Resíduos vs. Y esperado
+abline(0,0,col="red")
+# Avaliação gráfica
+par(mfrow=c(2,2))
+plot(model)
+
 # A variabilidade em Y causada por uma unidade em X é de 0.06625223
+#Limpa padrão gráfico
+dev.off()
+```
+```{r}
 # Gráfico de dispersão com o modelo ajustado
 plot(Distancia, Consumo, main="Consumo x Distância", ylab= "Consumo (l)", xlab="Distância (km)",
      pch=16, col="blue",cex.main=1.5, cex=1.5,cex.lab=1.2, cex.axis=1,bty="l")
 abline(h=seq(0,7,1), v=seq(0,90, 10), lty=3, col="gray")
 abline(model,col="red") 
-text(20,5,"Y=0.57+0.066X+e", col="red")
+text(30,5,"Y=0.57+0.066X+e", col="red")
 
+```
+```{r}
 # Predição do consumo de combustível para uma distância de 37.00 km
-
+#Acrescenta predição na função
 estima<-function(Distancia,Consumo,valor){
   sumxy<-sum(Distancia*Consumo)
   xbarra<-mean(Distancia)
@@ -379,11 +400,39 @@ estima<-function(Distancia,Consumo,valor){
 estima(Distancia, Consumo, 37.00)
 
 ```
+```{r}
+# Supondo um ponto discrepante
+cor(Distancia,Consumo) #Anterior a inclusão de outlier
+Distancia<-c(Distancia,40)
+Consumo<-c(Consumo,20)
+cor(Distancia,Consumo)
+plot(Distancia,Consumo, main="Consumo x Distância", ylab= "Consumo (l)", xlab="Distância (km)",
+     pch=16, col="blue",cex.main=1.5, cex=1.5,cex.lab=1.2, cex.axis=1,bty="l")
+abline(h=seq(0,20,1), v=seq(0,90, 10), lty=3, col="gray")
+model2<-lm(Consumo~Distancia)
+abline(model,col="red")
+abline(model2,col="blue")
+# Supondo mais um ponto discrepante
+Distancia<-c(Distancia,10)
+Consumo<-c(Consumo,15)
+cor(Distancia,Consumo)
+# Gráfico com os pontos discrepantes e o ajuste
+plot(Distancia,Consumo, main="Consumo x Distância", ylab= "Consumo (l)", xlab="Distância (km)",
+     pch=16, col="blue",cex.main=1.5, cex=1.5,cex.lab=1.2, cex.axis=1,bty="l")
+abline(h=seq(0,20,1), v=seq(0,90, 10), lty=3, col="gray")
+model3<-lm(Consumo~Distancia)
+abline(model,col="red") 
+abline(model2,col="blue") # Incluindo um dado doscrepante
+abline(model3,col="green") # Incluindo dois dados doscrepantes
+par(mfrow=c(2,2))
+plot(model3)
+```
+
 ## Quarteto Asconbe
 
 ```{r}
 # Este exemplo mostra a importância da visualização dos dados.
-# O quarteto Anscombes consiste em 4 conjuntos de dados x, y que foram publicados por Francis Anscombe em um paper de 1973.
+# O quarteto Anscombes contém 4 conjuntos de dados x, y, Francis Anscombe publicou um paper a respeito em 1973.
 head(anscombe)
 # Média
 sapply(1:8, function(x) mean(anscombe[ , x]))
@@ -418,14 +467,41 @@ abline(model4, col="red")
 ```
 ```{r}
 #Livro: Noções de probabilidade e Estatística. Marcos N. Magalhães e Antonio Carlos P. Lima. 7 #edição, 2015. 
-url <- "https://www.ime.usp.br/~noproest/dados/questionario.txt"
+url <- "https://felipebarletta.github.io/DAEST/questionario.txt"
 filename <- "questionario.txt" 
 downloader::download(url, destfile=filename)
 dat<-read.table("questionario.txt",head=T)
 head(dat)
-
+#install.packages("ggplot2")
 library(ggplot2)
-#ggplot(data=dados,aes(y=Y,x=X))+geom_point()
+ggplot(data=dat,aes(y=Peso,x=Alt))+
+  geom_point(aes(color = factor(Sexo)))+
+  stat_smooth(method = "lm",
+        col = "black",
+        se = FALSE,
+        size = 1)+
+  labs( x = "Altura",
+        y = "Peso",
+        color = "Sexo",
+        title = "Peso x Altura"
+    )
+
+# Qualidade do ajuste pelo ggplot
+mod<-lm(Peso~Alt,data=dat)
+# Resíduos vs predito
+ggplot(mod, aes(.fitted, .resid)) +
+  geom_point() +
+  geom_hline(yintercept = 0) +
+  geom_smooth(se = FALSE)
+# Resíduos padronizado vs predito
+ggplot(mod, aes(.fitted, sqrt(abs(.stdresid)))) +
+  geom_point() +
+  geom_smooth(se = FALSE)
+# Normalidade
+ggplot(mod) +
+  stat_qq(aes(sample = .stdresid)) +
+  geom_abline()
+
 ```
 
 
