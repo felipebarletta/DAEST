@@ -990,7 +990,7 @@ ggplot(data=dat,aes(y=Peso,x=Alt))+
 <p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 <pre class="r"><code># Qualidade do ajuste pelo ggplot
 mod&lt;-lm(Peso~Alt,data=dat)
-# Resíduos vs predito
+# Resíduos vs predito.
 ggplot(mod, aes(.fitted, .resid)) +
   geom_point() +
   geom_hline(yintercept = 0) +

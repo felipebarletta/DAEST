@@ -488,7 +488,7 @@ ggplot(data=dat,aes(y=Peso,x=Alt))+
 
 # Qualidade do ajuste pelo ggplot
 mod<-lm(Peso~Alt,data=dat)
-# Resíduos vs predito
+# Resíduos vs predito.
 ggplot(mod, aes(.fitted, .resid)) +
   geom_point() +
   geom_hline(yintercept = 0) +
