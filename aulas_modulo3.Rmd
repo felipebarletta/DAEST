@@ -31,7 +31,7 @@ plot(x, y1, main = "Correlação perfeita positiva",ylab = "y",col="blue")
 # Correlação perfeita negativa
 x<-seq(-100, 100)
 y2<- -x*2.53
-plot(x, y2, main = "Correlação perfeita positiva",ylab = "y",col="blue")
+plot(x, y2, main = "Correlação perfeita negativa",ylab = "y",col="blue")
 
 # Alta correlação positiva
 y3<-rnorm(y1,y1,20)
