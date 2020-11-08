@@ -40,8 +40,8 @@ navbar:
         href: hospital.csv  
       - text: "questionario.txt"
         href: questionario.txt
-      - text: "total.csv"
-        href: total.csv
+      - text: "base.csv"
+        href: base.csv
     - text: "Referências"
       href: referencias.html
     - text: "Recursos computacionais"
