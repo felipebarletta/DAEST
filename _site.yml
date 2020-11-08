@@ -43,6 +43,7 @@ navbar:
       - text: "total.csv"
         href: total.csv
         
+        
     - text: "Referências"
       href: referencias.html
     - text: "Recursos computacionais"
