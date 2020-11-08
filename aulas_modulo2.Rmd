@@ -1,5 +1,5 @@
 ---
-title: "Módulo 2"
+title: "Módulo 2."
 author: "Prof.ª Angélica Maria Tortola Ribeiro"
 output:
   html_document:
