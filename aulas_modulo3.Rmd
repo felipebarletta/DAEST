@@ -519,22 +519,21 @@ dados$Grupo<-factor(dados$Grupo)
 summary(factor(dados$Grupo))
 
 # Verificando os pressupostos do teste
+# Verificando a homocedasticidade
+mod<-lm(dados$PP~dados$Grupo)
+boxplot(mod$res~dados$Grupo, ylab="Resíduos",xlab="Grupos")
+
+# Teste de Bartlett:
+bartlett.test(mod$res~dados$Grupo)
 
 #Verificação gráfica
 library(car)
 qqPlot(dados$PP, dist='norm')
-plot.
-qqline(dados$PP)
 
 # Teste para a normalidade
 shapiro.test(dados$PP)
 
-# Verificando a homocedasticidade
-mod<-lm(dados$PP~dados$Grupo)
-boxplot(residuals(mod)~dados$Grupo)
 
-# Teste de Bartlett:
-bartlett.test(dados$PP~dados$Grupo)
 
 grupo<-c("1","2","3")
 n<-sapply(grupo, function(x) length(dados[dados$Grupo==x,names(dados)== "PP"]))
