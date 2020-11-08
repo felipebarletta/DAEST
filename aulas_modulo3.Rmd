@@ -508,10 +508,12 @@ ggplot(mod) +
 ```{r}
 #Os dados a seguir são de um experimento em que se deseja verificar se há diferença entre as práticas parentais com relação a três grupos de crianças. O primeiro grupo são de crianças com síndrome de down, o segundo grupo são de crianças com síndrome de down em que os pais recebem orientção sobre prtáricas parentais para este grupo especial e o terciro grupo de crianças não possuem síndrome de down. Para medir as práticas parentais há um instrumento psicológico que gera um escore em que os resultados estão guardados na variável PP.
 
-url <- "https://felipebarletta.github.io/DAEST/total.csv"
-filename <- "total.csv" 
-downloader::download(url, destfile=filename)
-dados<-read.csv("total.csv",head=T,sep=";")
+
+#url <- "https://felipebarletta.github.io/DAEST/total.csv"
+#filename <- "total.csv" 
+#downloader::download(url, destfile=filename)
+#dados<-read.csv("total.csv",head=T,sep=";")
+dados<-read.csv2('http://www.leg.ufpr.br/lib/exe/fetch.php/pessoais:total.csv', h=T)
 
 #Verifica a estrutura dos dados 
 str(dados)
