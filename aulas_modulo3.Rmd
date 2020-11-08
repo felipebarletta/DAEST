@@ -467,9 +467,9 @@ abline(model4, col="red")
 ```
 ```{r}
 #Livro: Noções de probabilidade e Estatística. Marcos N. Magalhães e Antonio Carlos P. Lima. 7 #edição, 2015. 
-url <- "https://felipebarletta.github.io/DAEST/questionario.txt"
-filename <- "questionario.txt" 
-downloader::download(url, destfile=filename)
+#url <- "https://felipebarletta.github.io/DAEST/questionario.txt"
+#filename <- "questionario.txt" 
+#downloader::download(url, destfile=filename)
 dat<-read.table("questionario.txt",head=T)
 head(dat)
 #install.packages("ggplot2")
@@ -528,14 +528,13 @@ boxplot(mod$res~dados$Grupo, ylab="Resíduos",xlab="Grupos")
 # Teste de Bartlett:
 bartlett.test(mod$res~dados$Grupo)
 
+# Verificando a normalidade
 #Verificação gráfica
 library(car)
 qqPlot(dados$PP, dist='norm')
 
 # Teste para a normalidade
 shapiro.test(dados$PP)
-
-
 
 grupo<-c("1","2","3")
 n<-sapply(grupo, function(x) length(dados[dados$Grupo==x,names(dados)== "PP"]))
@@ -557,7 +556,7 @@ SQD<-((n[1]-1)*s2[1]+(n[2]-1)*s2[2]+(n[3]-1)*s2[3])
 #sd2=SQD/(N-k)
 sd2<-SQD/(n[1]+n[2]+n[3]-3)
 
-SQT<-sum((red.cell.folate$folate-mtotal)^2)
+SQT<-sum((dados$PP-mtotal)^2)
 
 # Conferência
 SQE+SQD

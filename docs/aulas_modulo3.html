@@ -330,6 +330,9 @@ $(document).ready(function () {
     <li>
       <a href="questionario.txt">questionario.txt</a>
     </li>
+    <li>
+      <a href="total.csv">total.csv</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -962,9 +965,9 @@ plot(y4~x4,anscombe,main = &quot;y4 ~ x4&quot;,col=&quot;blue&quot;,pch=16)
 abline(model4, col=&quot;red&quot;)</code></pre>
 <p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-28-2.png" width="672" /></p>
 <pre class="r"><code>#Livro: Noções de probabilidade e Estatística. Marcos N. Magalhães e Antonio Carlos P. Lima. 7 #edição, 2015. 
-url &lt;- &quot;https://felipebarletta.github.io/DAEST/questionario.txt&quot;
-filename &lt;- &quot;questionario.txt&quot; 
-downloader::download(url, destfile=filename)
+#url &lt;- &quot;https://felipebarletta.github.io/DAEST/questionario.txt&quot;
+#filename &lt;- &quot;questionario.txt&quot; 
+#downloader::download(url, destfile=filename)
 dat&lt;-read.table(&quot;questionario.txt&quot;,head=T)
 head(dat)</code></pre>
 <pre><code>  Id Turma Sexo Idade  Alt Peso Filhos Fuma Toler Exerc Cine OpCine TV OpTV
@@ -1005,7 +1008,138 @@ ggplot(mod, aes(.fitted, sqrt(abs(.stdresid)))) +
 ggplot(mod) +
   stat_qq(aes(sample = .stdresid)) +
   geom_abline()</code></pre>
-<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-29-4.png" width="672" /></p>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-29-4.png" width="672" /> # Análise de Variância</p>
+<pre class="r"><code>#Os dados a seguir são de um experimento em que se deseja verificar se há diferença entre as práticas parentais com relação a três grupos de crianças. O primeiro grupo são de crianças com síndrome de down, o segundo grupo são de crianças com síndrome de down em que os pais recebem orientção sobre prtáricas parentais para este grupo especial e o terciro grupo de crianças não possuem síndrome de down. Para medir as práticas parentais há um instrumento psicológico que gera um escore em que os resultados estão guardados na variável PP.
+
+
+#url &lt;- &quot;https://felipebarletta.github.io/DAEST/total.csv&quot;
+#filename &lt;- &quot;total.csv&quot; 
+#downloader::download(url, destfile=filename)
+#dados&lt;-read.csv(&quot;total.csv&quot;,head=T,sep=&quot;;&quot;)
+dados&lt;-read.csv2(&#39;http://www.leg.ufpr.br/lib/exe/fetch.php/pessoais:total.csv&#39;, h=T)
+
+#Verifica a estrutura dos dados 
+str(dados)</code></pre>
+<pre><code>&#39;data.frame&#39;:   120 obs. of  27 variables:
+ $ Grupo                   : int  1 1 1 1 1 1 1 1 1 1 ...
+ $ SD                      : int  1 1 1 1 1 1 1 1 1 1 ...
+ $ DI                      : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ Idade_da_crianca        : int  0 0 1 1 0 1 1 0 1 0 ...
+ $ sexo                    : int  1 1 1 0 0 0 0 0 1 0 ...
+ $ escola                  : int  1 1 1 1 1 1 1 1 1 1 ...
+ $ ocupacao_da_mae         : int  1 1 1 3 1 3 1 3 1 1 ...
+ $ ocupacao_da_mae_Trabalha: int  1 1 1 0 1 0 1 0 1 1 ...
+ $ ocupacao_da_mae_Lar     : int  0 0 0 1 0 1 0 1 0 0 ...
+ $ ocupacao_do_pai         : int  1 1 1 1 3 1 1 1 3 1 ...
+ $ ocupacao_do_pai_Trabalha: int  1 1 1 1 0 1 1 1 0 1 ...
+ $ ocupacao.do_pai_Lar     : int  0 0 0 0 1 0 0 0 1 0 ...
+ $ idade_da_mae            : int  34 32 30 32 22 49 48 32 55 27 ...
+ $ idade_do_pai            : int  36 36 31 47 25 47 50 50 59 27 ...
+ $ situacao_conjugal       : int  3 1 1 3 4 2 1 1 1 1 ...
+ $ casado                  : int  0 1 1 0 0 0 1 1 1 1 ...
+ $ Numero_de_filhos        : int  2 1 2 1 1 2 2 3 5 2 ...
+ $ Tipo_de_moradia         : int  1 0 1 1 1 1 1 1 1 1 ...
+ $ Condicao_de_moradia     : int  1 1 1 1 2 1 1 1 1 3 ...
+ $ Condicao_de_moradia.1   : int  1 1 1 1 2 1 1 1 1 3 ...
+ $ Moradia_Propria         : int  1 1 1 1 0 1 1 1 1 0 ...
+ $ Moradia_Alugada         : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ media_salarial          : int  5 5 2 2 2 2 6 6 2 2 ...
+ $ PP                      : int  171 176 179 179 162 152 160 171 147 177 ...
+ $ CP                      : int  171 197 175 201 164 183 203 179 188 208 ...
+ $ PSI                     : int  132 124 80 128 107 101 94 103 105 130 ...
+ $ FACES_IV                : int  201 200 220 227 222 219 205 233 211 226 ...</code></pre>
+<pre class="r"><code>dados$Grupo&lt;-factor(dados$Grupo)
+summary(factor(dados$Grupo))</code></pre>
+<pre><code> 1  2  3 
+45 41 34 </code></pre>
+<pre class="r"><code># Verificando os pressupostos do teste
+# Verificando a homocedasticidade
+mod&lt;-lm(dados$PP~dados$Grupo)
+boxplot(mod$res~dados$Grupo, ylab=&quot;Resíduos&quot;,xlab=&quot;Grupos&quot;)</code></pre>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<pre class="r"><code># Teste de Bartlett:
+bartlett.test(mod$res~dados$Grupo)</code></pre>
+<pre><code>
+    Bartlett test of homogeneity of variances
+
+data:  mod$res by dados$Grupo
+Bartlett&#39;s K-squared = 2.0255, df = 2, p-value = 0.3632</code></pre>
+<pre class="r"><code>#Verificação gráfica
+library(car)
+qqPlot(dados$PP, dist=&#39;norm&#39;)</code></pre>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-30-2.png" width="672" /></p>
+<pre><code>[1] 54 77</code></pre>
+<pre class="r"><code># Teste para a normalidade
+shapiro.test(dados$PP)</code></pre>
+<pre><code>
+    Shapiro-Wilk normality test
+
+data:  dados$PP
+W = 0.98445, p-value = 0.1834</code></pre>
+<pre class="r"><code>grupo&lt;-c(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;)
+n&lt;-sapply(grupo, function(x) length(dados[dados$Grupo==x,names(dados)== &quot;PP&quot;]))
+
+#Variância entre os grupos
+m&lt;-sapply(grupo, function(x) mean(dados[dados$Grupo==x,names(dados)== &quot;PP&quot;]))
+mtotal&lt;-mean(dados[,names(dados)== &quot;PP&quot;])
+
+#Soma de quadrados entre amostras 
+SQE&lt;-((m-mtotal)^2)%*%matrix(n,3,1)
+#se2=SQE/(k-1)
+se2&lt;-SQE/(length(n)-1)
+
+# Variância nos grupos
+s2&lt;-sapply(grupo, function(x) var(dados[dados$Grupo==x,names(dados)== &quot;PP&quot;]))
+
+#Soma de quadrados dentre as amostras (residual)
+SQD&lt;-((n[1]-1)*s2[1]+(n[2]-1)*s2[2]+(n[3]-1)*s2[3])
+#sd2=SQD/(N-k)
+sd2&lt;-SQD/(n[1]+n[2]+n[3]-3)
+
+SQT&lt;-sum((dados$PP-mtotal)^2)
+
+# Conferência
+SQE+SQD</code></pre>
+<pre><code>        [,1]
+[1,] 30970.8</code></pre>
+<pre class="r"><code>#st2=SQT/(N-1)
+st2&lt;-SQT/(sum(n)-1)
+
+#Teste F
+Fcalc&lt;-se2/sd2
+
+# Valor tabelado
+tab&lt;-qf(0.95 ,df1=(length(n)-1),df2=(n[1]+n[2]+n[3]-3))
+Fcalc&gt;tab</code></pre>
+<pre><code>     [,1]
+[1,] TRUE</code></pre>
+<pre class="r"><code>#p-valor
+1-pf(se2/sd2,df1=(length(n)-1),df2=(n[1]+n[2]+n[3]-3))</code></pre>
+<pre><code>           [,1]
+[1,] 0.02998625</code></pre>
+<pre class="r"><code># Verificando com a função pronta
+anova(lm(dados$PP~dados$Grupo))</code></pre>
+<pre><code>Analysis of Variance Table
+
+Response: dados$PP
+             Df  Sum Sq Mean Sq F value  Pr(&gt;F)  
+dados$Grupo   2  1802.1  901.06  3.6143 0.02999 *
+Residuals   117 29168.7  249.31                  
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>x &lt;- rf(100000, df1 = 10, df2 = 20)
+hist(x, 
+     breaks = &#39;Scott&#39;, 
+     freq = FALSE, 
+     xlim = c(0,4), 
+     ylim = c(0,1),
+     xlab = &#39;&#39;, cex.main=0.9,
+     ylab=&quot;Densidade&quot;,
+     main=&quot;Distribuição F&quot;)
+curve(df(x, df1 = 10, df2 = 20), from = 0, to = 4, n = 5000, col= &#39;pink&#39;, lwd=2, add = T)
+abline(v=Fcalc, lty=3, col=&quot;red&quot;)
+abline(v=tab, lty=3, col=&quot;blue&quot;)</code></pre>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-30-3.png" width="672" /></p>
 </div>
 </div>
 
