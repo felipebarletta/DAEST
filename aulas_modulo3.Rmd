@@ -503,5 +503,93 @@ ggplot(mod) +
   geom_abline()
 
 ```
+# Análise de Variância
+
+```{r}
+#Os dados a seguir são de um experimento em que se deseja verificar se há diferença entre as práticas parentais com relação a três grupos de crianças. O primeiro grupo são de crianças com síndrome de down, o segundo grupo são de crianças com síndrome de down em que os pais recebem orientção sobre prtáricas parentais para este grupo especial e o terciro grupo de crianças não possuem síndrome de down. Para medir as práticas parentais há um instrumento psicológico que gera um escore em que os resultados estão guardados na variável PP.
+
+url <- "https://felipebarletta.github.io/DAEST/total.csv"
+filename <- "total.csv" 
+downloader::download(url, destfile=filename)
+dados<-read.csv("total.csv",head=T,sep=";")
+
+#Verifica a estrutura dos dados 
+str(dados)
+dados$Grupo<-factor(dados$Grupo)
+summary(factor(dados$Grupo))
+
+# Verificando os pressupostos do teste
+
+#Verificação gráfica
+library(car)
+qqPlot(dados$PP, dist='norm')
+plot.
+qqline(dados$PP)
+
+# Teste para a normalidade
+shapiro.test(dados$PP)
+
+# Verificando a homocedasticidade
+mod<-lm(dados$PP~dados$Grupo)
+boxplot(residuals(mod)~dados$Grupo)
+
+# Teste de Bartlett:
+bartlett.test(dados$PP~dados$Grupo)
+
+grupo<-c("1","2","3")
+n<-sapply(grupo, function(x) length(dados[dados$Grupo==x,names(dados)== "PP"]))
+
+#Variância entre os grupos
+m<-sapply(grupo, function(x) mean(dados[dados$Grupo==x,names(dados)== "PP"]))
+mtotal<-mean(dados[,names(dados)== "PP"])
+
+#Soma de quadrados entre amostras 
+SQE<-((m-mtotal)^2)%*%matrix(n,3,1)
+#se2=SQE/(k-1)
+se2<-SQE/(length(n)-1)
+
+# Variância nos grupos
+s2<-sapply(grupo, function(x) var(dados[dados$Grupo==x,names(dados)== "PP"]))
+
+#Soma de quadrados dentre as amostras (residual)
+SQD<-((n[1]-1)*s2[1]+(n[2]-1)*s2[2]+(n[3]-1)*s2[3])
+#sd2=SQD/(N-k)
+sd2<-SQD/(n[1]+n[2]+n[3]-3)
+
+SQT<-sum((red.cell.folate$folate-mtotal)^2)
+
+# Conferência
+SQE+SQD
+#st2=SQT/(N-1)
+st2<-SQT/(sum(n)-1)
+
+#Teste F
+Fcalc<-se2/sd2
+
+# Valor tabelado
+tab<-qf(0.95 ,df1=(length(n)-1),df2=(n[1]+n[2]+n[3]-3))
+Fcalc>tab
+#p-valor
+1-pf(se2/sd2,df1=(length(n)-1),df2=(n[1]+n[2]+n[3]-3))
+
+# Verificando com a função pronta
+anova(lm(dados$PP~dados$Grupo))
+
+x <- rf(100000, df1 = 10, df2 = 20)
+hist(x, 
+     breaks = 'Scott', 
+     freq = FALSE, 
+     xlim = c(0,4), 
+     ylim = c(0,1),
+     xlab = '', cex.main=0.9,
+     ylab="Densidade",
+     main="Distribuição F")
+curve(df(x, df1 = 10, df2 = 20), from = 0, to = 4, n = 5000, col= 'pink', lwd=2, add = T)
+abline(v=Fcalc, lty=3, col="red")
+abline(v=tab, lty=3, col="blue")
+
+
+```
+
 
 
