@@ -331,7 +331,7 @@ $(document).ready(function () {
       <a href="questionario.txt">questionario.txt</a>
     </li>
     <li>
-      <a href="total.csv">total.csv</a>
+      <a href="base.csv">base.csv</a>
     </li>
   </ul>
 </li>
@@ -1008,7 +1008,13 @@ ggplot(mod, aes(.fitted, sqrt(abs(.stdresid)))) +
 ggplot(mod) +
   stat_qq(aes(sample = .stdresid)) +
   geom_abline()</code></pre>
-<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-29-4.png" width="672" /> # Análise de Variância</p>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-29-4.png" width="672" /></p>
+</div>
+</div>
+<div id="análise-de-variância-101120" class="section level1">
+<h1>Análise de Variância (10/11/20)</h1>
+<div id="exercício-1-1" class="section level2">
+<h2>Exercício 1</h2>
 <pre class="r"><code>#Os dados a seguir são de um experimento em que se deseja verificar se há diferença entre as práticas parentais com relação a três grupos de crianças. O primeiro grupo são de crianças com síndrome de down, o segundo grupo são de crianças com síndrome de down em que os pais recebem orientção sobre prtáricas parentais para este grupo especial e o terciro grupo de crianças não possuem síndrome de down. Para medir as práticas parentais há um instrumento psicológico que gera um escore em que os resultados estão guardados na variável PP.
 
 
@@ -1064,11 +1070,15 @@ bartlett.test(mod$res~dados$Grupo)</code></pre>
 
 data:  mod$res by dados$Grupo
 Bartlett&#39;s K-squared = 2.0255, df = 2, p-value = 0.3632</code></pre>
-<pre class="r"><code>#Verificação gráfica
+<pre class="r"><code># Verificando a normalidade
+#Verificação gráfica
 library(car)
 qqPlot(dados$PP, dist=&#39;norm&#39;)</code></pre>
 <p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-30-2.png" width="672" /></p>
 <pre><code>[1] 54 77</code></pre>
+<pre class="r"><code>qqnorm(dados$PP)
+qqline(dados$PP)</code></pre>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-30-3.png" width="672" /></p>
 <pre class="r"><code># Teste para a normalidade
 shapiro.test(dados$PP)</code></pre>
 <pre><code>
@@ -1105,19 +1115,8 @@ SQE+SQD</code></pre>
 <pre class="r"><code>#st2=SQT/(N-1)
 st2&lt;-SQT/(sum(n)-1)
 
-#Teste F
-Fcalc&lt;-se2/sd2
 
-# Valor tabelado
-tab&lt;-qf(0.95 ,df1=(length(n)-1),df2=(n[1]+n[2]+n[3]-3))
-Fcalc&gt;tab</code></pre>
-<pre><code>     [,1]
-[1,] TRUE</code></pre>
-<pre class="r"><code>#p-valor
-1-pf(se2/sd2,df1=(length(n)-1),df2=(n[1]+n[2]+n[3]-3))</code></pre>
-<pre><code>           [,1]
-[1,] 0.02998625</code></pre>
-<pre class="r"><code># Verificando com a função pronta
+# Verificando com a função pronta
 anova(lm(dados$PP~dados$Grupo))</code></pre>
 <pre><code>Analysis of Variance Table
 
@@ -1127,7 +1126,25 @@ dados$Grupo   2  1802.1  901.06  3.6143 0.02999 *
 Residuals   117 29168.7  249.31                  
 ---
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>x &lt;- rf(100000, df1 = 10, df2 = 20)
+<pre class="r"><code>#Teste F
+Fcalc&lt;-se2/sd2
+
+# Valor tabelado
+tab&lt;-qf(0.95 ,df1=(length(n)-1),df2=(n[1]+n[2]+n[3]-3))
+tab</code></pre>
+<pre><code>[1] 3.073763</code></pre>
+<pre class="r"><code>Fcalc&gt;tab</code></pre>
+<pre><code>     [,1]
+[1,] TRUE</code></pre>
+<pre class="r"><code>#p-valor
+1-pf(se2/sd2,df1=(length(n)-1),df2=(n[1]+n[2]+n[3]-3))</code></pre>
+<pre><code>           [,1]
+[1,] 0.02998625</code></pre>
+<pre class="r"><code>pf(se2/sd2,df1=(length(n)-1),df2=(n[1]+n[2]+n[3]-3),lower.tail = FALSE)</code></pre>
+<pre><code>           [,1]
+[1,] 0.02998625</code></pre>
+<pre class="r"><code>set.seed(1234)
+x &lt;- rf(100000, df1 = (length(n)-1), df2 = (n[1]+n[2]+n[3]-3))
 hist(x, 
      breaks = &#39;Scott&#39;, 
      freq = FALSE, 
@@ -1136,10 +1153,121 @@ hist(x,
      xlab = &#39;&#39;, cex.main=0.9,
      ylab=&quot;Densidade&quot;,
      main=&quot;Distribuição F&quot;)
-curve(df(x, df1 = 10, df2 = 20), from = 0, to = 4, n = 5000, col= &#39;pink&#39;, lwd=2, add = T)
 abline(v=Fcalc, lty=3, col=&quot;red&quot;)
-abline(v=tab, lty=3, col=&quot;blue&quot;)</code></pre>
-<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-30-3.png" width="672" /></p>
+text(Fcalc,0.6,&quot;Valor calculado&quot;,srt = 90,col=&quot;red&quot;)
+abline(v=tab, lty=3, col=&quot;blue&quot;)
+text(tab,0.6,&quot;Valor crítico&quot;,srt = 90,col=&quot;blue&quot;)</code></pre>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-30-4.png" width="672" /></p>
+</div>
+<div id="exercício-2" class="section level2">
+<h2>Exercício 2</h2>
+<pre class="r"><code>#Conjunto de dados
+data&lt;-data.frame(Peso=scan(text=&quot;27.42 30.34 30.75 27.26 26.74 28.23 27.22 27.08 29.36 29.17 31.12 27.67 32.73 32.14 32.15 30.47 27.86 28.52 29.83 30.38 28.69&quot;),
+                 Industria=c(rep(&quot;A&quot;,7),rep(&quot;B&quot;,7),rep(&quot;C&quot;,7)))
+head(data)</code></pre>
+<pre><code>   Peso Industria
+1 27.42         A
+2 30.34         A
+3 30.75         A
+4 27.26         A
+5 26.74         A
+6 28.23         A</code></pre>
+<pre class="r"><code>#Avalia homocedasticidade
+
+
+mod&lt;-lm(data$Peso~data$Industria)
+boxplot(mod$res~data$Industria, ylab=&quot;Resíduos&quot;,xlab=&quot;Grupos&quot;)</code></pre>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<pre class="r"><code>bartlett.test(mod$res~data$Industria)</code></pre>
+<pre><code>
+    Bartlett test of homogeneity of variances
+
+data:  mod$res by data$Industria
+Bartlett&#39;s K-squared = 0.9788, df = 2, p-value = 0.613</code></pre>
+<pre class="r"><code>#Avalia normalidade
+qqnorm(data$Peso)
+qqline(data$Peso)</code></pre>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-31-2.png" width="672" /></p>
+<pre class="r"><code># Teste para a normalidade
+shapiro.test(data$Peso)</code></pre>
+<pre><code>
+    Shapiro-Wilk normality test
+
+data:  data$Peso
+W = 0.94052, p-value = 0.2231</code></pre>
+<pre class="r"><code>#Teste F
+anova(lm(mod))</code></pre>
+<pre><code>Analysis of Variance Table
+
+Response: data$Peso
+               Df Sum Sq Mean Sq F value Pr(&gt;F)
+data$Industria  2 10.886  5.4428  1.7261 0.2062
+Residuals      18 56.760  3.1533               </code></pre>
+<pre class="r"><code>#Valor crítico
+qf(0.95 ,df1=2,df2=18)</code></pre>
+<pre><code>[1] 3.554557</code></pre>
+<pre class="r"><code># Gráfico do teste
+set.seed(1234)
+x &lt;- rf(100000, df1 = 2, df2 = 18)
+hist(x, 
+     breaks = &#39;Scott&#39;, 
+     freq = FALSE, 
+     xlim = c(0,4), 
+     ylim = c(0,1),
+     xlab = &#39;&#39;, cex.main=0.9,
+     ylab=&quot;Densidade&quot;,
+     main=&quot;Distribuição F&quot;)
+#calculado
+abline(v=1.7261, lty=3, col=&quot;red&quot;)
+text(1.7261,0.6,&quot;Valor calculado&quot;,srt = 90,col=&quot;red&quot;)
+#tabelado
+abline(v=3.554557, lty=3, col=&quot;blue&quot;)
+text(3.554557,0.6,&quot;Valor crítico&quot;,srt = 90,col=&quot;blue&quot;)</code></pre>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-31-3.png" width="672" /></p>
+</div>
+<div id="distribuição-f-com-diferentes-graus-de-liberdade" class="section level2">
+<h2>Distribuição F com diferentes graus de liberdade</h2>
+<pre class="r"><code>#Distribuição fixando N=31 e modificando os números de níveis
+distF&lt;-function(df1,df2,color){
+  set.seed(1234)
+  x &lt;- rf(100000, df1 = df1, df2 = df2)
+  return(hist(x, 
+              breaks = &#39;Scott&#39;, 
+              freq = FALSE, 
+              xlim = c(0,4), 
+              ylim = c(0,1),
+              col=color,
+              xlab = &#39;&#39;, 
+              cex.main=0.9,
+              ylab=&quot;Densidade&quot;,
+              main=&quot;Distribuição F&quot;))
+}
+#N=31,k=11
+distF(10,20,color=rgb(0,0,1,0.5))
+par(new=TRUE)
+#N=31,k=6
+distF(5,25,rgb(0,1,1,0.5))
+#N=31,k=3
+par(new=TRUE)
+distF(2,28,rgb(1,0,1,0.5))
+legend(&quot;topleft&quot;,legend=c(&quot;N=31,k=11&quot;,&quot;N=31,k=6&quot;,
+                          &quot;N=31,k=3&quot;),
+       text.col=c(rgb(0,0,1,0.5),rgb(0,1,1,0.5),rgb(1,0,1,0.5)),
+       col=c(rgb(0,0,1,0.5),rgb(0,1,1,0.5),rgb(1,0,1,0.5)))</code></pre>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<pre class="r"><code>#N=50,k=5
+distF(4,45,rgb(0,0,1,0.5))
+par(new=TRUE)
+#N=25,k=5
+distF(4,20,rgb(0,1,1,0.5))
+#N=15,k=5
+par(new=TRUE)
+distF(4,10,rgb(1,0,1,0.5))
+legend(&quot;topleft&quot;,legend=c(&quot;N=50,k=5&quot;,&quot;N=25,k=5&quot;,
+                          &quot;N=15,k=5&quot;),
+       text.col=c(rgb(0,0,1,0.5),rgb(0,1,1,0.5),rgb(1,0,1,0.5)),
+       col=c(rgb(0,0,1,0.5),rgb(0,1,1,0.5),rgb(1,0,1,0.5)))</code></pre>
+<p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
 </div>
 </div>
 
