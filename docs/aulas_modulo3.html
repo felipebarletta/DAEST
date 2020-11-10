@@ -1269,6 +1269,48 @@ legend(&quot;topleft&quot;,legend=c(&quot;N=50,k=5&quot;,&quot;N=25,k=5&quot;,
        col=c(rgb(0,0,1,0.5),rgb(0,1,1,0.5),rgb(1,0,1,0.5)))</code></pre>
 <p><img src="aulas_modulo3_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
 </div>
+<div id="praticando" class="section level2">
+<h2>Praticando</h2>
+<ul>
+<li><p>Com os dados abaixo, primeiramente verifique os pressupostos do teste por meio de análise gráfica e teste estatístico;</p></li>
+<li><p>Depois, construa a tabela ANOVA e por fim, faça o teste.</p></li>
+</ul>
+<pre class="r"><code>Y &lt;- c(rnorm(10,21,1),rnorm(10,17,2),rnorm(10,15,2)) # Variável resposta
+X &lt;- rep(c(&quot;T1&quot;,&quot;T2&quot;,&quot;T3&quot;),each=10)  # Variável explicativa (categórica)
+dados &lt;- data.frame(Y,X)
+dados</code></pre>
+<pre><code>          Y  X
+1  20.46927 T1
+2  21.03065 T1
+3  21.35751 T1
+4  22.54133 T1
+5  22.08710 T1
+6  18.83653 T1
+7  20.97352 T1
+8  20.53054 T1
+9  21.32191 T1
+10 22.65148 T1
+11 17.17377 T2
+12 13.48594 T2
+13 16.50427 T2
+14 17.78216 T2
+15 18.13752 T2
+16 19.66093 T2
+17 16.62999 T2
+18 17.42968 T2
+19 14.61467 T2
+20 18.14116 T2
+21 13.90767 T3
+22 13.89422 T3
+23 15.42667 T3
+24 12.11868 T3
+25 16.83952 T3
+26 14.96261 T3
+27 13.82106 T3
+28 15.03173 T3
+29 15.80150 T3
+30 17.90072 T3</code></pre>
+</div>
 </div>
 
 <center>

@@ -695,6 +695,20 @@ legend("topleft",legend=c("N=50,k=5","N=25,k=5",
        col=c(rgb(0,0,1,0.5),rgb(0,1,1,0.5),rgb(1,0,1,0.5)))
 ```
 
+## Praticando
+
+- Com os dados abaixo, primeiramente verifique os pressupostos do teste por meio de análise gráfica e teste estatístico;
+
+- Depois, construa a tabela ANOVA e por fim, faça o teste.
+
+```{r}
+Y <- c(rnorm(10,21,1),rnorm(10,17,2),rnorm(10,15,2)) # Variável resposta
+X <- rep(c("T1","T2","T3"),each=10)  # Variável explicativa (categórica)
+dados <- data.frame(Y,X)
+dados
+```
+
+
 
 
 
