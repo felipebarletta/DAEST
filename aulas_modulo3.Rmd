@@ -699,7 +699,9 @@ legend("topleft",legend=c("N=50,k=5","N=25,k=5",
 
 - Com os dados abaixo, primeiramente verifique os pressupostos do teste por meio de análise gráfica e teste estatístico;
 
-- Depois, construa a tabela ANOVA e por fim, faça o teste.
+- Depois, construa a tabela ANOVA e por fim, faça o teste;
+
+- Construa o gráfico do teste
 
 ```{r}
 Y <- c(rnorm(10,21,1),rnorm(10,17,2),rnorm(10,15,2)) # Variável resposta
